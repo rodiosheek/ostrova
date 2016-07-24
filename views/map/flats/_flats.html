@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- Response map -->
+<section class="page">
+    <div class="flat">
+        <div class="flat-plan">
+            <img src="assets/images/maps/tahiti/flats/flat-{{ flatId }}.png" alt="Квартира № {{ flatId }}">
+        </div>
+        <div class="flat-info">
+            <div class="flat-info-item">
+                <p>Номер квартиры</p>
+                <h1>{{ flatId }}</h1>
+            </div>
+            <div class="flat-info-item">
+                <p>Общая площадь</p>
+                <h1>45 м&#178;</h1>
+            </div>
+            <div class="flat-info-item">
+                <p>Комнат</p>
+                <h1>1</h1>
+            </div>
+            <div class="flat-info-item">
+                <p>Статус</p>
+                <h1>в продаже</h1>
+            </div>
 
-</body>
-</html>
+            <button class="reservation-button" ng-click="formShow = !formShow">Online бронирование</button>
+
+        </div>
+    </div>
+    <div class="reservation-form" ng-show="formShow">
+        <div class="reservation-form-area">
+            <h1>Забронировать квартиру</h1>
+            <label for="name">Имя</label>
+            <input id="name" ng-model="form.name" required>
+            <!--
+            <label for="email">Почта</label>
+            <input id="email" ng-model="form.email">
+            -->
+            <label for="phone">Телефон</label>
+            <input id="phone" ng-model="form.phone" required>
+
+            <button ng-click="reservationFlat()">Бронировать</button>
+            <button ng-click="formShow = !formShow">Отмена</button>
+        </div>
+    </div>
+</section>

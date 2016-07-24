@@ -673,6 +673,128 @@ a.corps-link {
 .corps-link.non-active .corps-link-popup .corps-popup-title {
     font-size: 1.1em;
 }
+/*** Flats ***/
+
+.flat {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.flat-plan {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    left: 0;
+}
+
+.flat-plan img {
+    position: relative;
+    width: 100%;
+    top: 25%;
+}
+
+.flat-info {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    top: 25%;
+    right: 0;
+}
+
+.flat-info-item {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.flat-info-item p {
+    margin-bottom: 15px;
+}
+
+.flat-info-item h1 {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #FE7B25;
+}
+
+.reservation-button, .reservation-form-area button {
+    padding: 5px;
+    color: #fff;
+    font-size: 1.1em;
+    background-color: rgb(23, 43, 93);
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+}
+
+.reservation-button:hover, .reservation-form-area button:hover {
+    -webkit-box-shadow: 0px 0px 4px 2px rgba(0,75,213,1);
+    -moz-box-shadow: 0px 0px 4px 2px rgba(0,75,213,1);
+    box-shadow: 0px 0px 4px 2px rgba(0,75,213,1);
+}
+
+/*** Reservation form ***/
+
+.reservation-form {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(66, 80, 100, 0.51);
+    z-index: 100000;
+}
+
+.reservation-form-area {
+    position: relative;
+    height: 308px;
+    width: 500px;
+    left: 25%;
+    top: 35%;
+    background-color: #fff;
+    border: 1px #9f9f9f solid;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.reservation-form-area h1 {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.reservation-form-area label {
+    font-size: 1.2em
+}
+
+.reservation-form-area input {
+    border: none;
+    height: 30px;
+    width: 300px;
+    background-color: #dad8d8;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.reservation-form-area button {
+    width: 150px;
+}
+
 
 /****************************************
        ### 9 ---- How to bay

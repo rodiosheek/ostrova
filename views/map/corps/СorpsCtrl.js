@@ -1,8 +1,8 @@
-function CorpsCtrl($scope, $location, $routeParams) {
+function CorpsCtrl($scope, $location, $routeParams, mapService) {
     console.log('Korpus controller');
 
     var id = $routeParams.alt;
-   
+
 
     $scope.sectionInit = function () {
             setTimeout(function () {

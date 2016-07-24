@@ -41,7 +41,7 @@ function router($routeProvider) {
             controller: FloorCtrl
         })
         .when('/flat/:alt', {
-            templateUrl: '/views/map/flats/_flats.html',
+            templateUrl: 'views/map/flats/_flats.html',
             controller: FlatsCtrl
         })
         .when('/kak-kupit', {
