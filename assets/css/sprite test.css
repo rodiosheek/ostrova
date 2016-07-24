@@ -1,0 +1,184 @@
+.s-0001, .s-0002, .s-0003, .s-3d-tour, .s-0004, .s-0005, .s-0006, .s-0007, .s-0008, .s-0009, .s-0010, .s-0011, .s-0012, .s-0013, .s-0014, .build, .facebook, .google, .hills, .instagram, .location, .logo, .new, .odnoklassniki, .photo, .search, .territory, .twitter, .vk, .youtube{
+    background: url(sprites.png) no-repeat;
+}
+
+.s-0001{
+    background-position: -682px -53px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0002{
+    background-position: -630px -53px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0003{
+    background-position: -577px -55px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-3d-tour{
+    background-position: -661px -179px ;
+    width: 131px;
+    height: 131px;
+}
+
+.s-0004{
+    background-position: -523px -55px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0005{
+    background-position: -470px -55px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0006{
+    background-position: -417px -55px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0007{
+    background-position: -365px -54px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0008{
+    background-position: -314px -54px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0009{
+    background-position: -265px -54px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0010{
+    background-position: -214px -54px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0011{
+    background-position: -160px -54px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0012{
+    background-position: -107px -54px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0013{
+    background-position: -55px -54px ;
+    width: 43px;
+    height: 43px;
+}
+
+.s-0014{
+    background-position: -4px -52px ;
+    width: 43px;
+    height: 43px;
+}
+
+.build{
+    background-position: -216px -271px ;
+    width: 131px;
+    height: 131px;
+}
+
+.facebook{
+    background-position: -308px -12px ;
+    width: 32px;
+    height: 33px;
+}
+
+.google{
+    background-position: -259px -8px ;
+    width: 33px;
+    height: 33px;
+}
+
+.hills{
+    background-position: -487px -129px ;
+    width: 293px;
+    height: 30px;
+}
+
+.instagram{
+    background-position: -207px -10px ;
+    width: 33px;
+    height: 33px;
+}
+
+.location{
+    background-position: -601px -325px ;
+    width: 160px;
+    height: 159px;
+}
+
+.logo{
+    background-position: -200px -126px ;
+    width: 262px;
+    height: 112px;
+}
+
+.new{
+    background-position: -380px -324px ;
+    width: 160px;
+    height: 159px;
+}
+
+.odnoklassniki{
+    background-position: -159px -8px ;
+    width: 33px;
+    height: 33px;
+}
+
+.photo{
+    background-position: -9px -318px ;
+    width: 160px;
+    height: 159px;
+}
+
+.search{
+    background-position: -11px -155px ;
+    width: 160px;
+    height: 159px;
+}
+
+.territory{
+    background-position: -543px -184px ;
+    width: 67px;
+    height: 67px;
+}
+
+.twitter{
+    background-position: -109px -11px ;
+    width: 33px;
+    height: 33px;
+}
+
+.vk{
+    background-position: -58px -10px ;
+    width: 33px;
+    height: 33px;
+}
+
+.youtube{
+    background-position: -10px -10px ;
+    width: 33px;
+    height: 33px;
+}
+

@@ -1,0 +1,19 @@
+{
+  "name": "ostrova",
+  "version": "0.1",
+  "main": "index.html",
+  "ignore": [
+    "**/.*",
+    "sources"
+  ],
+  "dependencies": {
+    "angular": "latest",
+    "angular-route": "latest",
+    "requirejs": "latest",
+    "requirejs-domready": "latest",
+    "angular-animate": "latest",
+    "raphael": "^2.2.1",
+    "jquery": "^3.1.0",
+    "angular-ui-router": "latest"
+  }
+}

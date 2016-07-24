@@ -1,0 +1,64 @@
+<!-- Home page -->
+
+    <!-- Buttons panel -->
+    <div class="buttons-panel">
+        <!-- Button new home -->
+        <div class="design-button new-home">
+            <a href="" class="button-img">
+                <div class="button-text">
+                    Новый дом<br/>
+                    <span>в продаже</span>
+                </div>
+            </a>
+            <div class="rotate-bg-1"></div>
+            <div class="rotate-bg-2"></div>
+            <div class="rotate-bg-3"></div>
+        </div>
+        <!-- Button choice of flats -->
+        <div class="design-button choice-flats">
+            <a href="#/map" class="button-img">
+                <div class="button-text">
+                    Выбор<br/>
+                    <span>квартры</span>
+                </div>
+            </a>
+            <div class="rotate-bg-1"></div>
+            <div class="rotate-bg-2"></div>
+            <div class="rotate-bg-3"></div>
+        </div>
+        <!-- 3-D tour -->
+        <a href="" class="small-button d-tour">
+            <div class="small-button-text"><span>3-D</span><br/> тур</div>
+        </a>
+        <!-- Building process -->
+        <a href="" class="small-button b-process">
+            <div class="small-button-text"><span>ход</span><br/> стройки</div>
+        </a>
+
+    </div>
+
+
+    <section class="page">
+        <div class="slider-img {{ viewClass }}" ng-repeat="(i, slide) in slider.images" ng-show="i == slider.index">
+            <img src="{{ slide.image }}" alt="{{ i }}">
+        </div>
+    </section>
+
+    <div class="slider-controls">
+        <div class="slider-prev" ng-click="prev()"></div>
+        <div class="slider-next" ng-click="next()"></div>
+        <div class="slider-info">
+            <div class="slider-icon-repeat">
+                <div class="slider-icon" ng-repeat="(i, icon) in slider.icons" ng-show="i == slider.index">
+                    <img src="{{ icon.icon }}" alt="{{ i }}">
+                </div>
+            </div>
+            <div class="slider-text-repeat">
+                <div class="slider-text"  ng-repeat="(i, text) in slider.text" ng-show="i == slider.index">
+                    {{ text.text }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
