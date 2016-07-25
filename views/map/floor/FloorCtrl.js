@@ -1,8 +1,9 @@
 function FloorCtrl($scope, $location, $routeParams) {
     console.log('Floor controller');
 
-    var id = $routeParams.id;
-    console.log('ID->' + id);
+    var id = $routeParams.alt;
+
+
 
     $scope.sectionInit = function () {
         setTimeout(function () {
@@ -10,7 +11,7 @@ function FloorCtrl($scope, $location, $routeParams) {
                 onclick: function (el) {
                     var alt = el.data('alt');
                     if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
-                        console.log("Corps->" + alt);
+                        console.log("Flats->" + alt);
                         $scope.$apply(function () {
                             $location.path('/flat/' + alt);
                         })

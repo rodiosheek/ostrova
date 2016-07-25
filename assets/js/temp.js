@@ -1,16 +1,8 @@
 
-function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
-    'use strict';
+function MapCtrl($scope, $location, $routeParams, $route) {
+
     console.log('Map controller');
-    var mapData = mapService.getMapData();
-    mapData.then(
-        function(data) {
-            $scope.mapInfo = data;
-        },
-        function(error) {
-            console.log(error);
-        }
-    );
+
     $scope.mapInit = function () {
         setTimeout(function () {
             $('.map-plans').svgDrawing({
@@ -40,8 +32,10 @@ function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
         }, 1000);
     };
 
-    $scope.mapInit();
+
 
 };
 
-app.controller('MapCtrl', MapCtrl);
+app.controller('MapCtrl', MapCtrl);/**
+ * Created by lenovo on 24.07.2016.
+ */
