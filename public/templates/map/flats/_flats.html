@@ -1,0 +1,63 @@
+<!-- Response map -->
+<section class="page">
+    <div class="flat">
+        <div class="flat-plan">
+            <img src="../../images/maps/tahiti/flats/flat-{{ room }}.png" alt="Квартира № {{ room }}">
+        </div>
+        <div class="flat-info">
+            <div class="flat-info-item">
+                <p>Номер квартиры</p>
+                <h1>{{ flat.number }}</h1>
+            </div>
+            <div class="flat-info-item">
+                <p>Общая площадь</p>
+                <h1>{{ flat.area }} м&#178;</h1>
+            </div>
+            <div class="flat-info-item">
+                <p>Комнат</p>
+                <h1>{{ flat.rooms }}</h1>
+            </div>
+            <div class="flat-info-item">
+                <p>Статус</p>
+                <h1 ng-if="flat.onSale == 1">в продаже</h1>
+                <h1 ng-if="flat.onSale == 0">нет в продаже</h1>
+            </div>
+
+            <button class="reservation-button" ng-click="formShow = !formShow">Online бронирование</button>
+
+        </div>
+    </div>
+    <div class="reservation-form" ng-show="formShow" style="overflow: scroll">
+        <form name="resForm" class="reservation-form-area" novalidate>
+            <h1>Забронировать квартиру</h1>
+            <label for="name">Имя</label>
+            <div class="input-form">
+                <input type="text" id="name" name="name" ng-model="form.name" required>
+                <div class="error-message" ng-show="resForm.name.$error.required">Заполните это поле</div>
+            </div>
+
+            <label for="email">Почта</label>
+            <div class="input-form">
+                <input id="email" type="email" name="email" ng-model="form.email"  required>
+                <div class="error-message" ng-show="resForm.email.$error.required">Заполните это поле</div>
+                <div class="error-message" ng-show="resForm.email.$error.email">Это не похоже на email</div>
+            </div>
+
+            <label for="phone">Телефон</label>
+            <div class="input-form">
+                <input id="phone" type="text" name="phone" ng-model="form.phone" ui-mask="+8 ( 999 ) 999 - 99 - 99" model-view-value="true" required>
+                <div class="error-message" ng-show="resForm.phone.$error.required">Заполните это поле</div>
+            </div>
+
+            <button ng-click="reservationFlat()" ng-disabled="resForm.$invalid">Бронировать</button>
+            <button ng-click="formShow = !formShow">Отмена</button>
+
+            <div ng-show="done" class="done-message">
+                <div class="http-loading" ng-show="httpLoading"><div>Отправка сообщения...</div></div>
+                <div>Сообщение отправлено</div>
+                <button ng-click="formShow = !formShow">Назад</button>
+            </div>
+        </form>
+        <div >{{error}}</div>
+    </div>
+</section>
