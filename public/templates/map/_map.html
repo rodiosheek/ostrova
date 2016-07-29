@@ -1,0 +1,283 @@
+
+    <!-- Response map -->
+    <section class="page">
+        <desc>MAP</desc>
+        <!-- Map directive -->
+        <div class="map-frame">
+            <!-- Background map image -->
+            <img class="bg-img" src="../../images/maps/9a.jpg">
+            <div class="map-info" >
+                <img class="map-plans"  width="3300" height="1855" src="">
+                <map >
+                    <area ng-repeat="info in mapInfo"    alt="{{ info.alt }}" shape="poly" coords="{{ info.coords }}"   nohref="nohref" />
+
+                </map>
+            </div>
+            <div class="popup-menu">
+                <!-- Popup item -->
+                <a href="" class="corps-link non-active" data-target="1" style="top: 29%;left: 90%;">1
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title" >
+                            нет
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                     в продаже
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link non-active" data-target="2" style="top: 32%;left: 80%;">2
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title">
+                            нет
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link non-active" data-target="3" style="top: 36%;left: 70%;">3
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title">
+                            нет
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link non-active" data-target="4" style="top: 52%;left: 64%;">4
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title">
+                            нет
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link" data-target="5" style="top: 29%;left: 62%;">33
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title">
+                            110
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corps-popup f1">
+                            10
+                            <span>
+                                1-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f2">
+                            10
+                            <span>
+                                2-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f3">
+                            10
+                            <span>
+                                3-комнатных
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link" data-target="9a" style="top: 43%;left: 48%;">9a
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title">
+                            {{ flats.count }}
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corps-popup f1">
+                            {{ flats.oneroom }}
+                            <span>
+                                1-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f2">
+                            {{ flats.tworooms }}
+                            <span>
+                                2-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f3">
+                            {{ flats.threerooms }}
+                            <span>
+                                3-комнатных
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link non-active" data-target="7" style="top: 54%;left: 19%;">7
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title">
+                            нет
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link non-active" data-target="8" style="top: 35%;left: 22%;">8
+                    <div class="corps-link-popup">
+                        <div class="corps-popup-title">
+                            нет
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link" data-target="dc" style="top: 15%;left: 62%;">
+                    <div class="corps-link-popup" style="left: 40px">
+                        <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
+                            Детский сад
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link" data-target="tc" style="top: 67%;left: 31%;">
+                    <div class="corps-link-popup" style="left: 40px">
+                        <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
+                            Торговый центр
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link non-active" data-target="9" style="top: 45%;left: 16%;">9
+                    <div class="corps-link-popup" style="left: 40px">
+                        <div class="corps-popup-title">
+                            нет
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corps-popup f1">
+                            10
+                            <span>
+                                1-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f2">
+                            10
+                            <span>
+                                2-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f3">
+                            10
+                            <span>
+                                3-комнатных
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link" data-target="10" style="top: 44%;left: 5%;">30
+                    <div class="corps-link-popup" style="left: 40px">
+                        <div class="corps-popup-title">
+                            110
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corps-popup f1">
+                            10
+                            <span>
+                                1-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f2">
+                            10
+                            <span>
+                                2-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f3">
+                            10
+                            <span>
+                                3-комнатных
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link" data-target="11" style="top: 25%;left: 17%;">29a
+                    <div class="corps-link-popup" style="left: 40px">
+                        <div class="corps-popup-title">
+                            110
+                            <div class="corps-text">
+                                квартир
+                                <div>
+                                    в продаже
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corps-popup f1">
+                            10
+                            <span>
+                                1-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f2">
+                            10
+                            <span>
+                                2-комнатных
+                            </span>
+                        </div>
+                        <div class="corps-popup f3">
+                            10
+                            <span>
+                                3-комнатных
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
