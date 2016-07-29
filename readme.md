@@ -10,13 +10,6 @@
 AngularJS [![Build Status](https://travis-ci.org/angular/angular.js.svg?branch=master)](https://travis-ci.org/angular/angular.js)
 =========
 
-* Web site: https://angularjs.org
-* Tutorial: https://docs.angularjs.org/tutorial
-* API Docs: https://docs.angularjs.org/api
-* Developer Guide: https://docs.angularjs.org/guide
-* Contribution guidelines: [CONTRIBUTING.md](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md)
-* Dashboard: https://dashboard.angularjs.org
-
 
 
 ### Structure of my Angular application
