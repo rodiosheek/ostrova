@@ -14,33 +14,36 @@ AngularJS [![Build Status](https://travis-ci.org/angular/angular.js.svg?branch=m
 
 ### Structure of my Angular application
 ```
-resources/ 
+Structure of Angular application
+
+resources/
 -------- assets/
--------------- app/ 
------------------- controllers/ 
------------------------- CorpsCtrl.js
------------------------- AbouteCtrl.js
------------------------- FlatsCtrl.js
------------------------- FloorCtrl.js
------------------------- FlatsCtrl.js
------------------------- FloorCtrl.js
------------------------- HomeCtrl.js
------------------------- MapCtrl.js
------------------------- SectionCtlr.js
------------------- jquery-scripts/
------------------------- jquery-scripts.js /* Scripts for resize page and draving SVG maps
+------------- app/
+---------------- controllers/
+----------------------- CorpsCtrl.js
+----------------------- AbouteCtrl.js
+----------------------- FlatsCtrl.js
+----------------------- FloorCtrl.js
+----------------------- FlatsCtrl.js
+----------------------- FloorCtrl.js
+----------------------- HomeCtrl.js
+----------------------- MapCtrl.js
+----------------------- SectionCtlr.js
+---------------- jquery-scripts/
+----------------------- jquery-scripts.js /* Scripts for resize page and draving SVG maps
 ------------------ services/
------------------------- mapService.js
------------------- sources/
------------------------- angular-animate.js
------------------------- angular-route.js
------------------------- angular.js
------------------------- jquery.js
------------------------- mask.js
------------------------- raphael.js
------------------------- scale.raphael.js
+----------------------- mapService.js
 ------------------ app.js
 ------------------ routes.js
+------------- sources/
+-------------------- angular-animate.js
+-------------------- angular-route.js
+-------------------- angular.js
+-------------------- jquery.js
+-------------------- mask.js
+-------------------- raphael.js
+-------------------- scale.raphael.js
+
 
 Views for Angular located in 
 
@@ -50,6 +53,10 @@ public/
 Laravel controllers for Angular application in 
 
 app/
+--- Http/
+------- Controllers/
+---------------- Building9aController.php /* to RESTful  between Laravel and Angular
+
 --- Http/
 ------- Controllers/
 ---------------- Building9aController.php /* to RESTful  between Laravel and Angular
