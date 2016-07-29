@@ -29,12 +29,13 @@ piece of cake. Best of all? It makes development fun!
 * Dashboard: https://dashboard.angularjs.org
 
 
-Structure of Angular application
 
-redources/
+### Structure of Angular application
+```
+redources/ 
 -------- assets/
--------------- app/
------------------- controllers/
+-------------- app/ 
+------------------ controllers/ 
 ------------------------ CorpsCtrl.js
 ------------------------ AbouteCtrl.js
 ------------------------ FlatsCtrl.js
@@ -70,3 +71,4 @@ app/
 --- Http/
 ------- Controllers/
 ---------------- Building9aController.php /* to RESTful  between Laravel and Angular
+```
