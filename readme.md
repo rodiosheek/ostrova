@@ -31,10 +31,10 @@ resources/
 ----------------------- SectionCtlr.js
 ---------------- jquery-scripts/
 ----------------------- jquery-scripts.js /* Scripts for resize page and draving SVG maps
------------------- services/
+---------------- services/
 ----------------------- mapService.js
------------------- app.js
------------------- routes.js
+---------------- app.js
+---------------- routes.js
 ------------- sources/
 -------------------- angular-animate.js
 -------------------- angular-route.js
