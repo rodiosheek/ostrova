@@ -57,7 +57,4 @@ app/
 ------- Controllers/
 ---------------- Building9aController.php /* to RESTful  between Laravel and Angular
 
---- Http/
-------- Controllers/
----------------- Building9aController.php /* to RESTful  between Laravel and Angular
 ```
