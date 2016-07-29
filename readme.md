@@ -14,7 +14,7 @@ AngularJS [![Build Status](https://travis-ci.org/angular/angular.js.svg?branch=m
 
 ### Structure of my Angular application
 ```
-redources/ 
+resources/ 
 -------- assets/
 -------------- app/ 
 ------------------ controllers/ 
