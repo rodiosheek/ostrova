@@ -25,6 +25,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
     );
 
     $scope.mapInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
@@ -53,7 +54,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
                     $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-
+        $rootScope.loading = false;
         }, 1000);
     };
 

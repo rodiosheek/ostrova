@@ -1,4 +1,4 @@
-function CorpsCtrl($scope, $location, $routeParams, mapService) {
+function CorpsCtrl($scope, $location, $routeParams, mapService, $rootScope) {
     console.log('Korpus controller');
 
     var id = $routeParams.alt;
@@ -25,6 +25,7 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
     );
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
             setTimeout(function () {
                 $('.map-plans').svgDrawing({
                     onclick: function (el) {
@@ -50,8 +51,10 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
                         $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                     }
                 });
+                $rootScope.loading = false;
             }, 1000);
     };
+
 };
 
 app.controller('CorpsCtrl', CorpsCtrl);

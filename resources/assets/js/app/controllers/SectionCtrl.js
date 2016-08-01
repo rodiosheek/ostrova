@@ -1,4 +1,4 @@
-function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
+function SectionCtrl($scope, $rootScope, $location, $routeParams, $route, mapService) {
     console.log('Section controller');
 
     var section1 = $route.current.originalPath.split('/')[2];
@@ -7,6 +7,7 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
 
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
@@ -41,7 +42,7 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
                     $('.popup-menu').find('div[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-            
+            $rootScope.loading = false;
         }, 1000);
     };
 };

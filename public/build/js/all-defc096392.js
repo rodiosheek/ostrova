@@ -56130,10 +56130,12 @@ function router($routeProvider) {
             controller: AboutCtrl
         })
         .when('/o-proekte/preimushestva', {
-            templateUrl: '/templates/preim/_preim.html'
+            templateUrl: '/templates/preim/_preim.html',
+            contoroller: AboutCtrl
         })
-        .when('/location', {
-            templateUrl: '/templates/location/_location.html'
+        .when('/gallery', {
+            templateUrl: '/templates/gallery/gallery.html',
+            controller: GalleryCtrl
         })
         .when('/vubor-kvartiru', {
             templateUrl: '/templates/map/_map.html',
@@ -56143,20 +56145,12 @@ function router($routeProvider) {
             templateUrl: '/templates/map/corps/_corps.html',
             controller: CorpsCtrl
         })
-        .when('/section/1', {
+        .when('/section/:section', {
             templateUrl: '/templates/map/section/_section-1.html',
-            controller: SectionCtrl
-        })
-        .when('/section/2', {
-            templateUrl: '/templates/map/section/_section-2.html',
             controller: SectionCtrl
         })
         .when('/section/:section/floor/:floor', {
             templateUrl: '/templates/map/floor/_floor-section-1.html',
-            controller: FloorCtrl
-        })
-        .when('/section/2/floor/', {
-            templateUrl: '/templates/map/floor/_floor-section-2.html',
             controller: FloorCtrl
         })
         .when('/flat/:section/:floor/:room', {
@@ -56164,24 +56158,44 @@ function router($routeProvider) {
             controller: FlatsCtrl
         })
         .when('/kak-kupit', {
-            templateUrl: '/templates/how-to-bay/_how-to-bay.html'
+            templateUrl: '/templates/how-to-bay/_how-to-bay.html',
+            controller: BayCtrl
         })
         .when('/kak-kupit/stoimosti-kvarti', {
-            templateUrl: '/templates/how-to-bay/_price.html'
+            templateUrl: '/templates/how-to-bay/_price.html',
+            controller: BayCtrl
         })
         .when('/kak-kupit/tpovoy-dogovor', {
-            templateUrl: '/templates/how-to-bay/_contracts.html'
+            templateUrl: '/templates/how-to-bay/_contracts.html',
+            controller: BayCtrl
         })
         .when('/kak-kupit/oline-bronirovanie', {
             templateUrl: '/templates/how-to-bay/_reservation.html',
             controller: ReservationCtrl
         })
         .when('/kak-kupit/otdel-prodag', {
-            templateUrl: '/templates/how-to-bay/_sales-department.html'
+            templateUrl: '/templates/how-to-bay/_sales-department.html',
+            controller: BayCtrl
         })
         .when('/novosti', {
             templateUrl: '/templates/news/_news.html',
             controller: NewsCtrl
+        })
+        .when('/kompania', {
+            templateUrl: '/templates/company/company.html',
+            controller: CompanyCtrl
+        })
+        .when('/kompania/tarifu', {
+            templateUrl: '/templates/company/company.html',
+            controller: CompanyCtrl
+        })
+        .when('/kompania/dogovor', {
+            templateUrl: '/templates/company/company.html',
+            controller: CompanyCtrl
+        })
+        .when('/kontaktu', {
+            templateUrl: '/templates/contacts/contacts.html',
+            controller: ContactsCtrl
         })
         .otherwise({
             redirectTo: '/home'
@@ -56191,11 +56205,30 @@ function router($routeProvider) {
 app.config(router);
 function AboutCtrl($scope, $route, $rootScope) {
     console.log('About controller');
-
+    $rootScope.activePage = 'about';
+    console.log($rootScope.activePage);
 
 }
 
 app.controller('AboutCtrl', AboutCtrl);
+function BayCtrl($scope, $rootScope) {
+	console.log('Bay controller');
+	$rootScope.activePage = 'bay';
+}
+
+app.controller('BayCtrl', BayCtrl);
+function CompanyCtrl($scope, $rootScope) {
+	console.log('Company controller');
+	$rootScope.activePage = 'company';
+}
+
+app.controller('CompanyCtrl', CompanyCtrl);
+function ContactsCtrl($scope, $rootScope) {
+	console.log('Contacts controller');
+	$rootScope.activePage = 'contacts';
+}
+
+app.controller('ContactsCtrl', ContactsCtrl);
 function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
     console.log('Flats controller');
     $scope.formShow = false;
@@ -56236,36 +56269,48 @@ function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
 }
 
 app.controller('FlatsCtrl', FlatsCtrl);
-function FloorCtrl($scope, $location, $routeParams, mapService) {
+function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
     console.log('Floor controller');
 
     var section = $routeParams.section;
     var floor = $routeParams.floor;
     $scope.section = section;
-
+    console.log('section=->' + $scope.section);
 
 
 
 
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var room = el.data('alt');
                         console.log("Flats->" + room);
                     console.log(floor);
-                        $scope.$apply(function () {
-                            $location.path('/flat/' + section + '/' + floor + '/' + room);
-                        })
+                    mapService.getRoomNumber(section, floor, room).then(
+                        function(data) {
+                            if(data.onSale != 0) {
+                               $location.path('/flat/' + section + '/' + floor + '/' + room);
+                            }
+                        },
+                        function(error) {
+                            console.log(error);
+                        }
+                    );
                 },
                 onmouseover: function (el) {
-
                     var room = el.data('alt');
-                    el.attr('opacity', 0.5);
+                    
                     mapService.getRoomNumber(section, floor, room).then(
                         function(data) {
                             $scope.number = data;
+                            if(data.onSale != 0) {
+                                el.attr('opacity', 0.5);
+                            } else {
+                                el.attr('background-color', '#111');
+                            }
                         },
                         function(error) {
                             console.log(error);
@@ -56280,15 +56325,24 @@ function FloorCtrl($scope, $location, $routeParams, mapService) {
                     $('.rooms-popup').find('div[data-target=' + room + ']').hide();
                 }
             });
+            $rootScope.loading = false;
         }, 1000);
     };
 };
 
 app.controller('FloorCtrl', FloorCtrl);
+function GalleryCtrl ($scope, $rootScope) {
+	console.log('Gallery controller');
+	$rootScope.activePage = 'gallery';
+	console.log($rootScope.activePage);
+}
+
+app.controller('GalleryCtrl', GalleryCtrl);
 
 
-function HomeCtrl($scope) {
+function HomeCtrl($scope, $rootScope) {
     console.log('Home controller');
+    $rootScope.activePage = 'home';
     $scope.slider = {};
     $scope.slider.index = 0;
     $scope.viewClass = 'animation-fade';
@@ -56314,6 +56368,7 @@ function HomeCtrl($scope) {
         {'icon' : '../../images/slider/slider-icons/0013.png'},
     ];
     // Next slide
+    
     $scope.next = function () {
         var totalImg = $scope.slider.images.length;
         if(totalImg > 0) {
@@ -56338,9 +56393,10 @@ function HomeCtrl($scope) {
 
 app.controller('HomeCtrl', HomeCtrl);
 
-function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
+function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, mapService) {
     'use strict';
     console.log('Map controller');
+    $rootScope.activePage = 'map';
     var mapData = mapService.getMapData();
     var getOnSaleFlats = mapService.getOnSaleFlats();
     
@@ -56363,17 +56419,19 @@ function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
     );
 
     $scope.mapInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var alt = el.data('alt');
-                    console.log(alt)
-                    if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
-                        console.log('->' + alt)
-                        $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').show();
-                        $scope.$apply(function () {
-                            $location.path('/korpus/' + alt);
-                        })
+                    var popup = $('.popup-menu').find('a[data-target=' + alt + ']');
+                    if(!popup.hasClass('non-active')) {
+                        if (alt != 'dc' && alt != 'tc' && alt != '30' && alt != '29a') {
+                            popup.find('.corps-link-popup').show();
+                            $scope.$apply(function () {
+                                $location.path('/korpus/' + alt);
+                            })
+                        }
                     }
                 },
                 onmouseover: function (el) {
@@ -56390,7 +56448,7 @@ function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
                     $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-
+        $rootScope.loading = false;
         }, 1000);
     };
 
@@ -56402,8 +56460,9 @@ function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
 
 app.controller('MapCtrl', MapCtrl);
 
-function NewsCtrl($scope, $http, $location) {
+function NewsCtrl($scope, $rootScope, $http, $location) {
     console.log('News controller');
+    $rootScope.activePage = 'news';
 };
 
 app.controller('NewsCtrl', NewsCtrl);
@@ -56413,30 +56472,32 @@ function ReservationCtrl($scope) {
 };
 
 app.controller('ReservationCtrl', ReservationCtrl);
-function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
+function SectionCtrl($scope, $rootScope, $location, $routeParams, $route, mapService) {
     console.log('Section controller');
 
-    var section = $route.current.originalPath.split('/')[2];
+    var section1 = $route.current.originalPath.split('/')[2];
+    $scope.section = $routeParams.section;
 
 
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var floor = el.data('alt');
                     if(!$('.popup-menu').find('a[data-target=' + floor + ']').hasClass('non-active')) {
                         $scope.$apply(function () {
-                            $location.path('/section/' + section + '/floor/' + floor);
+                            $location.path('/section/' + $scope.section + '/floor/' + floor);
                         })
                     }
                 },
                 onmouseover: function (el) {
 
                     var floor = el.data('alt');
-                    console.log('section->' + section);
+                    console.log('section->' + $scope.section);
                     console.log('floor->' + floor);
-                    var getFloorFlatsCount = mapService.getFloorFlats(section, floor);
+                    var getFloorFlatsCount = mapService.getFloorFlats($scope.section, floor);
                     getFloorFlatsCount.then(
                         function(data) {
                             $scope.flats = data;
@@ -56455,13 +56516,13 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
                     $('.popup-menu').find('div[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-            
+            $rootScope.loading = false;
         }, 1000);
     };
 };
 
 app.controller('SectionCtrl', SectionCtrl);
-function CorpsCtrl($scope, $location, $routeParams, mapService) {
+function CorpsCtrl($scope, $location, $routeParams, mapService, $rootScope) {
     console.log('Korpus controller');
 
     var id = $routeParams.alt;
@@ -56488,6 +56549,7 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
     );
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
             setTimeout(function () {
                 $('.map-plans').svgDrawing({
                     onclick: function (el) {
@@ -56513,8 +56575,10 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
                         $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                     }
                 });
+                $rootScope.loading = false;
             }, 1000);
     };
+
 };
 
 app.controller('CorpsCtrl', CorpsCtrl);

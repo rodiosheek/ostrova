@@ -291,9 +291,28 @@ img {
     padding: 0 20px;
 }
 
+/****************************************
+       ### 5 ---- Loading page
+****************************************/
+
+.loading {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    background-color: rgb(255, 255, 255);
+}
+
+.loading img {
+    position: relative;
+    top: calc(50% - 150px);
+    left: calc(50% - 200px);
+}
+
 
 /****************************************
-       ### 4 ---- Footer
+       ### 6 ---- Footer
 ****************************************/
 
 .footer {

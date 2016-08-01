@@ -56269,7 +56269,7 @@ function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
 }
 
 app.controller('FlatsCtrl', FlatsCtrl);
-function FloorCtrl($scope, $location, $routeParams, mapService) {
+function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
     console.log('Floor controller');
 
     var section = $routeParams.section;
@@ -56282,23 +56282,35 @@ function FloorCtrl($scope, $location, $routeParams, mapService) {
 
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var room = el.data('alt');
                         console.log("Flats->" + room);
                     console.log(floor);
-                        $scope.$apply(function () {
-                            $location.path('/flat/' + section + '/' + floor + '/' + room);
-                        })
+                    mapService.getRoomNumber(section, floor, room).then(
+                        function(data) {
+                            if(data.onSale != 0) {
+                               $location.path('/flat/' + section + '/' + floor + '/' + room);
+                            }
+                        },
+                        function(error) {
+                            console.log(error);
+                        }
+                    );
                 },
                 onmouseover: function (el) {
                     var room = el.data('alt');
-                    el.attr('opacity', 0.5);
+                    
                     mapService.getRoomNumber(section, floor, room).then(
                         function(data) {
                             $scope.number = data;
-                            console.log('data->' + data);
+                            if(data.onSale != 0) {
+                                el.attr('opacity', 0.5);
+                            } else {
+                                el.attr('background-color', '#111');
+                            }
                         },
                         function(error) {
                             console.log(error);
@@ -56313,6 +56325,7 @@ function FloorCtrl($scope, $location, $routeParams, mapService) {
                     $('.rooms-popup').find('div[data-target=' + room + ']').hide();
                 }
             });
+            $rootScope.loading = false;
         }, 1000);
     };
 };
@@ -56406,6 +56419,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
     );
 
     $scope.mapInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
@@ -56434,7 +56448,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
                     $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-
+        $rootScope.loading = false;
         }, 1000);
     };
 
@@ -56458,7 +56472,7 @@ function ReservationCtrl($scope) {
 };
 
 app.controller('ReservationCtrl', ReservationCtrl);
-function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
+function SectionCtrl($scope, $rootScope, $location, $routeParams, $route, mapService) {
     console.log('Section controller');
 
     var section1 = $route.current.originalPath.split('/')[2];
@@ -56467,6 +56481,7 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
 
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
@@ -56501,13 +56516,13 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
                     $('.popup-menu').find('div[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-            
+            $rootScope.loading = false;
         }, 1000);
     };
 };
 
 app.controller('SectionCtrl', SectionCtrl);
-function CorpsCtrl($scope, $location, $routeParams, mapService) {
+function CorpsCtrl($scope, $location, $routeParams, mapService, $rootScope) {
     console.log('Korpus controller');
 
     var id = $routeParams.alt;
@@ -56534,6 +56549,7 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
     );
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
             setTimeout(function () {
                 $('.map-plans').svgDrawing({
                     onclick: function (el) {
@@ -56559,8 +56575,10 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
                         $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                     }
                 });
+                $rootScope.loading = false;
             }, 1000);
     };
+
 };
 
 app.controller('CorpsCtrl', CorpsCtrl);

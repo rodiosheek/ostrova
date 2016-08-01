@@ -92,6 +92,10 @@
 
     <div  ng-view class="view-animate"></div>
 
+    <!-- Loading -->
+    <div class="loading" ng-show="loading">
+        <img src="/images/loading.gif">
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
