@@ -22,28 +22,28 @@
         <!-- Header navigation -->
         <nav class="header-nav">
             <div class="nav-menu">
-                <div class="nav-item"  >
+                <div class="nav-item" ng-class="{ 'tab-active': activePage == 'about'}"  >
                     <a href="#/o-proekte">о проекте</a>
-                    <div class="nav-popup">
+                    <div class="nav-popup ">
                         <div class="nav-popup-bg"></div>
                         <ul>
                             <li><a href="#/o-proekte/preimushestva">преимущества</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="nav-item">
-                    <a href="">галерея</a>
+                <div class="nav-item" ng-class="{ 'tab-active': activePage == 'gallery'}">
+                    <a href="#/gallery">галерея</a>
                     <div class="nav-popup">
                         <div class="nav-popup-bg"></div>
                         <ul>
-                            <li><a href="">фотоотчет</a></li>
+                            <li><a href="#/gallery">фотоотчет</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="nav-item" >
+                <div class="nav-item" ng-class="{ 'tab-active': activePage == 'map'}">
                     <a href="#/vubor-kvartiru">выбор квартиры</a>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item" ng-class="{ 'tab-active': activePage == 'bay'}">
                     <a href="#/kak-kupit">как купить</a>
                     <div class="nav-popup">
                         <div class="nav-popup-bg"></div>
@@ -55,21 +55,21 @@
                         </ul>
                     </div>
                 </div>
-                <div class="nav-item">
+                <div class="nav-item" ng-class="{ 'tab-active': activePage == 'news'}">
                     <a href="#/novosti">новости</a>
                 </div>
-                <div class="nav-item">
-                    <a href="">управляющая компания</a>
+                <div class="nav-item" ng-class="{ 'tab-active': activePage == 'company'}">
+                    <a href="#/kompania">управляющая компания</a>
                     <div class="nav-popup">
                         <div class="nav-popup-bg"></div>
                         <ul>
-                            <li><a href="">тарифы</a></li>
-                            <li><a href="">договор</a></li>
+                            <li><a href="#/kompania/tarifu">тарифы</a></li>
+                            <li><a href="#/kompania/dogovor">договор</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="nav-item">
-                    <a href="">контакты</a>
+                <div class="nav-item" ng-class="{ 'tab-active': activePage == 'contacts'}">
+                    <a href="#/kontaktu">контакты</a>
                 </div>
                 <div class="nav-item">
                     <a href="http://dominanta-d.com/">вторичная недвижимость</a>

@@ -4,7 +4,7 @@ function FloorCtrl($scope, $location, $routeParams, mapService) {
     var section = $routeParams.section;
     var floor = $routeParams.floor;
     $scope.section = section;
-
+    console.log('section=->' + $scope.section);
 
 
 
@@ -22,12 +22,12 @@ function FloorCtrl($scope, $location, $routeParams, mapService) {
                         })
                 },
                 onmouseover: function (el) {
-
                     var room = el.data('alt');
                     el.attr('opacity', 0.5);
                     mapService.getRoomNumber(section, floor, room).then(
                         function(data) {
                             $scope.number = data;
+                            console.log('data->' + data);
                         },
                         function(error) {
                             console.log(error);

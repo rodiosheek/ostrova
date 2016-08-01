@@ -1,7 +1,8 @@
 
-function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
+function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, mapService) {
     'use strict';
     console.log('Map controller');
+    $rootScope.activePage = 'map';
     var mapData = mapService.getMapData();
     var getOnSaleFlats = mapService.getOnSaleFlats();
     
@@ -28,13 +29,14 @@ function MapCtrl($scope, $location, $routeParams, $route, $http, mapService) {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var alt = el.data('alt');
-                    console.log(alt)
-                    if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
-                        console.log('->' + alt)
-                        $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').show();
-                        $scope.$apply(function () {
-                            $location.path('/korpus/' + alt);
-                        })
+                    var popup = $('.popup-menu').find('a[data-target=' + alt + ']');
+                    if(!popup.hasClass('non-active')) {
+                        if (alt != 'dc' && alt != 'tc' && alt != '30' && alt != '29a') {
+                            popup.find('.corps-link-popup').show();
+                            $scope.$apply(function () {
+                                $location.path('/korpus/' + alt);
+                            })
+                        }
                     }
                 },
                 onmouseover: function (el) {

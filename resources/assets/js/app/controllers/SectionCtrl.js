@@ -1,7 +1,8 @@
 function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
     console.log('Section controller');
 
-    var section = $route.current.originalPath.split('/')[2];
+    var section1 = $route.current.originalPath.split('/')[2];
+    $scope.section = $routeParams.section;
 
 
 
@@ -12,16 +13,16 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
                     var floor = el.data('alt');
                     if(!$('.popup-menu').find('a[data-target=' + floor + ']').hasClass('non-active')) {
                         $scope.$apply(function () {
-                            $location.path('/section/' + section + '/floor/' + floor);
+                            $location.path('/section/' + $scope.section + '/floor/' + floor);
                         })
                     }
                 },
                 onmouseover: function (el) {
 
                     var floor = el.data('alt');
-                    console.log('section->' + section);
+                    console.log('section->' + $scope.section);
                     console.log('floor->' + floor);
-                    var getFloorFlatsCount = mapService.getFloorFlats(section, floor);
+                    var getFloorFlatsCount = mapService.getFloorFlats($scope.section, floor);
                     getFloorFlatsCount.then(
                         function(data) {
                             $scope.flats = data;
