@@ -1,7 +1,8 @@
 
 
-function HomeCtrl($scope) {
+function HomeCtrl($scope, $rootScope) {
     console.log('Home controller');
+    $rootScope.activePage = 'home';
     $scope.slider = {};
     $scope.slider.index = 0;
     $scope.viewClass = 'animation-fade';
@@ -27,6 +28,7 @@ function HomeCtrl($scope) {
         {'icon' : '../../images/slider/slider-icons/0013.png'},
     ];
     // Next slide
+    
     $scope.next = function () {
         var totalImg = $scope.slider.images.length;
         if(totalImg > 0) {

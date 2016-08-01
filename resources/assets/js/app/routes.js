@@ -11,10 +11,12 @@ function router($routeProvider) {
             controller: AboutCtrl
         })
         .when('/o-proekte/preimushestva', {
-            templateUrl: '/templates/preim/_preim.html'
+            templateUrl: '/templates/preim/_preim.html',
+            contoroller: AboutCtrl
         })
-        .when('/location', {
-            templateUrl: '/templates/location/_location.html'
+        .when('/gallery', {
+            templateUrl: '/templates/gallery/gallery.html',
+            controller: GalleryCtrl
         })
         .when('/vubor-kvartiru', {
             templateUrl: '/templates/map/_map.html',
@@ -24,20 +26,12 @@ function router($routeProvider) {
             templateUrl: '/templates/map/corps/_corps.html',
             controller: CorpsCtrl
         })
-        .when('/section/1', {
+        .when('/section/:section', {
             templateUrl: '/templates/map/section/_section-1.html',
-            controller: SectionCtrl
-        })
-        .when('/section/2', {
-            templateUrl: '/templates/map/section/_section-2.html',
             controller: SectionCtrl
         })
         .when('/section/:section/floor/:floor', {
             templateUrl: '/templates/map/floor/_floor-section-1.html',
-            controller: FloorCtrl
-        })
-        .when('/section/2/floor/', {
-            templateUrl: '/templates/map/floor/_floor-section-2.html',
             controller: FloorCtrl
         })
         .when('/flat/:section/:floor/:room', {
@@ -45,24 +39,44 @@ function router($routeProvider) {
             controller: FlatsCtrl
         })
         .when('/kak-kupit', {
-            templateUrl: '/templates/how-to-bay/_how-to-bay.html'
+            templateUrl: '/templates/how-to-bay/_how-to-bay.html',
+            controller: BayCtrl
         })
         .when('/kak-kupit/stoimosti-kvarti', {
-            templateUrl: '/templates/how-to-bay/_price.html'
+            templateUrl: '/templates/how-to-bay/_price.html',
+            controller: BayCtrl
         })
         .when('/kak-kupit/tpovoy-dogovor', {
-            templateUrl: '/templates/how-to-bay/_contracts.html'
+            templateUrl: '/templates/how-to-bay/_contracts.html',
+            controller: BayCtrl
         })
         .when('/kak-kupit/oline-bronirovanie', {
             templateUrl: '/templates/how-to-bay/_reservation.html',
             controller: ReservationCtrl
         })
         .when('/kak-kupit/otdel-prodag', {
-            templateUrl: '/templates/how-to-bay/_sales-department.html'
+            templateUrl: '/templates/how-to-bay/_sales-department.html',
+            controller: BayCtrl
         })
         .when('/novosti', {
             templateUrl: '/templates/news/_news.html',
             controller: NewsCtrl
+        })
+        .when('/kompania', {
+            templateUrl: '/templates/company/company.html',
+            controller: CompanyCtrl
+        })
+        .when('/kompania/tarifu', {
+            templateUrl: '/templates/company/company.html',
+            controller: CompanyCtrl
+        })
+        .when('/kompania/dogovor', {
+            templateUrl: '/templates/company/company.html',
+            controller: CompanyCtrl
+        })
+        .when('/kontaktu', {
+            templateUrl: '/templates/contacts/contacts.html',
+            controller: ContactsCtrl
         })
         .otherwise({
             redirectTo: '/home'

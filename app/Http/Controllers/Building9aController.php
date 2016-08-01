@@ -89,6 +89,7 @@ class Building9aController extends Controller
         $section = (int) $section;
         $floor = (int) $floor;
         $room = (int) $room;
+        $arr = [$section, $floor, $room];
         $number = Building9a::all()->where('section', $section)->where('floor', $floor)->where('onPlan', $room);
         $number1 = 0;
         foreach($number as $num) {
