@@ -24,6 +24,10 @@
             {!! Form::text('area', null,  array('class' => 'form-control')) !!}
         </div>
         <div class="form-group">
+            {!! Form::label('onPlan', 'onPlan')  !!}
+            {!! Form::text('onPlan', null,  array('class' => 'form-control')) !!}
+        </div>
+        <div class="form-group">
             {!! Form::label('onSale', 'onSale') !!}
             {!! Form::checkbox('onSale', 0, true) !!}
         </div>
@@ -44,6 +48,7 @@
             <th>Number</th>
             <th>Rooms</th>
             <th>Area</th>
+            <th>onPlan</th>
             <th>onSale</th>
             <th>sales</th>
         </tr>
@@ -56,6 +61,7 @@
             <td>{{$flat['number']}}</td>
             <td>{{$flat['rooms']}}</td>
             <td>{{$flat['area']}}</td>
+            <td>{{$flat['onPlan']}}</td>
             <td>{{$flat['onSale']}}</td>
             <td>{{$flat['sales']}}</td>
 

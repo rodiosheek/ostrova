@@ -1,9 +1,10 @@
 function SectionCtrl($scope, $rootScope, $location, $routeParams, $route, mapService) {
     console.log('Section controller');
 
-    var section1 = $route.current.originalPath.split('/')[2];
+    
     $scope.section = $routeParams.section;
-
+    $scope.id = $routeParams.id;
+    console.log($scope.id);
 
 
     $scope.sectionInit = function () {
@@ -14,7 +15,7 @@ function SectionCtrl($scope, $rootScope, $location, $routeParams, $route, mapSer
                     var floor = el.data('alt');
                     if(!$('.popup-menu').find('a[data-target=' + floor + ']').hasClass('non-active')) {
                         $scope.$apply(function () {
-                            $location.path('/section/' + $scope.section + '/floor/' + floor);
+                            $location.path('/building/' + $scope.id + '/section/' + $scope.section + '/floor/' + floor);
                         })
                     }
                 },

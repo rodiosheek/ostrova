@@ -15,9 +15,9 @@ function HomeCtrl($scope, $rootScope) {
     ];
     //Slider images
     $scope.slider.images = [
-        {'image' : '../../images/slider/slider-image/0006.jpg'},
-        {'image' : '../../images/slider/slider-image/0004.jpg'},
         {'image' : '../../images/slider/slider-image/0005.jpg'},
+        {'image' : '../../images/slider/slider-image/0004.jpg'},
+        {'image' : '../../images/slider/slider-image/0006.jpg'},
         {'image' : '../../images/slider/slider-image/0001.jpg'},
     ];
     // Slider icons

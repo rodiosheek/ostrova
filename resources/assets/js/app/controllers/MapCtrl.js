@@ -4,7 +4,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
     console.log('Map controller');
     $rootScope.activePage = 'map';
     var mapData = mapService.getMapData();
-    var getOnSaleFlats = mapService.getOnSaleFlats();
+    //var getOnSaleFlats = mapService.getOnSaleFlats();
     
     mapData.then(
         function(data) {
@@ -15,14 +15,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
         }
     );
 
-    getOnSaleFlats.then(
-        function(data) {
-            $scope.flats = data;
-        },
-        function(error) {
-            console.log(error);
-        }
-    );
+    
 
     $scope.mapInit = function () {
         $rootScope.loading = true;
@@ -32,7 +25,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
                     var alt = el.data('alt');
                     var popup = $('.popup-menu').find('a[data-target=' + alt + ']');
                     if(!popup.hasClass('non-active')) {
-                        if (alt != 'dc' && alt != 'tc' && alt != '30' && alt != '29a') {
+                        if (alt != 'dc' && alt != 'tc' && alt != 'feetstyle') {
                             popup.find('.corps-link-popup').show();
                             $scope.$apply(function () {
                                 $location.path('/korpus/' + alt);
@@ -41,11 +34,19 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
                     }
                 },
                 onmouseover: function (el) {
-                    var alt = el.data('alt');
-
-                    if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
+                    var section = el.data('alt');
+                    mapService.getOnSaleFlats(section).then(
+                            function(data) {
+                                $scope.flats = data;
+                                console.log(data);
+                            },
+                            function(error) {
+                                console.log(error);
+                            }
+                        )
+                    if(!$('.popup-menu').find('a[data-target=' + section + ']').hasClass('non-active')) {
                         el.attr('opacity', 0.5);
-                        $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').show();
+                        $('.popup-menu').find('a[data-target=' + section + ']').find('.corps-link-popup').show();
                     }
                 },
                 onmouseout: function (el) {

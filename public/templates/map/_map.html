@@ -7,7 +7,7 @@
             <!-- Background map image -->
             <img class="bg-img" src="../../images/maps/9a.jpg">
             <div class="map-info" >
-                <img class="map-plans"  width="3300" height="1855" src="">
+                <img  class="map-plans"  width="3300" height="1855" src="">
                 <map >
                     <area ng-repeat="info in mapInfo"    alt="{{ info.alt }}" shape="poly" coords="{{ info.coords }}"   nohref="nohref" />
 
@@ -141,11 +141,20 @@
                         <div class="corps-popup-title">
                             нет
                             <div class="corps-text">
-                                квартир
+                                Фитнес-клуб
                                 <div>
-                                    в продаже
+                                    FITSTYLE
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- Popup item -->
+                <a href="" class="corps-link " data-target="feetstyle" style="top: 22%;left: 26%;">
+                    <div class="corps-link-popup" style="left: 50px">
+                        <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
+                            Фитнес-клуб FITSTYLE
+                            
                         </div>
                     </div>
                 </a>
@@ -212,10 +221,10 @@
                     </div>
                 </a>
                 <!-- Popup item -->
-                <a href="" class="corps-link" data-target="10" style="top: 44%;left: 5%;">30
-                    <div class="corps-link-popup" style="left: 40px">
+                <a href="" class="corps-link" data-target="30" style="top: 44%;left: 5%;">30
+                    <div class="corps-link-popup" style="left: 50px">
                         <div class="corps-popup-title">
-                            110
+                            {{ flats.count }}
                             <div class="corps-text">
                                 квартир
                                 <div>
@@ -224,19 +233,19 @@
                             </div>
                         </div>
                         <div class="corps-popup f1">
-                            10
+                            {{ flats.oneroom }}
                             <span>
                                 1-комнатных
                             </span>
                         </div>
                         <div class="corps-popup f2">
-                            10
+                            {{ flats.tworooms }}
                             <span>
                                 2-комнатных
                             </span>
                         </div>
                         <div class="corps-popup f3">
-                            10
+                            {{ flats.threerooms }}
                             <span>
                                 3-комнатных
                             </span>
@@ -244,10 +253,10 @@
                     </div>
                 </a>
                 <!-- Popup item -->
-                <a href="" class="corps-link" data-target="11" style="top: 25%;left: 17%;">29a
-                    <div class="corps-link-popup" style="left: 40px">
+                <a href="" class="corps-link" data-target="29a" style="top: 25%;left: 17%;">29a
+                   <div class="corps-link-popup" style="left: 50px">
                         <div class="corps-popup-title">
-                            110
+                            {{ flats.count }}
                             <div class="corps-text">
                                 квартир
                                 <div>
@@ -256,19 +265,19 @@
                             </div>
                         </div>
                         <div class="corps-popup f1">
-                            10
+                            {{ flats.oneroom }}
                             <span>
                                 1-комнатных
                             </span>
                         </div>
                         <div class="corps-popup f2">
-                            10
+                            {{ flats.tworooms }}
                             <span>
                                 2-комнатных
                             </span>
                         </div>
                         <div class="corps-popup f3">
-                            10
+                            {{ flats.threerooms }}
                             <span>
                                 3-комнатных
                             </span>
@@ -280,4 +289,3 @@
         </div>
 
     </section>
-

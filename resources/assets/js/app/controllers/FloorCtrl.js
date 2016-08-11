@@ -3,12 +3,9 @@ function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
 
     var section = $routeParams.section;
     var floor = $routeParams.floor;
+    $scope.id = $routeParams.id;
     $scope.section = section;
     console.log('section=->' + $scope.section);
-
-
-
-
 
     $scope.sectionInit = function () {
         $rootScope.loading = true;
@@ -21,7 +18,7 @@ function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
                     mapService.getRoomNumber(section, floor, room).then(
                         function(data) {
                             if(data.onSale != 0) {
-                               $location.path('/flat/' + section + '/' + floor + '/' + room);
+                               $location.path('/building/' + $scope.id + '/section/' + section + '/floor/' + floor + '/room/' + room);
                             }
                         },
                         function(error) {
@@ -31,14 +28,15 @@ function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
                 },
                 onmouseover: function (el) {
                     var room = el.data('alt');
-                    
                     mapService.getRoomNumber(section, floor, room).then(
                         function(data) {
                             $scope.number = data;
                             if(data.onSale != 0) {
                                 el.attr('opacity', 0.5);
+                                $scope.message = '';
                             } else {
-                                el.attr('background-color', '#111');
+                                $scope.message = 'Продано';
+                                console.log($scope.message);
                             }
                         },
                         function(error) {
@@ -52,6 +50,7 @@ function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
                     el.attr('opacity', 0);
                     var room = el.data('alt');
                     $('.rooms-popup').find('div[data-target=' + room + ']').hide();
+                    $scope.message = '';
                 }
             });
             $rootScope.loading = false;

@@ -34,7 +34,7 @@ Route::post('/admin-panel/store', 'AdminController@store');
  */
 Route::get('/get-coordinate', 'CoordsController@getCoords');
 
-Route::get('/get-onsale-flats', 'Building9aController@getOnSaleFlats');
+Route::get('/get-onsale-flats/{section}', 'Building9aController@getOnSaleFlats');
 
 Route::get('/get-flats-section-1', 'Building9aController@getSection_1');
 

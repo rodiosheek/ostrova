@@ -12,10 +12,10 @@ app.factory('mapService', function($http, $q) {
                 });
             return defer.promise;
         },
-        getOnSaleFlats: function () {
+        getOnSaleFlats: function (section) {
             var defer = $q.defer();
-
-            $http.get('/get-onsale-flats')
+            var path = '/get-onsale-flats/' + section;
+            $http.get(path)
                 .success(function (data) {
                     defer.resolve(data);
                 })

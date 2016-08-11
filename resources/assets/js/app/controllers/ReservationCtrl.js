@@ -1,5 +1,5 @@
 
-function ReservationCtrl($scope) {
+function ReservationCtrl($scope, mapService) {
     console.log('Reservation controller');
 };
 
