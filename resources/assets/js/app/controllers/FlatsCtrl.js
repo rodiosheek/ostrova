@@ -1,11 +1,12 @@
 function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
     console.log('Flats controller');
     $scope.formShow = false;
-    var section = $routeParams.section;
-    var floor = $routeParams.floor;
+    $scope.section = $routeParams.section;
+    $scope.floor = $routeParams.floor;
     $scope.room = $routeParams.room;
+    $scope.id = $routeParams.id;
 
-    mapService.getRoomNumber(section, floor, $scope.room).then(
+    mapService.getRoomNumber($scope.section, $scope.floor, $scope.room).then(
         function(data) {
             $scope.flat = data;
         },

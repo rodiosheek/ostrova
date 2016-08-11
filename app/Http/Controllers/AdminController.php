@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Building9a;
+use App\Building_30;
 
 use View;
 
@@ -24,7 +25,7 @@ class AdminController extends Controller
             return View::make('welcome');
         }
 
-        $flats = Building9a::all();
+        $flats = Building_30::all();
         return View::make('admin-panel.index')
             ->with('flats', $flats);
     }
@@ -32,13 +33,14 @@ class AdminController extends Controller
     public function store(Request $request) {
         $i = $request->input('number');
         $floor = $request->input('floor');
-        for( $i ; $i <= 298 ; $i += 8 ) {
-            $flats = new Building9a;
+        for( $i ; $i <= 178 ; $i += 10 ) {
+            $flats = new Building_30;
             $flats->section = $request->input('section');
             $flats->floor   = $floor;
             $flats->number  = $i;
             $flats->rooms   = $request->input('rooms');
             $flats->area    = $request->input('area');
+            $flats->onPlan  = $request->input('onPlan');
             $flats->onSale  = $request->input('onSale');
             $flats->sales   = $request->input('sales');
             $flats->save();
@@ -46,7 +48,7 @@ class AdminController extends Controller
 
             $floor++;
         }
-        $newFlats = Building9a::all();
+        $newFlats = Building_30::all();
         return View::make('admin-panel.index')
             ->with('flats', $newFlats);
     }

@@ -2,12 +2,13 @@
 
 <!-- Response map -->
 <section class="page" ng-init="sectionInit()">
+<a class="back-button" href="#/korpus/{{ id }}"></a>
     <!-- Section #1 directive -->
     <div class="map-frame">
         <!-- Background map image -->
-        <img class="bg-img" src="../../images/maps/tahiti/tahiti-section-new.jpg">
-        <div class="map-info" >
-            <img class="map-plans"   width="1950" height="1096" src="">
+        <img class="bg-img" src="../../images/maps/tahiti/section-{{id}}.jpg">
+        <div class="map-info">
+            <img  class="map-plans"   width="1950" height="1096" src="">
             <map ng-if="section == 1">
                 <area shape="poly" coords="552,882,995,881,995,842,553,843" alt="1" target="floor-1"  nohref="nohref" />
                 <area shape="poly" coords="995,842,995,808,553,809,552,843" alt="2" target="floor-2"  nohref="nohref" />
@@ -90,4 +91,3 @@
         </div>
     </div>
 </section>
-

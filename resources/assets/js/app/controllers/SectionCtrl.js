@@ -1,19 +1,21 @@
-function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
+function SectionCtrl($scope, $rootScope, $location, $routeParams, $route, mapService) {
     console.log('Section controller');
 
-    var section1 = $route.current.originalPath.split('/')[2];
+    
     $scope.section = $routeParams.section;
-
+    $scope.id = $routeParams.id;
+    console.log($scope.id);
 
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var floor = el.data('alt');
                     if(!$('.popup-menu').find('a[data-target=' + floor + ']').hasClass('non-active')) {
                         $scope.$apply(function () {
-                            $location.path('/section/' + $scope.section + '/floor/' + floor);
+                            $location.path('/building/' + $scope.id + '/section/' + $scope.section + '/floor/' + floor);
                         })
                     }
                 },
@@ -41,7 +43,7 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
                     $('.popup-menu').find('div[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-            
+            $rootScope.loading = false;
         }, 1000);
     };
 };

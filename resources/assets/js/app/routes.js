@@ -26,15 +26,15 @@ function router($routeProvider) {
             templateUrl: '/templates/map/corps/_corps.html',
             controller: CorpsCtrl
         })
-        .when('/section/:section', {
+        .when('/building/:id/section/:section', {
             templateUrl: '/templates/map/section/_section-1.html',
             controller: SectionCtrl
         })
-        .when('/section/:section/floor/:floor', {
+        .when('/building/:id/section/:section/floor/:floor', {
             templateUrl: '/templates/map/floor/_floor-section-1.html',
             controller: FloorCtrl
         })
-        .when('/flat/:section/:floor/:room', {
+        .when('/building/:id/section/:section/floor/:floor/room/:room', {
             templateUrl: '/templates/map/flats/_flats.html',
             controller: FlatsCtrl
         })
@@ -46,11 +46,11 @@ function router($routeProvider) {
             templateUrl: '/templates/how-to-bay/_price.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/tpovoy-dogovor', {
+        .when('/kak-kupit/tipovoy-dogovor', {
             templateUrl: '/templates/how-to-bay/_contracts.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/oline-bronirovanie', {
+        .when('/kak-kupit/online-bronirovanie', {
             templateUrl: '/templates/how-to-bay/_reservation.html',
             controller: ReservationCtrl
         })
@@ -67,11 +67,11 @@ function router($routeProvider) {
             controller: CompanyCtrl
         })
         .when('/kompania/tarifu', {
-            templateUrl: '/templates/company/company.html',
+            templateUrl: '/templates/company/_tarify.html',
             controller: CompanyCtrl
         })
         .when('/kompania/dogovor', {
-            templateUrl: '/templates/company/company.html',
+            templateUrl: '/templates/company/_dogovor.html',
             controller: CompanyCtrl
         })
         .when('/kontaktu', {

@@ -57,7 +57,6 @@ abbr,acronym { border: 0;
 
 html,
 .body-frame,
-.header,
 .bg-img,
 .logo,
 .hills,
@@ -67,6 +66,14 @@ html,
     height: 100%;
     width: 100%;
     top: 0;
+    left: 0;
+}
+
+.header {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    bottom: 0;
     left: 0;
 }
 
@@ -85,6 +92,11 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
+
+    transition:all .2s linear; 
+    -o-transition:all .2s linear; 
+    -moz-transition:all .2s linear; 
+    -webkit-transition:all .2s linear;
 }
 
 a,
@@ -160,16 +172,19 @@ img {
 ****************************************/
 
 .header {
-    max-height: 13.12%;
+    max-height: 35%;
     z-index: 100000;
-    background-color: rgba(9, 15, 35, 0.58);
+    /* background-color: rgba(9, 15, 35, 0.58); */
+    background: url(../../images/backgrounds/fon.png) no-repeat 50% 80%;
+    background-size: 100%;
+    pointer-events: none;
 }
 
 .logo {
     width: 14%;
     height: 85%;
     left: 10%;
-    top: 10%;
+    top: 30%;
     margin-left: -116px;
     /* background-position: -200px -126px ; */
     background: url(../../images/white-logo.png) no-repeat center;
@@ -194,8 +209,8 @@ img {
 
 .contact-phone {
     width: 293px;
-    top: 20%;
-    right: 10%;
+    bottom: 26%;
+    right: 7%;
     margin-right: -117px;
     z-index: 99;
 }
@@ -216,8 +231,12 @@ img {
     max-width: 1000px;
     width: calc(50% - 14px);
     margin: auto;
-    top: 40%;
+    top: 85%;
     text-align: center;
+}
+
+.header-nav, .logo {
+    pointer-events: all;
 }
 
 .nav-menu {
@@ -243,17 +262,26 @@ img {
     display: block;
     z-index: 1000;
 }
-
+/*
 .nav-popup {
     width: 150%;
     left: -26px;
     margin-top:20px;
     display: none;
 }
-
+*/
+.nav-popup {
+    background-color: #9f9f9f;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-radius: 10px 10px 0 0;
+    bottom: -150%;
+    left: -25px;
+    padding: 16px 25px 90px;
+    display: none;
+}
 .nav-popup > ul > li {
-    text-align: center;
-    padding: 10px 15px;
+   
+    padding: 10px 20px;
 }
 
 .nav-popup > ul > li > a {
@@ -278,22 +306,39 @@ img {
 
 .nav-item.tab-active:after {
     content: '';
-    width: 100%;
-    height: 64px;
     background-color: #028b04;
     position: absolute;
-    top: -288%;
-    left: -27%;
-    -webkit-border-radius: 0 0 10px 10px;
-    -moz-border-radius: 0 0 10px 10px;
-    border-radius: 0 0 10px 10px;
+    left: calc(50% - 80px);
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    padding: 0 20px;
+    padding: 40px 80px;
+    top: 100%;
+}
+
+/****************************************
+       ### 5 ---- Loading page
+****************************************/
+
+.loading {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    background-color: rgb(255, 255, 255);
+}
+
+.loading img {
+    position: relative;
+    top: calc(50% - 150px);
+    left: calc(50% - 200px);
 }
 
 
 /****************************************
-       ### 4 ---- Footer
+       ### 6 ---- Footer
 ****************************************/
 
 .footer {
@@ -373,7 +418,7 @@ img {
 
 .new-home,
 .choice-flats {
-    top: calc(50% - 90px);
+    top: calc(45% - 90px);
 }
 
 .new-home {
@@ -400,12 +445,12 @@ img {
 
 .d-tour {
     background: url(../../images/design-button/small-button-img/3d-tour.png) no-repeat center;
-    top: 23%;
+    top: 18%;
 }
 
 .b-process {
-    background: url(../../images/design-button/small-button-img/build.png) no-repeat center;
-    bottom: 23%;
+    background: url(../../images/design-button/small-button-img/photo-2.png) no-repeat center;
+    bottom: 28%;
 }
 
 /*** Slider ***/
@@ -424,10 +469,18 @@ img {
     left: 0;
 }
 
+.slider-img img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
 .slider-controls {
     width: 600px;
     left: calc(50% - 300px);
-    bottom: 10%;
+    bottom: 14%;
     z-index: 10000;
 }
 
@@ -488,8 +541,9 @@ img {
 }
 
 .about {
-    background: url(../../images/backgrounds/about.png) no-repeat center;
-    background-size: 100%;
+    /*background: url(../../images/backgrounds/about.png) no-repeat center;
+    background-size: 100%;*/
+
 }
 
 .advantages {
@@ -500,7 +554,7 @@ img {
 .photo-button,
 .location-button {
     left: calc(50% - 90px);
-    bottom: 10%;
+    bottom: 15%;
 }
 
 .photo-button > .button-img {
@@ -517,7 +571,7 @@ img {
 .advantages-text {
     position: absolute;
     width: 40%;
-    top: 20%;
+    top: 11%;
     left: 4%;
 }
 
@@ -565,6 +619,29 @@ img {
        ### 8 ---- Map page
 ****************************************/
 
+.back-button {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    top: 15%;
+    left: 12%;
+    background: url(../../images/other/arrow.png) no-repeat center;
+    background-size: 100%;
+    z-index: 1000;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    border-radius:50%;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.back-button:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
 .map-frame, .map-info {
     position: absolute;
     height: 100%;
@@ -573,8 +650,16 @@ img {
     left: 0;
 }
 
+.map-plans {
+  display: none;
+}
+
 .map-plans-draw {
     position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
 }
 
 /*** Popup ***/
@@ -687,8 +772,9 @@ a.corps-link {
 .flat-plan {
     position: absolute;
     height: 100%;
-    width: 50%;
+    width: 60%;
     left: 0;
+    bottom: 10%;
 }
 
 .flat-plan img {
@@ -700,7 +786,7 @@ a.corps-link {
 .flat-info {
     position: absolute;
     height: 100%;
-    width: 50%;
+    width: 40%;
     top: 25%;
     right: 0;
 }
@@ -838,13 +924,31 @@ a.corps-link {
     color:#fff;
     font-size: 1.2em;
     position: absolute;
-    padding: 8px;
-    background-color: #009700;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
     display:none;
+    height: 45px;
+    width: 45px;
+    text-align: center;
+    line-height: 41px;
+    background-color: #FE7B25;
+    border: 3px #fff solid;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
     pointer-events: none;
+}
+
+/*** Sale message on floor ***/
+
+.sale-message {
+    position: absolute;
+    height: 20px;
+    width: 100px;
+    color: #FE7B25;
+    font-size: 1.7em;
+    left: calc(50% - 50px);
+    top: 11%;
+    text-align: center;
+    font-weight: bold;
 }
 
 
@@ -856,9 +960,9 @@ a.corps-link {
 
 .price, .contract {
     position: absolute;
-    height: 70%;
+    height: 77%;
     width: 100%;
-    top: 15%;
+    top: 5%;
     left: 0;
     overflow-y: scroll;
 }
@@ -891,12 +995,13 @@ a.corps-link {
 }
 
 .price-table table {
-    width: 75%;
+    width: 100%;
     border: 3px rgb(23, 43, 93) solid;
     border-radius: 15px;
 }
 
 .price-table table td {
+    min-width: 30px;
     height: 30px;
     text-align: center;
     vertical-align: middle;
@@ -1109,9 +1214,9 @@ a.corps-link {
        ### !!! ---- Media query
 ****************************************/
 
-@media (min-width: 1350px) {
+@media screen and (min-width: 1350px) {
     .about-content > p {
-        font-size: 1.4em;
+        font-size: 1.2em;
         margin-top: 15px;
     }
     .about-text > h1,
@@ -1126,5 +1231,9 @@ a.corps-link {
         font-size: 1.4em;
     }
 }
+
+
+
+
 
 /*# sourceMappingURL=all.css.map */

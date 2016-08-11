@@ -2,7 +2,39 @@
  * Jquery scripts
  */
 
-
+var body_mobile_resize = function () {
+    console.log('Body Resize');
+    var min_w = 1250;
+    var min_h = 670;
+    var min_d = min_h/min_w;
+    console.log('min_d->' + min_d);
+    var win_w = $(window).width();
+    var win_h = $(window).height();
+    var win_d = win_h/win_w;
+    console.log('win_d->' + win_d);
+    if(win_d < min_d) {
+        var scale = Math.min(1, win_h/min_h);
+        console.log('1->' + scale);
+        $('body').css({
+            'min-width' : win_w/scale,
+            'min-height' : min_h,
+            'transformOrigin' : '0 0',
+            transform: 'scale(' + scale + ')'
+        })
+    } else {
+        var scale = Math.min(1, win_w/min_w);
+        console.log('2->' + scale);
+        $('body').css({
+            'min-width' : min_w,
+            'min-height' : win_h/scale,
+            'transformOrigin' : '0 0',
+             transform: 'scale(' + scale + ')'
+        })
+    }
+    bodySize('.page');
+    bodySize('.view-animate');
+    mapResize('svg');
+}
 
 
 /**
@@ -157,15 +189,31 @@ var navigationHover = function () {
 })(jQuery);
 
 
-$(document).ready(function () {
+$(window).ready(function () {
+    var android = /Android/i,
+        iphone  = /iPhone/i,
+        ipad    = /iPad/i;
+        user    = navigator.userAgent;
+        console.log(user);
+    if(android.test(user) || iphone.test(user) || ipad.test(user)) {
+        console.log('Mobile');
+        body_mobile_resize();
+        bodySize('.page');
+    bodySize('.view-animate');
+    mapResize('svg');
+    }
+
     console.log('window ready')
     $(window).bind('resize', function () {
         console.log('window resize')
         bodySize('.page');
         mapResize('svg');
     });
+    
     bodySize('.page');
+    bodySize('.view-animate');
     mapResize('svg');
     navigationHover();
+    
 });
 

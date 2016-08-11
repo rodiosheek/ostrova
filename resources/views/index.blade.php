@@ -17,24 +17,26 @@
     <!-- Header -->
     <header class="header">
         <!-- Header background -->
-
+        <!--
+        <img class="bg-img" src="/images/backgrounds/fon.png" alt="header-background">
+        -->
         <a href="#/home" class="logo"></a>
         <!-- Header navigation -->
         <nav class="header-nav">
             <div class="nav-menu">
                 <div class="nav-item" ng-class="{ 'tab-active': activePage == 'about'}"  >
-                    <a href="#/o-proekte">о проекте</a>
-                    <div class="nav-popup ">
-                        <div class="nav-popup-bg"></div>
+                <div class="nav-popup" style="left:-33px">
                         <ul>
                             <li><a href="#/o-proekte/preimushestva">преимущества</a></li>
                         </ul>
                     </div>
+                    <a href="#/o-proekte">о проекте</a>
+                
                 </div>
                 <div class="nav-item" ng-class="{ 'tab-active': activePage == 'gallery'}">
                     <a href="#/gallery">галерея</a>
-                    <div class="nav-popup">
-                        <div class="nav-popup-bg"></div>
+                    <div class="nav-popup" style="left: -20px;">
+                        
                         <ul>
                             <li><a href="#/gallery">фотоотчет</a></li>
                         </ul>
@@ -44,13 +46,13 @@
                     <a href="#/vubor-kvartiru">выбор квартиры</a>
                 </div>
                 <div class="nav-item" ng-class="{ 'tab-active': activePage == 'bay'}">
-                    <a href="#/kak-kupit">как купить</a>
-                    <div class="nav-popup">
-                        <div class="nav-popup-bg"></div>
+                    <a href="">как купить</a>
+                    <div class="nav-popup" style="left:-38px;">
+                       
                         <ul>
                             <li><a href="#/kak-kupit/stoimosti-kvarti">стоимость квартир</a></li>
-                            <li><a href="#/kak-kupit/tpovoy-dogovor">типовой договор</a></li>
-                            <li><a href="#/kak-kupit/oline-bronirovanie">online бронирование</a></li>
+                            <li><a href="#/kak-kupit/tipovoy-dogovor">типовой договор</a></li>
+                            <li><a href="#/kak-kupit/online-bronirovanie">online бронирование</a></li>
                             <li><a href="#/kak-kupit/otdel-prodag">отдел продаж</a></li>
                         </ul>
                     </div>
@@ -59,9 +61,9 @@
                     <a href="#/novosti">новости</a>
                 </div>
                 <div class="nav-item" ng-class="{ 'tab-active': activePage == 'company'}">
-                    <a href="#/kompania">управляющая компания</a>
-                    <div class="nav-popup">
-                        <div class="nav-popup-bg"></div>
+                    <a href="">управляющая компания</a>
+                    <div class="nav-popup" style="padding: 16px 35px 90px;">
+                       
                         <ul>
                             <li><a href="#/kompania/tarifu">тарифы</a></li>
                             <li><a href="#/kompania/dogovor">договор</a></li>
@@ -71,9 +73,11 @@
                 <div class="nav-item" ng-class="{ 'tab-active': activePage == 'contacts'}">
                     <a href="#/kontaktu">контакты</a>
                 </div>
+                <!-- 
                 <div class="nav-item">
                     <a href="http://dominanta-d.com/">вторичная недвижимость</a>
                 </div>
+                -->
             </div>
         </nav>
         <!-- Contact phone -->
@@ -92,8 +96,13 @@
 
     <div  ng-view class="view-animate"></div>
 
+    <!-- Loading -->
+    <div class="loading" ng-show="loading">
+        <img src="/images/loading.gif">
+    </div>
 
     <!-- Footer -->
+    <!--
     <footer class="footer">
         <img class="bg-img" src="/images/backgrounds/footer-bg.png" alt="footer-background">
         <div class="social">
@@ -107,7 +116,7 @@
         </div>
     </footer>
 </div>
-
+-->
 
 
 <script src="{{ elixir('js/all.js') }}"></script>

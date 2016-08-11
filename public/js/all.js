@@ -18472,7 +18472,39 @@ return /******/ (function(modules) { // webpackBootstrap
  * Jquery scripts
  */
 
-
+var body_mobile_resize = function () {
+    console.log('Body Resize');
+    var min_w = 1250;
+    var min_h = 670;
+    var min_d = min_h/min_w;
+    console.log('min_d->' + min_d);
+    var win_w = $(window).width();
+    var win_h = $(window).height();
+    var win_d = win_h/win_w;
+    console.log('win_d->' + win_d);
+    if(win_d < min_d) {
+        var scale = Math.min(1, win_h/min_h);
+        console.log('1->' + scale);
+        $('body').css({
+            'min-width' : win_w/scale,
+            'min-height' : min_h,
+            'transformOrigin' : '0 0',
+            transform: 'scale(' + scale + ')'
+        })
+    } else {
+        var scale = Math.min(1, win_w/min_w);
+        console.log('2->' + scale);
+        $('body').css({
+            'min-width' : min_w,
+            'min-height' : win_h/scale,
+            'transformOrigin' : '0 0',
+             transform: 'scale(' + scale + ')'
+        })
+    }
+    bodySize('.page');
+    bodySize('.view-animate');
+    mapResize('svg');
+}
 
 
 /**
@@ -18627,16 +18659,32 @@ var navigationHover = function () {
 })(jQuery);
 
 
-$(document).ready(function () {
+$(window).ready(function () {
+    var android = /Android/i,
+        iphone  = /iPhone/i,
+        ipad    = /iPad/i;
+        user    = navigator.userAgent;
+        console.log(user);
+    if(android.test(user) || iphone.test(user) || ipad.test(user)) {
+        console.log('Mobile');
+        body_mobile_resize();
+        bodySize('.page');
+    bodySize('.view-animate');
+    mapResize('svg');
+    }
+
     console.log('window ready')
     $(window).bind('resize', function () {
         console.log('window resize')
         bodySize('.page');
         mapResize('svg');
     });
+    
     bodySize('.page');
+    bodySize('.view-animate');
     mapResize('svg');
     navigationHover();
+    
 });
 
 
@@ -56145,15 +56193,15 @@ function router($routeProvider) {
             templateUrl: '/templates/map/corps/_corps.html',
             controller: CorpsCtrl
         })
-        .when('/section/:section', {
+        .when('/building/:id/section/:section', {
             templateUrl: '/templates/map/section/_section-1.html',
             controller: SectionCtrl
         })
-        .when('/section/:section/floor/:floor', {
+        .when('/building/:id/section/:section/floor/:floor', {
             templateUrl: '/templates/map/floor/_floor-section-1.html',
             controller: FloorCtrl
         })
-        .when('/flat/:section/:floor/:room', {
+        .when('/building/:id/section/:section/floor/:floor/room/:room', {
             templateUrl: '/templates/map/flats/_flats.html',
             controller: FlatsCtrl
         })
@@ -56165,11 +56213,11 @@ function router($routeProvider) {
             templateUrl: '/templates/how-to-bay/_price.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/tpovoy-dogovor', {
+        .when('/kak-kupit/tipovoy-dogovor', {
             templateUrl: '/templates/how-to-bay/_contracts.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/oline-bronirovanie', {
+        .when('/kak-kupit/online-bronirovanie', {
             templateUrl: '/templates/how-to-bay/_reservation.html',
             controller: ReservationCtrl
         })
@@ -56186,11 +56234,11 @@ function router($routeProvider) {
             controller: CompanyCtrl
         })
         .when('/kompania/tarifu', {
-            templateUrl: '/templates/company/company.html',
+            templateUrl: '/templates/company/_tarify.html',
             controller: CompanyCtrl
         })
         .when('/kompania/dogovor', {
-            templateUrl: '/templates/company/company.html',
+            templateUrl: '/templates/company/_dogovor.html',
             controller: CompanyCtrl
         })
         .when('/kontaktu', {
@@ -56232,11 +56280,12 @@ app.controller('ContactsCtrl', ContactsCtrl);
 function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
     console.log('Flats controller');
     $scope.formShow = false;
-    var section = $routeParams.section;
-    var floor = $routeParams.floor;
+    $scope.section = $routeParams.section;
+    $scope.floor = $routeParams.floor;
     $scope.room = $routeParams.room;
+    $scope.id = $routeParams.id;
 
-    mapService.getRoomNumber(section, floor, $scope.room).then(
+    mapService.getRoomNumber($scope.section, $scope.floor, $scope.room).then(
         function(data) {
             $scope.flat = data;
         },
@@ -56269,36 +56318,46 @@ function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
 }
 
 app.controller('FlatsCtrl', FlatsCtrl);
-function FloorCtrl($scope, $location, $routeParams, mapService) {
+function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
     console.log('Floor controller');
 
     var section = $routeParams.section;
     var floor = $routeParams.floor;
+    $scope.id = $routeParams.id;
     $scope.section = section;
     console.log('section=->' + $scope.section);
 
-
-
-
-
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var room = el.data('alt');
                         console.log("Flats->" + room);
                     console.log(floor);
-                        $scope.$apply(function () {
-                            $location.path('/flat/' + section + '/' + floor + '/' + room);
-                        })
+                    mapService.getRoomNumber(section, floor, room).then(
+                        function(data) {
+                            if(data.onSale != 0) {
+                               $location.path('/building/' + $scope.id + '/section/' + section + '/floor/' + floor + '/room/' + room);
+                            }
+                        },
+                        function(error) {
+                            console.log(error);
+                        }
+                    );
                 },
                 onmouseover: function (el) {
                     var room = el.data('alt');
-                    el.attr('opacity', 0.5);
                     mapService.getRoomNumber(section, floor, room).then(
                         function(data) {
                             $scope.number = data;
-                            console.log('data->' + data);
+                            if(data.onSale != 0) {
+                                el.attr('opacity', 0.5);
+                                $scope.message = '';
+                            } else {
+                                $scope.message = 'Продано';
+                                console.log($scope.message);
+                            }
                         },
                         function(error) {
                             console.log(error);
@@ -56311,8 +56370,10 @@ function FloorCtrl($scope, $location, $routeParams, mapService) {
                     el.attr('opacity', 0);
                     var room = el.data('alt');
                     $('.rooms-popup').find('div[data-target=' + room + ']').hide();
+                    $scope.message = '';
                 }
             });
+            $rootScope.loading = false;
         }, 1000);
     };
 };
@@ -56342,9 +56403,9 @@ function HomeCtrl($scope, $rootScope) {
     ];
     //Slider images
     $scope.slider.images = [
-        {'image' : '../../images/slider/slider-image/0006.jpg'},
-        {'image' : '../../images/slider/slider-image/0004.jpg'},
         {'image' : '../../images/slider/slider-image/0005.jpg'},
+        {'image' : '../../images/slider/slider-image/0004.jpg'},
+        {'image' : '../../images/slider/slider-image/0006.jpg'},
         {'image' : '../../images/slider/slider-image/0001.jpg'},
     ];
     // Slider icons
@@ -56385,7 +56446,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
     console.log('Map controller');
     $rootScope.activePage = 'map';
     var mapData = mapService.getMapData();
-    var getOnSaleFlats = mapService.getOnSaleFlats();
+    //var getOnSaleFlats = mapService.getOnSaleFlats();
     
     mapData.then(
         function(data) {
@@ -56396,23 +56457,17 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
         }
     );
 
-    getOnSaleFlats.then(
-        function(data) {
-            $scope.flats = data;
-        },
-        function(error) {
-            console.log(error);
-        }
-    );
+    
 
     $scope.mapInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var alt = el.data('alt');
                     var popup = $('.popup-menu').find('a[data-target=' + alt + ']');
                     if(!popup.hasClass('non-active')) {
-                        if (alt != 'dc' && alt != 'tc' && alt != '30' && alt != '29a') {
+                        if (alt != 'dc' && alt != 'tc' && alt != 'feetstyle') {
                             popup.find('.corps-link-popup').show();
                             $scope.$apply(function () {
                                 $location.path('/korpus/' + alt);
@@ -56421,11 +56476,19 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
                     }
                 },
                 onmouseover: function (el) {
-                    var alt = el.data('alt');
-
-                    if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
+                    var section = el.data('alt');
+                    mapService.getOnSaleFlats(section).then(
+                            function(data) {
+                                $scope.flats = data;
+                                console.log(data);
+                            },
+                            function(error) {
+                                console.log(error);
+                            }
+                        )
+                    if(!$('.popup-menu').find('a[data-target=' + section + ']').hasClass('non-active')) {
                         el.attr('opacity', 0.5);
-                        $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').show();
+                        $('.popup-menu').find('a[data-target=' + section + ']').find('.corps-link-popup').show();
                     }
                 },
                 onmouseout: function (el) {
@@ -56434,7 +56497,7 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
                     $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-
+        $rootScope.loading = false;
         }, 1000);
     };
 
@@ -56453,27 +56516,29 @@ function NewsCtrl($scope, $rootScope, $http, $location) {
 
 app.controller('NewsCtrl', NewsCtrl);
 
-function ReservationCtrl($scope) {
+function ReservationCtrl($scope, mapService) {
     console.log('Reservation controller');
 };
 
 app.controller('ReservationCtrl', ReservationCtrl);
-function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
+function SectionCtrl($scope, $rootScope, $location, $routeParams, $route, mapService) {
     console.log('Section controller');
 
-    var section1 = $route.current.originalPath.split('/')[2];
+    
     $scope.section = $routeParams.section;
-
+    $scope.id = $routeParams.id;
+    console.log($scope.id);
 
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
         setTimeout(function () {
             $('.map-plans').svgDrawing({
                 onclick: function (el) {
                     var floor = el.data('alt');
                     if(!$('.popup-menu').find('a[data-target=' + floor + ']').hasClass('non-active')) {
                         $scope.$apply(function () {
-                            $location.path('/section/' + $scope.section + '/floor/' + floor);
+                            $location.path('/building/' + $scope.id + '/section/' + $scope.section + '/floor/' + floor);
                         })
                     }
                 },
@@ -56501,17 +56566,19 @@ function SectionCtrl($scope, $location, $routeParams, $route, mapService) {
                     $('.popup-menu').find('div[data-target=' + alt + ']').find('.corps-link-popup').hide();
                 }
             });
-            
+            $rootScope.loading = false;
         }, 1000);
     };
 };
 
 app.controller('SectionCtrl', SectionCtrl);
-function CorpsCtrl($scope, $location, $routeParams, mapService) {
+function CorpsCtrl($scope, $location, $routeParams, mapService, $rootScope) {
     console.log('Korpus controller');
 
     var id = $routeParams.alt;
-
+    $scope.section = $routeParams.alt;
+    console.log($scope.section);    
+    console.log(id);
     var CountFlatsSection_1 = mapService.getSection_1();
     var CountFlatsSection_2 = mapService.getSection_2();
 
@@ -56534,6 +56601,7 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
     );
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
             setTimeout(function () {
                 $('.map-plans').svgDrawing({
                     onclick: function (el) {
@@ -56541,7 +56609,7 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
                         if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
                             console.log("Corps->" + alt);
                             $scope.$apply(function () {
-                                $location.path('/section/' + alt);
+                                $location.path('/building/' + id + '/section/' + alt);
                             })
                         }
                     },
@@ -56559,8 +56627,10 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
                         $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                     }
                 });
+                $rootScope.loading = false;
             }, 1000);
     };
+
 };
 
 app.controller('CorpsCtrl', CorpsCtrl);
@@ -56578,10 +56648,10 @@ app.factory('mapService', function($http, $q) {
                 });
             return defer.promise;
         },
-        getOnSaleFlats: function () {
+        getOnSaleFlats: function (section) {
             var defer = $q.defer();
-
-            $http.get('/get-onsale-flats')
+            var path = '/get-onsale-flats/' + section;
+            $http.get(path)
                 .success(function (data) {
                     defer.resolve(data);
                 })
@@ -56640,4 +56710,5 @@ app.factory('mapService', function($http, $q) {
         }
     }
 });
+
 //# sourceMappingURL=all.js.map

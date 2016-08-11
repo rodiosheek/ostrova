@@ -1,16 +1,25 @@
 
 <!-- Response map -->
 <section class="page" ng-init="sectionInit()">
-    <desc>Corps</desc>
+<a class="back-button" href="#/vubor-kvartiru"></a>
+    <desc></desc>
     <!-- Corps directive -->
     <div class="map-frame">
         <!-- Background map image -->
-        <img class="bg-img" src="../../images/maps/tahiti/tahiti-section-new.jpg">
+        <img  class="bg-img" src="../../images/maps/tahiti/section-{{section}}.jpg">
         <div class="map-info" >
             <img class="map-plans"   width="1950" height="1096" src="">
-            <map>
+            <map ng-if="section == '9a'">
                 <area alt="1" shape="poly" coords="550,902,551,220,777,219,777,190,851,189,851,220,994,220,995,903" target="section-1"  nohref="nohref" />
                 <area alt="2" shape="poly" coords="996,903,995,220,1141,220,1141,189,1215,189,1215,221,1442,220,1442,904" target="section-2"  nohref="nohref" />
+            </map>
+            <map ng-if="section == '30'">
+                <area alt="1" shape="poly" coords="263,270,520,270,521,227,583,227,582,269,966,269,965,852,262,851" target="section-1"  nohref="nohref" />
+                <area alt="2" shape="poly" coords="1672,269,1412,269,1412,227,1350,227,1352,270,967,269,965,853,1670,851" target="section-2"  nohref="nohref" />
+            </map>
+            <map ng-if="section == '29a'">
+                <area alt="1" shape="poly" coords="263,270,520,270,521,227,583,227,582,269,966,269,965,852,262,851" target="section-1"  nohref="nohref" />
+                <area alt="2" shape="poly" coords="1672,269,1412,269,1412,227,1350,227,1352,270,967,269,965,853,1670,851" target="section-2"  nohref="nohref" />
             </map>
         </div>
         <div class="popup-menu">
@@ -48,7 +57,7 @@
             </a>
             <!-- Popup item -->
             <a href="" class="corps-link " data-target="2" style="top: 29%;left: 70%;">2
-                <div class="corps-link-popup" style="left: 42px">
+                <div class="corps-link-popup" style="left: 50px">
                     <div class="corps-popup-title" >
                         {{ section_2.count }}
                         <div class="corps-text">
@@ -83,4 +92,3 @@
     </div>
 
 </section>
-

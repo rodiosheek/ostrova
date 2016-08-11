@@ -1,8 +1,10 @@
-function CorpsCtrl($scope, $location, $routeParams, mapService) {
+function CorpsCtrl($scope, $location, $routeParams, mapService, $rootScope) {
     console.log('Korpus controller');
 
     var id = $routeParams.alt;
-
+    $scope.section = $routeParams.alt;
+    console.log($scope.section);    
+    console.log(id);
     var CountFlatsSection_1 = mapService.getSection_1();
     var CountFlatsSection_2 = mapService.getSection_2();
 
@@ -25,6 +27,7 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
     );
 
     $scope.sectionInit = function () {
+        $rootScope.loading = true;
             setTimeout(function () {
                 $('.map-plans').svgDrawing({
                     onclick: function (el) {
@@ -32,7 +35,7 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
                         if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
                             console.log("Corps->" + alt);
                             $scope.$apply(function () {
-                                $location.path('/section/' + alt);
+                                $location.path('/building/' + id + '/section/' + alt);
                             })
                         }
                     },
@@ -50,8 +53,10 @@ function CorpsCtrl($scope, $location, $routeParams, mapService) {
                         $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').hide();
                     }
                 });
+                $rootScope.loading = false;
             }, 1000);
     };
+
 };
 
 app.controller('CorpsCtrl', CorpsCtrl);

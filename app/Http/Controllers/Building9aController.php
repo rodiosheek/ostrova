@@ -8,6 +8,10 @@ use App\Http\Requests;
 
 use App\Building9a;
 
+use App\Building29a;
+
+use App\Building30;
+
 class Building9aController extends Controller
 {
     /**
@@ -50,12 +54,32 @@ class Building9aController extends Controller
 
     }
 
-    public function getOnSaleFlats() {
+    public function getOnSaleFlats($section) {
 
-        $flat['count'] = Building9a::all()->where('onSale', 1)->count();
-        $flat['oneroom'] = Building9a::all()->where('onSale', 1)->where('rooms', 1)->count();
-        $flat['tworooms'] = Building9a::all()->where('onSale', 1)->where('rooms', 2)->count();
-        $flat['threerooms'] = Building9a::all()->where('onSale', 1)->where('rooms', 3)->count();
+        switch ($section) {
+            case '9a':
+                $flat['count'] = Building9a::all()->where('onSale', 1)->count();
+                $flat['oneroom'] = Building9a::all()->where('onSale', 1)->where('rooms', 1)->count();
+                $flat['tworooms'] = Building9a::all()->where('onSale', 1)->where('rooms', 2)->count();
+                $flat['threerooms'] = Building9a::all()->where('onSale', 1)->where('rooms', 3)->count();     
+                break;
+            case '29a':
+                $flat['count'] = Building29a::all()->where('onSale', 1)->count();
+                $flat['oneroom'] = Building29a::all()->where('onSale', 1)->where('rooms', 1)->count();
+                $flat['tworooms'] = Building29a::all()->where('onSale', 1)->where('rooms', 2)->count();
+                $flat['threerooms'] = Building29a::all()->where('onSale', 1)->where('rooms', 3)->count();
+                break;   
+            case '30':
+                $flat['count'] = Building30::all()->where('onSale', 1)->count();
+                $flat['oneroom'] = Building30::all()->where('onSale', 1)->where('rooms', 1)->count();
+                $flat['tworooms'] = Building30::all()->where('onSale', 1)->where('rooms', 2)->count();
+                $flat['threerooms'] = Building30::all()->where('onSale', 1)->where('rooms', 3)->count();     
+                break;
+            default:
+                $flat = 'error';
+                break;
+        }
+        
         return $flat;
     }
 
