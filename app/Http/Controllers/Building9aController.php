@@ -58,45 +58,48 @@ class Building9aController extends Controller
 
         switch ($section) {
             case '9a':
-                $flat['count'] = Building9a::all()->where('onSale', 1)->count();
-                $flat['oneroom'] = Building9a::all()->where('onSale', 1)->where('rooms', 1)->count();
-                $flat['tworooms'] = Building9a::all()->where('onSale', 1)->where('rooms', 2)->count();
-                $flat['threerooms'] = Building9a::all()->where('onSale', 1)->where('rooms', 3)->count();     
+                $build = new Building9a;
                 break;
             case '29a':
-                $flat['count'] = Building29a::all()->where('onSale', 1)->count();
-                $flat['oneroom'] = Building29a::all()->where('onSale', 1)->where('rooms', 1)->count();
-                $flat['tworooms'] = Building29a::all()->where('onSale', 1)->where('rooms', 2)->count();
-                $flat['threerooms'] = Building29a::all()->where('onSale', 1)->where('rooms', 3)->count();
-                break;   
+                $build = new Building29a;
+                break;
             case '30':
-                $flat['count'] = Building30::all()->where('onSale', 1)->count();
-                $flat['oneroom'] = Building30::all()->where('onSale', 1)->where('rooms', 1)->count();
-                $flat['tworooms'] = Building30::all()->where('onSale', 1)->where('rooms', 2)->count();
-                $flat['threerooms'] = Building30::all()->where('onSale', 1)->where('rooms', 3)->count();     
+                $build = new Building30;
                 break;
             default:
-                $flat = 'error';
+                echo 'Error';
                 break;
         }
+        $flat['count'] = $build::all()->where('onSale', 1)->count();
+        $flat['oneroom'] = $build::all()->where('onSale', 1)->where('rooms', 1)->count();
+        $flat['tworooms'] = $build::all()->where('onSale', 1)->where('rooms', 2)->count();
+        $flat['threerooms'] = $build::all()->where('onSale', 1)->where('rooms', 3)->count(); 
+        return $flat;
+    }
+
+    public function getSection($building, $section) {
+       
+        $section = (int) $section;
+        switch ($building) {
+            case '9a':
+                $build = new Building9a;
+                break;
+            case '29a':
+                $build = new Building29a;
+                break;
+            case '30':
+                $build = new Building30;
+                break;
+            default:
+                echo 'Error';
+                break;
+        }
+        $flat['count'] = $build::all()->where('onSale', 1)->where('section', $section)->count();
+        $flat['oneroom'] = $build::all()->where('onSale', 1)->where('section', $section)->where('rooms', 1)->count();
+        $flat['tworooms'] = $build::all()->where('onSale', 1)->where('section', $section)->where('rooms', 2)->count();
+        $flat['threerooms'] = $build::all()->where('onSale', 1)->where('section', $section)->where('rooms', 3)->count();
+        return $flat;
         
-        return $flat;
-    }
-
-    public function getSection_1() {
-        $flat['count'] = Building9a::all()->where('onSale', 1)->where('section', 1)->count();
-        $flat['oneroom'] = Building9a::all()->where('onSale', 1)->where('section', 1)->where('rooms', 1)->count();
-        $flat['tworooms'] = Building9a::all()->where('onSale', 1)->where('section', 1)->where('rooms', 2)->count();
-        $flat['threerooms'] = Building9a::all()->where('onSale', 1)->where('section', 1)->where('rooms', 3)->count();
-        return $flat;
-    }
-
-    public function getSection_2() {
-        $flat['count'] = Building9a::all()->where('onSale', 1)->where('section', 2)->count();
-        $flat['oneroom'] = Building9a::all()->where('onSale', 1)->where('section', 2)->where('rooms', 1)->count();
-        $flat['tworooms'] = Building9a::all()->where('onSale', 1)->where('section', 2)->where('rooms', 2)->count();
-        $flat['threerooms'] = Building9a::all()->where('onSale', 1)->where('section', 2)->where('rooms', 3)->count();
-        return $flat;
     }
 
     public function getFloorFlats($section, $floor) {

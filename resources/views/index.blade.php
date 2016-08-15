@@ -47,12 +47,14 @@
                 </div>
                 <div class="nav-item" ng-class="{ 'tab-active': activePage == 'bay'}">
                     <a href="">как купить</a>
-                    <div class="nav-popup" style="left:-38px;">
+                    <div class="nav-popup" style="left:-17px;">
                        
                         <ul>
                             <li><a href="#/kak-kupit/stoimosti-kvarti">стоимость квартир</a></li>
                             <li><a href="#/kak-kupit/tipovoy-dogovor">типовой договор</a></li>
+                            <!--
                             <li><a href="#/kak-kupit/online-bronirovanie">online бронирование</a></li>
+                            -->
                             <li><a href="#/kak-kupit/otdel-prodag">отдел продаж</a></li>
                         </ul>
                     </div>
