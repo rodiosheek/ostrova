@@ -1,50 +1,36 @@
 function CorpsCtrl($scope, $location, $routeParams, mapService, $rootScope) {
     console.log('Korpus controller');
 
-    var id = $routeParams.alt;
+    var building = $routeParams.alt;
     $scope.section = $routeParams.alt;
-    console.log($scope.section);    
-    console.log(id);
-    var CountFlatsSection_1 = mapService.getSection_1();
-    var CountFlatsSection_2 = mapService.getSection_2();
-
-    CountFlatsSection_1.then(
-        function(data) {
-            $scope.section_1 = data;
-        },
-        function(error) {
-            console.log(error);
-        }
-    );
-
-    CountFlatsSection_2.then(
-        function(data) {
-            $scope.section_2 = data;
-        },
-        function(error) {
-            console.log(error);
-        }
-    );
+    console.log($scope.section);   
 
     $scope.sectionInit = function () {
         $rootScope.loading = true;
             setTimeout(function () {
                 $('.map-plans').svgDrawing({
                     onclick: function (el) {
-                        var alt = el.data('alt');
-                        if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
-                            console.log("Corps->" + alt);
+                        var section = el.data('alt');
+                        if(!$('.popup-menu').find('a[data-target=' + section + ']').hasClass('non-active')) {
+                            console.log("Corps->" + section);
                             $scope.$apply(function () {
-                                $location.path('/building/' + id + '/section/' + alt);
+                                $location.path('/building/' + building + '/section/' + section);
                             })
                         }
                     },
                     onmouseover: function (el) {
 
-                        var alt = el.data('alt');
+                        var section = el.data('alt');
                         el.attr('opacity', 0.5);
-                        if(!$('.popup-menu').find('a[data-target=' + alt + ']').hasClass('non-active')) {
-                            $('.popup-menu').find('a[data-target=' + alt + ']').find('.corps-link-popup').show();
+                        mapService.getSection(building, section).then(
+                            function(data) {
+                                $scope.section_1 = data;
+                            },
+                            function(error) {
+                                console.log(error);
+                            });
+                        if(!$('.popup-menu').find('a[data-target=' + section + ']').hasClass('non-active')) {
+                            $('.popup-menu').find('a[data-target=' + section + ']').find('.corps-link-popup').show();
                         }
                     },
                     onmouseout: function (el) {

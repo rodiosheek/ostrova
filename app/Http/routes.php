@@ -36,7 +36,7 @@ Route::get('/get-coordinate', 'CoordsController@getCoords');
 
 Route::get('/get-onsale-flats/{section}', 'Building9aController@getOnSaleFlats');
 
-Route::get('/get-flats-section-1', 'Building9aController@getSection_1');
+Route::get('/get-flats-section/{building}/{section}', 'Building9aController@getSection');
 
 Route::get('/get-flats-section-2', 'Building9aController@getSection_2');
 

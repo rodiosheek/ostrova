@@ -24,22 +24,10 @@ app.factory('mapService', function($http, $q) {
                 });
             return defer.promise;
         },
-        getSection_1: function () {
+        getSection: function (building, section) {
             var defer = $q.defer();
-
-            $http.get('/get-flats-section-1')
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (error) {
-                    defer.reject(error);
-                });
-            return defer.promise;
-        },
-        getSection_2: function () {
-            var defer = $q.defer();
-
-            $http.get('/get-flats-section-2')
+            var path = '/get-flats-section/' + building + '/' + section;
+            $http.get(path)
                 .success(function (data) {
                     defer.resolve(data);
                 })
