@@ -47,7 +47,7 @@
                 </div>
                 <div class="nav-item" ng-class="{ 'tab-active': activePage == 'bay'}">
                     <a href="">как купить</a>
-                    <div class="nav-popup" style="left:-17px;">
+                    <div class="nav-popup" style="left:-25px;">
                        
                         <ul>
                             <li><a href="#/kak-kupit/stoimosti-kvarti">стоимость квартир</a></li>

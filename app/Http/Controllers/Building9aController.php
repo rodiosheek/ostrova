@@ -112,12 +112,25 @@ class Building9aController extends Controller
         return $flat;
     }
 
-    public function getRoomNumber($section, $floor, $room) {
+    public function getRoomNumber($building, $section, $floor, $room) {
+        switch ($building) {
+            case '9a':
+                $build = new Building9a;
+                break;
+            case '29a':
+                $build = new Building29a;
+                break;
+            case '30':
+                $build = new Building30;
+                break;
+            default:
+                echo 'Error';
+                break;
+        }
         $section = (int) $section;
         $floor = (int) $floor;
         $room = (int) $room;
-        $arr = [$section, $floor, $room];
-        $number = Building9a::all()->where('section', $section)->where('floor', $floor)->where('onPlan', $room);
+        $number = $build::all()->where('section', $section)->where('floor', $floor)->where('onPlan', $room);
         $number1 = 0;
         foreach($number as $num) {
             $number1 = $num;

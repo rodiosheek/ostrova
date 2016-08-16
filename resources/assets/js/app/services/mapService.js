@@ -48,9 +48,9 @@ app.factory('mapService', function($http, $q) {
                 });
             return defer.promise;
         },
-        getRoomNumber: function (section, floor, room) {
+        getRoomNumber: function (building,section, floor, room) {
             var defer = $q.defer();
-            var path = '/get-room-number/' + section + '/' + floor + '/' + room;
+            var path = '/get-room-number/' + building + '/' + section + '/' + floor + '/' + room;
             $http.get(path)
                 .success(function (data) {
                     defer.resolve(data);

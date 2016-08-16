@@ -42,7 +42,7 @@ Route::get('/get-flats-section-2', 'Building9aController@getSection_2');
 
 Route::get('/get-floor-flats/{section}/{floor}', 'Building9aController@getFloorFlats');
 
-Route::get('/get-room-number/{section}/{floor}/{room}', 'Building9aController@getRoomNumber');
+Route::get('/get-room-number/{building}/{section}/{floor}/{room}', 'Building9aController@getRoomNumber');
 
 
 /**

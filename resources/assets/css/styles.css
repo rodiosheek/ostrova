@@ -87,7 +87,7 @@ body {
     font-family: 'MyriadSetPro-Medium', sans-serif;
     font-size: 14px;
     color: rgb(23, 43, 93);
-    min-height: 670px;
+    min-height: 640px;
     min-width: 1250px;
     width: 100%;
     height: 100%;
@@ -623,7 +623,7 @@ img {
     position: absolute;
     height: 50px;
     width: 50px;
-    top: 15%;
+    top: 8%;
     left: 12%;
     background: url(../../images/other/arrow.png) no-repeat center;
     background-size: 100%;
@@ -1214,7 +1214,7 @@ a.corps-link {
        ### !!! ---- Media query
 ****************************************/
 
-@media screen and (min-width: 1350px) {
+@media screen and (min-width: 1370px) {
     .about-content > p {
         font-size: 1.2em;
         margin-top: 15px;

@@ -4,83 +4,200 @@
     <!-- Section #1 floor directive -->
     <div class="map-frame">
         <!-- Background map image -->
-        <img class="bg-img" src="../../images/maps/tahiti/floor-section-{{section}}.jpg">
+        <img class="bg-img" src="../../images/maps/tahiti/building_{{id}}_section_{{section}}.png">
         <div class="map-info" >
             <img  class="map-plans"   width="1950" height="1096" src="">
-            <map ng-if="section == 1">
-                <area shape="poly" coords="256,272,520,272,521,528,455,529,455,611,356,611,356,530,256,530" alt="7" target="flat-7"  nohref="nohref" />
-                <area shape="poly" coords="455,611,521,611,521,869,255,869,256,530,356,530,356,611" alt="6" target="flat-6"  nohref="nohref" />
-                <area shape="poly" coords="521,611,899,612,898,869,521,869" alt="5" target="flat-5"  nohref="nohref" />
-                <area shape="poly" coords="899,612,1163,612,1164,869,898,869" alt="4" target="flat-4"  nohref="nohref" />
-                <area shape="poly" coords="1163,612,1563,612,1564,869,1164,869" alt="3" target="fla-3"  nohref="nohref" />
-                <area shape="poly" coords="1337,612,1563,612,1564,869,1694,869,1694,272,1429,271,1429,528,1337,528" alt="2" target="flat-2"  nohref="nohref" />
-                <area shape="poly" coords="1337,528,1050,527,1051,272,1429,271,1429,528" alt="1" target="flat-1"  nohref="nohref" />
-                <area shape="poly" coords="520,272,785,272,786,529,521,528" alt="8" target="flat-8"  nohref="nohref" />
+            <map >
+                <area ng-repeat="(i, path) in maps" shape="poly" coords="{{path}}" alt="{{i+1}}" target="floor-1"  nohref="nohref" />
             </map>
-            <map ng-if="section == 2">
-                <area shape="poly" coords="599,535,505,534,504,273,236,272,235,881,506,881,506,620,599,620" alt="7" target="flat-7"  nohref="nohref" />
-                <area shape="poly" coords="506,881,775,879,776,620,506,621" alt="6" target="flat-6"  nohref="nohref" />
-                <area shape="poly" coords="775,879,1046,880,1046,619,776,620" alt="5" target="flat-5"  nohref="nohref" />
-                <area shape="poly" coords="1046,880,1431,880,1432,619,1046,618" alt="4" target="flat-4"  nohref="nohref" />
-                <area shape="poly" coords="1431,880,1702,880,1702,534,1599,535,1599,619,1432,619" alt="3" target="flat-3"  nohref="nohref" />
-                <area shape="poly" coords="1702,534,1701,272,1431,273,1432,535" alt="2" target="flat-2"  nohref="nohref" />
-                <area shape="poly" coords="1431,273,1161,272,1160,535,1432,535" alt="1" target="flat-1"  nohref="nohref" />
-                <area shape="poly" coords="504,273,890,274,890,534,506,534" alt="8" target="flat-8"  nohref="nohref" />
-            </map>
-        </div>
-        <div class="rooms-popup" ng-if="section == 1">
-            <div class="room-number" data-target="1" style="top: 27%;left: 62%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="2" style="top: 40%;left: 76%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="3" style="top: 59%;left: 76%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="4" style="top: 72%;left: 49%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="5" style="top: 72%;left: 36%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="6" style="top: 66%;left: 15%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="7" style="top: 34%;left: 15%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="8" style="top: 34%;left: 36%;">
-                № {{ number.number }}
-            </div>
-        </div>
-        <div class="rooms-popup" ng-if="section == 2">
-            <div class="room-number" data-target="1" style="top: 32%;left: 62%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="2" style="top: 32%;left: 82%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="3" style="top: 68%;left: 82%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="4" style="top: 68%;left: 62%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="5" style="top: 68%;left: 41%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="6" style="top: 68%;left: 35%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="7" style="top: 32%;left: 15%;">
-                № {{ number.number }}
-            </div>
-            <div class="room-number" data-target="8" style="top: 32%;left: 28%;">
-                № {{ number.number }}
-            </div>
-        </div>
 
+        </div>
+        <div ng-if="id == '9a'">
+            <div class="rooms-popup" ng-if="section == 1">
+                <div class="room-number" data-target="1" style="top: 27%;left: 62%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="2" style="top: 40%;left: 76%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="3" style="top: 59%;left: 76%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="4" style="top: 72%;left: 49%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="5" style="top: 72%;left: 36%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="6" style="top: 66%;left: 15%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="7" style="top: 34%;left: 15%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="8" style="top: 34%;left: 36%;">
+                    № {{ number.number }}
+                </div>
+            </div>
+            <div class="rooms-popup" ng-if="section == 2">
+                <div class="room-number" data-target="1" style="top: 32%;left: 62%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="2" style="top: 32%;left: 82%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="3" style="top: 68%;left: 82%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="4" style="top: 68%;left: 62%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="5" style="top: 68%;left: 41%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="6" style="top: 68%;left: 35%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="7" style="top: 32%;left: 15%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="8" style="top: 32%;left: 28%;">
+                    № {{ number.number }}
+                </div>
+            </div>
+        </div>
+        <div ng-if="id == '30'">
+            <div class="rooms-popup" ng-if="section == 1">
+                <div class="room-number" data-target="1" style="top: 55%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="2" style="top: 48%;left: 15%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="3" style="top: 15%;left: 20%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="4" style="top: 19%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="5" style="top: 19%;left: 48%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="6" style="top: 19%;left: 66%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="7" style="top: 19%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="8" style="top: 59%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="9" style="top: 55%;left: 64%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="10" style="top: 55%;left: 51%;">
+                    № {{ number.number }}
+                </div>
+            </div>
+            <div class="rooms-popup" ng-if="section == 2">
+                <div class="room-number" data-target="1" style="top: 55%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="2" style="top: 48%;left: 15%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="3" style="top: 15%;left: 20%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="4" style="top: 19%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="5" style="top: 19%;left: 48%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="6" style="top: 19%;left: 66%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="7" style="top: 19%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="8" style="top: 59%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="9" style="top: 55%;left: 64%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="10" style="top: 55%;left: 51%;">
+                    № {{ number.number }}
+                </div>
+            </div>
+        </div>
+        <div ng-if="id == '29a'">
+            <div class="rooms-popup" ng-if="section == 1">
+                <div class="room-number" data-target="1" style="top: 55%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="2" style="top: 48%;left: 15%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="3" style="top: 15%;left: 20%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="4" style="top: 19%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="5" style="top: 19%;left: 48%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="6" style="top: 19%;left: 66%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="7" style="top: 19%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="8" style="top: 59%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="9" style="top: 55%;left: 64%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="10" style="top: 55%;left: 51%;">
+                    № {{ number.number }}
+                </div>
+            </div>
+            <div class="rooms-popup" ng-if="section == 2">
+                <div class="room-number" data-target="1" style="top: 55%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="2" style="top: 48%;left: 15%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="3" style="top: 15%;left: 20%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="4" style="top: 19%;left: 31%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="5" style="top: 19%;left: 48%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="6" style="top: 19%;left: 66%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="7" style="top: 19%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="8" style="top: 59%;left: 81%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="9" style="top: 55%;left: 64%;">
+                    № {{ number.number }}
+                </div>
+                <div class="room-number" data-target="10" style="top: 55%;left: 51%;">
+                    № {{ number.number }}
+                </div>
+            </div>
+        </div>
         <!-- Message -->
         <div class="sale-message">
             {{ message }}
