@@ -214,6 +214,8 @@ $(window).ready(function () {
     bodySize('.view-animate');
     mapResize('svg');
     navigationHover();
-    
+
+
+
 });
 

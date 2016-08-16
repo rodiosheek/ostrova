@@ -9,9 +9,9 @@
         <img class="bg-img" src="../../images/maps/tahiti/section-{{id}}.jpg">
         <div class="map-info">
             <img  class="map-plans"   width="1950" height="1096" src="">
-            <map ng-if="section == 1">
-                <area shape="poly" coords="{{}}" alt="1" target="floor-1"  nohref="nohref" />
-          </map>
+            <map >
+                <area ng-repeat="(i, path) in paths" shape="poly" coords="{{path}}" alt="{{i+1}}" target="floor-1"  nohref="nohref" />
+            </map>
         </div>
         <div class="popup-menu">
             <!-- Popup item -->
