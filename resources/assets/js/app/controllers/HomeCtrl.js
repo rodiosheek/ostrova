@@ -1,6 +1,6 @@
 
 
-function HomeCtrl($scope, $rootScope) {
+function HomeCtrl($scope, $rootScope, $location) {
     console.log('Home controller');
     $rootScope.activePage = 'home';
     $scope.slider = {};
@@ -8,17 +8,17 @@ function HomeCtrl($scope, $rootScope) {
     $scope.viewClass = 'animation-fade';
     // Slider controls text
     $scope.slider.text = [
-        {'text' : 'благоустройство территории'},
-        {'text' : 'благоустройство территории-1'},
-        {'text' : 'благоустройство территории-2'},
-        {'text' : 'благоустройство территории-3'},
+        {'text' : 'Благоустройство по  европейскому принципу'},
+        {'text' : 'закрытая охраняемая территория'},
+        {'text' : 'детский сад, магазины, аптека'},
+        {'text' : 'фитнес-клуб, стадион и тренажерная площадка'},
     ];
     //Slider images
     $scope.slider.images = [
-        {'image' : '../../images/slider/slider-image/0005.jpg'},
-        {'image' : '../../images/slider/slider-image/0004.jpg'},
-        {'image' : '../../images/slider/slider-image/0006.jpg'},
-        {'image' : '../../images/slider/slider-image/0001.jpg'},
+        {'image' : '../../images/slider/slider-image/0007-min.jpg'},
+        {'image' : '../../images/slider/slider-image/0005-min.jpg'},
+        {'image' : '../../images/slider/slider-image/0004-min.jpg'},
+        {'image' : '../../images/slider/slider-image/0006-min.jpg'},
     ];
     // Slider icons
     $scope.slider.icons = [
@@ -27,8 +27,8 @@ function HomeCtrl($scope, $rootScope) {
         {'icon' : '../../images/slider/slider-icons/0012.png'},
         {'icon' : '../../images/slider/slider-icons/0013.png'},
     ];
+
     // Next slide
-    
     $scope.next = function () {
         var totalImg = $scope.slider.images.length;
         if(totalImg > 0) {
@@ -44,11 +44,19 @@ function HomeCtrl($scope, $rootScope) {
     };
     // Slider autoplay
     $scope.autoPlay = function () {
+        console.log('autoplay start');
         setTimeout(function () {
             $scope.next();
             $scope.autoPlay();
         }, 3000)
     };
+    
+   $scope.refPage = function () {
+        console.log('Refresh');
+        $locarion.reload();
+       
+   };
+
 };
 
 app.controller('HomeCtrl', HomeCtrl);

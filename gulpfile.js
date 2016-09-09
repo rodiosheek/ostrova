@@ -26,6 +26,8 @@ elixir(function(mix) {
                 'sources/angular-animate.js',
                 'sources/angular-route.js',
                 'sources/mask.js',
+                'sources/angular-sanitize.js',
+                'sources/jcarousel.js',
                 'app/app.js',
                 'app/routes.js',
                 'app/controllers/**/*.js',

@@ -1,0 +1,80 @@
+<section class="page sales-dep">
+	<img class="bg-img" src="../../images/backgrounds/otdel-prodaj.png">
+	<div class="left-sidebar">
+		<div><span style="color: rgb(23, 43, 93);">как купить</span> | отдел продаж</div>
+	</div>
+	<div class="managers">
+		<div class="manager-item">
+			<div class="manager-icon">
+				<img src="../../images/other/managers/manager-1.png">
+			</div>
+			<div class="manager-name">
+				Янева Иванна
+				<a href="{{path}}">link</a>
+			</div>
+			<div class="rating-widget">
+				<div ng-click="ratingPlus(1)">
+					<span class="like-icon"></span>
+					<span class="rating-num-like">{{rating['0'].rating_plus}}</span>
+				</div>
+				<div ng-click="ratingMinus(1)">
+					<span class="dislike-icon"></span>
+					<span class="rating-num-dislike">{{rating['0'].rating_minus}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="manager-item">
+			<div class="manager-icon">
+				<img src="../../images/other/managers/manager-2.png">
+			</div>
+			<div class="manager-name">
+				Мунциянова Ирина
+			</div>
+			<div class="rating-widget">
+				<div ng-click="ratingPlus(2)">
+					<span class="like-icon"></span>
+					<span class="rating-num-like">{{rating['1'].rating_plus}}</span>
+				</div>
+				<div ng-click="ratingMinus(2)">
+					<span class="dislike-icon"></span>
+					<span class="rating-num-dislike">{{rating['1'].rating_minus}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="manager-item">
+			<div class="manager-icon">
+				<img src="../../images/other/managers/manager-3.png">
+			</div>
+			<div class="manager-name">
+				Колесникова Юлия
+			</div>
+			<div class="rating-widget">
+				<div ng-click="ratingPlus(3)">
+					<span class="like-icon"></span>
+					<span class="rating-num-like">{{rating['2'].rating_plus}}</span>
+				</div>
+				<div ng-click="ratingMinus(3)">
+					<span class="dislike-icon"></span>
+					<span class="rating-num-dislike">{{rating['2'].rating_minus}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<!-- Buttons panel -->
+<div class="buttons-panel">
+    <!-- Button new home -->
+    <div class="design-button complaint-button">
+        <a href="" class="button-img">
+            <div class="button-text" style="margin-top: 12px;">
+                ЖАЛОБА<br/>
+                <span></span>
+            </div>
+        </a>
+        <div class="rotate-bg-1"></div>
+        <div class="rotate-bg-2"></div>
+        <div class="rotate-bg-3"></div>
+    </div>
+</div>

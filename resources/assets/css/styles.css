@@ -61,7 +61,8 @@ html,
 .logo,
 .hills,
 .buttons-panel,
-.page {
+.page,
+.header {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -69,7 +70,7 @@ html,
     left: 0;
 }
 
-.header {
+.header1 {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -85,7 +86,7 @@ html,
 
 body {
     font-family: 'MyriadSetPro-Medium', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     color: rgb(23, 43, 93);
     min-height: 640px;
     min-width: 1250px;
@@ -172,22 +173,22 @@ img {
 ****************************************/
 
 .header {
-    max-height: 35%;
+    max-height: 17%;
     z-index: 100000;
-    /* background-color: rgba(9, 15, 35, 0.58); */
+    /* background-color: rgba(9, 15, 35, 0.58);
     background: url(../../images/backgrounds/fon.png) no-repeat 50% 80%;
     background-size: 100%;
     pointer-events: none;
+    */
 }
 
 .logo {
-    width: 14%;
-    height: 85%;
-    left: 10%;
-    top: 30%;
-    margin-left: -116px;
+    width: 13%;
+    height: 65%;
+    left: 2%;
+    top: 0;
     /* background-position: -200px -126px ; */
-    background: url(../../images/white-logo.png) no-repeat center;
+    background: url(../../images/blue-logo.png) no-repeat center;
     background-size: 100%;
     z-index: 99;
 }
@@ -209,29 +210,37 @@ img {
 
 .contact-phone {
     width: 293px;
-    bottom: 26%;
-    right: 7%;
+    top: 24%;
+    left: 13%;
     margin-right: -117px;
     z-index: 99;
+}
+
+.logo-intostroi  {
+    position: absolute;
+    width: 11%;
+    right: 1%;
+    top: 10%;
 }
 
 .header-contacts {
     width: 100%;
     text-align: center;
-    color: #fff;
+    color: rgb(23, 43, 93);
 }
 
 .phone-number {
-    font-size: 1.7em;
+    font-size: 1.4em;
     font-weight: bold;
 }
 
 .header-nav {
     min-width: 710px;
-    max-width: 1000px;
+    max-width: 1100px;
     width: calc(50% - 14px);
-    margin: auto;
-    top: 85%;
+    /* margin:auto; */
+    top: 25%;
+    left: 31%;
     text-align: center;
 }
 
@@ -251,7 +260,7 @@ img {
 
 .nav-item > a {
     text-transform: uppercase;
-    color: rgb(255, 255, 255);
+    color: rgb(23, 43, 93);
 }
 
 .nav-item > a:hover {
@@ -273,20 +282,26 @@ img {
 .nav-popup {
     background-color: #9f9f9f;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    border-radius: 10px 10px 0 0;
-    bottom: -150%;
+    border-radius: 0 0 10px 10px;
     left: -25px;
-    padding: 16px 25px 90px;
+    padding: 100px 25px 17px;
     display: none;
+    /* margin-top: 6%; */
+    top: -100px;
+    text-transform: uppercase;
 }
+
+.nav-popup > ul {
+    margin-top: 25px;
+}
+
 .nav-popup > ul > li {
-   
-    padding: 10px 20px;
+    padding: 10px 30px;
 }
 
 .nav-popup > ul > li > a {
     color: #fff;
-    font-size: 1.1em;
+    font-size: 0.85em;
 }
 
 .nav-popup > ul > li > a:hover {
@@ -309,12 +324,12 @@ img {
     background-color: #028b04;
     position: absolute;
     left: calc(50% - 80px);
-    -webkit-border-radius: 10px 10px 0 0;
-    -moz-border-radius: 10px 10px 0 0;
-    border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    padding: 40px 80px;
-    top: 100%;
+    padding: 28px 80px;
+    top: -75px;
 }
 
 /****************************************
@@ -343,7 +358,7 @@ img {
 
 .footer {
     position: absolute;
-    height: 20%;
+    height: 17%;
     width: 100%;
     left: 0;
     bottom: 0;
@@ -355,11 +370,11 @@ img {
 .social {
     position: absolute;
     height: 33px;
-    width: 350px;
+    width: 250px;
     bottom: calc(50% - 50px);
-    left:calc(50% - 175px);
+    left: calc(50% - 125px);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .social > a {
@@ -418,7 +433,7 @@ img {
 
 .new-home,
 .choice-flats {
-    top: calc(45% - 90px);
+    top: calc(50% - 90px);
 }
 
 .new-home {
@@ -445,12 +460,12 @@ img {
 
 .d-tour {
     background: url(../../images/design-button/small-button-img/3d-tour.png) no-repeat center;
-    top: 18%;
+    top: 20%;
 }
 
 .b-process {
     background: url(../../images/design-button/small-button-img/photo-2.png) no-repeat center;
-    bottom: 28%;
+    bottom: 20%;
 }
 
 /*** Slider ***/
@@ -517,6 +532,15 @@ img {
     width: 67px;
 }
 
+.slider-icon {
+    height: 100%;
+    width: 100%;
+}
+
+.slider-icon img {
+    min-width: 100%;
+}
+
 .slider-text-repeat {
     text-align: center;
     font-size: 2.2em;
@@ -554,7 +578,12 @@ img {
 .photo-button,
 .location-button {
     left: calc(50% - 90px);
-    bottom: 15%;
+    bottom: 12%;
+}
+
+.complaint-button > .button-img {
+    background: url(../../images/design-button/design-button-center/znak.png) no-repeat center;
+    background-size: 100%;
 }
 
 .photo-button > .button-img {
@@ -571,7 +600,7 @@ img {
 .advantages-text {
     position: absolute;
     width: 40%;
-    top: 11%;
+    top: 18%;
     left: 4%;
 }
 
@@ -587,6 +616,15 @@ img {
     position: relative;
     z-index: 1000;
     font-size: 0.85em;
+}
+
+.about-content p {
+    margin-bottom: 15px;
+}
+
+.about-content ul li {
+    list-style: circle;
+    margin: 10px;
 }
 
 .advantages-img {
@@ -612,19 +650,288 @@ img {
     animation: bg-1 3s linear infinite ;
 }
 
+.design-button.complaint-button {
+    left: 25%;
+    bottom: 21%;
+}
 
+.design-button.complaint-button {
+    height: 130px;
+    width: 130px;
+}
 
+.complaint-button .button-img {
+    height: 78px;
+    width: 78px;
+    top: calc(50% - 39px);
+    left: calc(50% - 39px);
+}
+
+.design-button.complaint-button .button-text {
+    font-weight: 300;
+}
 
 /****************************************
-       ### 8 ---- Map page
+       ### 8 ---- News page
+****************************************/
+
+.news-list {
+    position: absolute;
+    width: 100%;
+    height: 70%;
+    top: 14%;
+    left: 0;
+    overflow-y: scroll;
+}
+
+.post {
+    margin: 20px auto;
+    width: 80%;
+    border-bottom: 2px rgb(23, 43, 93) solid;
+
+}
+
+.news-list h1 {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.news-list h1, .news-list h1 a {
+    color: #FE7B25;
+}
+
+.news-list h1 a:hover {
+    color: #bc601c;
+}
+
+.post-date {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.post-content {
+    margin: 10px;
+}
+
+.post a {
+    font-size: 1.3em;
+    color: #026b04;
+    margin: 10px;
+}
+
+.post a:hover {
+    color: #02bf04;
+}
+
+/**** Post topography ****/
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    clear: both;
+    font-weight: 900;
+}
+
+h1 {
+    
+    line-height: 1.2727272727;
+}
+
+h2 {
+    
+    line-height: 1.25;
+}
+
+h3 {
+    line-height: 1.2173913043;
+}
+
+h4,
+h5,
+h6 {
+    
+    line-height: 1.1052631579;
+}
+
+h4 {
+    letter-spacing: 0.13333em;
+    text-transform: uppercase;
+}
+
+h6 {
+    font-style: italic;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+    margin-top: 0;
+}
+
+p {
+    margin: 0 0 28px;
+}
+
+b,
+strong {
+    font-weight: 700;
+}
+
+dfn,
+cite,
+em,
+i {
+    font-style: italic;
+}
+
+blockquote {
+    border-left: 4px solid #1a1a1a;
+    color: #686868;
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.4736842105;
+    margin-bottom: 28px;
+    overflow: hidden;
+    padding: 0 0 0 24px;
+}
+
+blockquote:not(.alignleft):not(.alignright) {
+    margin-left: -28px;
+}
+
+blockquote blockquote:not(.alignleft):not(.alignright) {
+    margin-left: 0;
+}
+
+blockquote:before,
+blockquote:after {
+    content: "";
+    display: table;
+}
+
+blockquote:after {
+    clear: both;
+}
+
+blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+blockquote cite,
+blockquote small {
+    color: #1a1a1a;
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+blockquote em,
+blockquote i,
+blockquote cite {
+    font-style: normal;
+}
+
+blockquote strong,
+blockquote b {
+    font-weight: 400;
+}
+
+blockquote.alignleft,
+blockquote.alignright {
+    border: 0 solid #1a1a1a;
+    border-top-width: 4px;
+    padding: 18px 0 0;
+    width: -webkit-calc(50% - 14px);
+    width: calc(50% - 14px);
+}
+
+address {
+    font-style: normal;
+    /*margin: 0 0 28px;*/
+}
+
+code,
+kbd,
+tt,
+var,
+samp,
+pre {
+    font-family: Inconsolata, monospace;
+}
+
+
+
+code {
+    background-color: #d1d1d1;
+    padding: 2px 4px;
+}
+
+abbr[title] {
+    border-bottom: 1px dotted #d1d1d1;
+    cursor: help;
+}
+
+mark,
+ins {
+    background: #007acc;
+    color: #fff;
+    padding: 2px 4px;
+    text-decoration: none;
+}
+
+sup,
+sub {
+    font-size: 75%;
+    height: 0;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sub {
+    top: -6px;
+}
+
+sup {
+    bottom: -3px;
+}
+
+small {
+    font-size: 80%;
+}
+
+big {
+    font-size: 125%;
+}
+
+/****************************************
+       ### 9 ---- Gallery
+****************************************/
+
+.gallery {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+/****************************************
+       ### 10 ---- Map page
 ****************************************/
 
 .back-button {
     position: absolute;
     height: 50px;
     width: 50px;
-    top: 8%;
-    left: 12%;
+    top: 21%;
+    left: 9%;
     background: url(../../images/other/arrow.png) no-repeat center;
     background-size: 100%;
     z-index: 1000;
@@ -750,6 +1057,10 @@ a.corps-link {
 
 .corps-popup.f3 {
     background-color: #006000;
+}
+
+.corps-popup.f4 {
+    background-color: #004c00;
 }
 
 .corps-link.non-active {
@@ -946,7 +1257,7 @@ a.corps-link {
     color: #FE7B25;
     font-size: 1.7em;
     left: calc(50% - 50px);
-    top: 11%;
+    top: 17%;
     text-align: center;
     font-weight: bold;
 }
@@ -960,16 +1271,16 @@ a.corps-link {
 
 .price, .contract {
     position: absolute;
-    height: 77%;
-    width: 100%;
-    top: 5%;
-    left: 0;
+    height: 70%;
+    width: 47%;
+    top: 14%;
+    left: 3%;
     overflow-y: scroll;
 }
 
 .price-table, .contract-text {
     position: relative;
-    width: 50%;
+    width: 92%;
     margin: auto;
 }
 
@@ -1026,13 +1337,117 @@ a.corps-link {
     margin: 15px 0;
 }
 
+.sales-dep {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top:0;
+    left: 0; 
+}
+
+.managers {
+    position: absolute;
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    top: 22%;
+    left: 5%;
+}
+
+.manager-icon {
+    height: 175px;
+    width: 175px;
+    border: 2px rgb(157,247,204) solid;
+    padding: 10px;
+}
+
+.manager-icon img {
+    min-width: 100%
+}
+
+.manager-name {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.left-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 8%;
+    font-size: 3em;
+    text-align: center;
+    color: rgb(157,247,204);
+    z-index: 100000;
+}
+
+.left-sidebar div {
+    transform: rotate(-90deg);
+    top: 45%;
+    position: relative;
+    width: 500%;
+    height: 10%;
+    left: -210%;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/*** Contacts button ***/
+
+.design-button.contacts-button {
+    height: 390px;
+    width: 390px;
+    left: 10%;
+    top: calc(50% - 185px);
+}
+
+.design-button.contacts-button .button-img {
+    height: 234px;
+    width: 234px;
+    top: calc(50% - 117px);
+    left: calc(50% - 117px);
+    background-color: rgb(231,231,231);
+}
+
+.design-button.contacts-button .button-text {
+    color: rgb(10,28,74);
+    top: 10%;
+    font-size: 1.5em;
+}
+
+.design-button.contacts-button .button-text div {
+    font-weight: bold;
+    margin: 10px 0;
+}
 
 
+/*** Download buttons ***/
 
+.download-buttons {
+    position: absolute;
+    height: 100%;
+    width: 4%;
+    left: 51%;
+    top: 17%;
+    text-align: center;
+}
 
+a.d-button {
+    font-size: 0.8em;
+    color: rgb(10,28,74);
+    display: block;
+    margin-bottom: 20px;
+}
 
+a.d-button:hover {
+    color: orange;
+}
 
-
+a.d-button:last-child {
+    position: absolute;
+    bottom: 30%;
+}
 
 
 
@@ -1210,11 +1625,25 @@ a.corps-link {
     font-weight: bold;
 }
 
+/********* PDF Styles *********/
+
+span.cls_002{font-family:Arial,serif;font-size:11.8px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+div.cls_002{font-family:Arial,serif;font-size:11.8px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+span.cls_003{font-family:Arial,serif;font-size:9.9px;color:rgb(0,0,0);font-weight:normal;font-style:normal;text-decoration: none}
+div.cls_003{font-family:Arial,serif;font-size:9.9px;color:rgb(0,0,0);font-weight:normal;font-style:normal;text-decoration: none}
+span.cls_004{font-family:Arial,serif;font-size:9.9px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+div.cls_004{font-family:Arial,serif;font-size:9.9px;color:rgb(0,0,0);font-weight:bold;font-style:normal;text-decoration: none}
+span.cls_005{font-family:Arial,serif;font-size:7.8px;color:rgb(0,0,0);font-weight:normal;font-style:italic;text-decoration: none}
+div.cls_005{font-family:Arial,serif;font-size:7.8px;color:rgb(0,0,0);font-weight:normal;font-style:italic;text-decoration: none}
+
 /****************************************
        ### !!! ---- Media query
 ****************************************/
 
 @media screen and (min-width: 1370px) {
+    .about-content {
+        font-size: 1.2em;
+    }
     .about-content > p {
         font-size: 1.2em;
         margin-top: 15px;
@@ -1230,8 +1659,40 @@ a.corps-link {
     .advantages-item-text {
         font-size: 1.4em;
     }
+    span.cls_002{font-size:14.8px;}
+    div.cls_002{font-size:14.8px;}
+    span.cls_003{font-size:12.9px;}
+    div.cls_003{font-size:12.9px;}
+    span.cls_004{font-size:12.9px;}
+    div.cls_004{font-size:12.9px;}
+    span.cls_005{font-size:10.8px;}
+    div.cls_005{font-size:10.8px;}
 }
 
+@media screen and (max-width: 1370px) {
+    .design-button.contacts-button {
+    height: 290px;
+    width: 290px;
+    top: calc(50% - 145px);
+}
 
+.design-button.contacts-button .button-img {
+    height: 174px;
+    width: 174px;
+    top: calc(50% - 87px);
+    left: calc(50% - 87px);
+}
+
+.design-button.contacts-button .button-text {
+    top: 5%;
+    font-size: 1em;
+}
+.design-button.contacts-button .button-text {
+    margin: 0;
+}
+.left-sidebar {
+    font-size: 2em;
+}
+}
 
 

@@ -26,12 +26,14 @@ function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
     $scope.reservationFlat = function() {
         $scope.done = !$scope.done;
         $scope.httpLoading = !$scope.httpLoading;
-        $http.post('send/' + $scope.flat.number, $scope.form)
+        var path = '/send/' + $scope.id + '/' + $scope.flat.number;
+        $http.post(path, $scope.form)
             .success(function(data){
                 $scope.httpLoading = !$scope.httpLoading;
-            })
-            .error(function(data) {
                 console.log(data);
+            })
+            .error(function(error) {
+                console.log(error);
                 $scope.done = !$scope.done;
             });
 

@@ -18685,7 +18685,7 @@ $(window).ready(function () {
     mapResize('svg');
     navigationHover();
 
-
+    
 
 });
 
@@ -56159,35 +56159,2247 @@ angular.module('ui.mask', [])
         ]);
 
 }());
+/**
+ * @license AngularJS v1.5.9-build.4996+sha.e50e91c
+ * (c) 2010-2016 Google, Inc. http://angularjs.org
+ * License: MIT
+ */
+(function(window, angular) {'use strict';
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *     Any commits to this file should be reviewed with security in mind.  *
+ *   Changes to this file can potentially create security vulnerabilities. *
+ *          An approval from 2 Core members with history of modifying      *
+ *                         this file is required.                          *
+ *                                                                         *
+ *  Does the change somehow allow for arbitrary javascript to be executed? *
+ *    Or allows for someone to change the prototype of built-in objects?   *
+ *     Or gives undesired access to variables likes document or window?    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+var $sanitizeMinErr = angular.$$minErr('$sanitize');
+var bind;
+var extend;
+var forEach;
+var isDefined;
+var lowercase;
+var noop;
+var htmlParser;
+var htmlSanitizeWriter;
+
+/**
+ * @ngdoc module
+ * @name ngSanitize
+ * @description
+ *
+ * # ngSanitize
+ *
+ * The `ngSanitize` module provides functionality to sanitize HTML.
+ *
+ *
+ * <div doc-module-components="ngSanitize"></div>
+ *
+ * See {@link ngSanitize.$sanitize `$sanitize`} for usage.
+ */
+
+/**
+ * @ngdoc service
+ * @name $sanitize
+ * @kind function
+ *
+ * @description
+ *   Sanitizes an html string by stripping all potentially dangerous tokens.
+ *
+ *   The input is sanitized by parsing the HTML into tokens. All safe tokens (from a whitelist) are
+ *   then serialized back to properly escaped html string. This means that no unsafe input can make
+ *   it into the returned string.
+ *
+ *   The whitelist for URL sanitization of attribute values is configured using the functions
+ *   `aHrefSanitizationWhitelist` and `imgSrcSanitizationWhitelist` of {@link ng.$compileProvider
+ *   `$compileProvider`}.
+ *
+ *   The input may also contain SVG markup if this is enabled via {@link $sanitizeProvider}.
+ *
+ * @param {string} html HTML input.
+ * @returns {string} Sanitized HTML.
+ *
+ * @example
+   <example module="sanitizeExample" deps="angular-sanitize.js" name="sanitize-service">
+   <file name="index.html">
+     <script>
+         angular.module('sanitizeExample', ['ngSanitize'])
+           .controller('ExampleController', ['$scope', '$sce', function($scope, $sce) {
+             $scope.snippet =
+               '<p style="color:blue">an html\n' +
+               '<em onmouseover="this.textContent=\'PWN3D!\'">click here</em>\n' +
+               'snippet</p>';
+             $scope.deliberatelyTrustDangerousSnippet = function() {
+               return $sce.trustAsHtml($scope.snippet);
+             };
+           }]);
+     </script>
+     <div ng-controller="ExampleController">
+        Snippet: <textarea ng-model="snippet" cols="60" rows="3"></textarea>
+       <table>
+         <tr>
+           <td>Directive</td>
+           <td>How</td>
+           <td>Source</td>
+           <td>Rendered</td>
+         </tr>
+         <tr id="bind-html-with-sanitize">
+           <td>ng-bind-html</td>
+           <td>Automatically uses $sanitize</td>
+           <td><pre>&lt;div ng-bind-html="snippet"&gt;<br/>&lt;/div&gt;</pre></td>
+           <td><div ng-bind-html="snippet"></div></td>
+         </tr>
+         <tr id="bind-html-with-trust">
+           <td>ng-bind-html</td>
+           <td>Bypass $sanitize by explicitly trusting the dangerous value</td>
+           <td>
+           <pre>&lt;div ng-bind-html="deliberatelyTrustDangerousSnippet()"&gt;
+&lt;/div&gt;</pre>
+           </td>
+           <td><div ng-bind-html="deliberatelyTrustDangerousSnippet()"></div></td>
+         </tr>
+         <tr id="bind-default">
+           <td>ng-bind</td>
+           <td>Automatically escapes</td>
+           <td><pre>&lt;div ng-bind="snippet"&gt;<br/>&lt;/div&gt;</pre></td>
+           <td><div ng-bind="snippet"></div></td>
+         </tr>
+       </table>
+       </div>
+   </file>
+   <file name="protractor.js" type="protractor">
+     it('should sanitize the html snippet by default', function() {
+       expect(element(by.css('#bind-html-with-sanitize div')).getAttribute('innerHTML')).
+         toBe('<p>an html\n<em>click here</em>\nsnippet</p>');
+     });
+
+     it('should inline raw snippet if bound to a trusted value', function() {
+       expect(element(by.css('#bind-html-with-trust div')).getAttribute('innerHTML')).
+         toBe("<p style=\"color:blue\">an html\n" +
+              "<em onmouseover=\"this.textContent='PWN3D!'\">click here</em>\n" +
+              "snippet</p>");
+     });
+
+     it('should escape snippet without any filter', function() {
+       expect(element(by.css('#bind-default div')).getAttribute('innerHTML')).
+         toBe("&lt;p style=\"color:blue\"&gt;an html\n" +
+              "&lt;em onmouseover=\"this.textContent='PWN3D!'\"&gt;click here&lt;/em&gt;\n" +
+              "snippet&lt;/p&gt;");
+     });
+
+     it('should update', function() {
+       element(by.model('snippet')).clear();
+       element(by.model('snippet')).sendKeys('new <b onclick="alert(1)">text</b>');
+       expect(element(by.css('#bind-html-with-sanitize div')).getAttribute('innerHTML')).
+         toBe('new <b>text</b>');
+       expect(element(by.css('#bind-html-with-trust div')).getAttribute('innerHTML')).toBe(
+         'new <b onclick="alert(1)">text</b>');
+       expect(element(by.css('#bind-default div')).getAttribute('innerHTML')).toBe(
+         "new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
+     });
+   </file>
+   </example>
+ */
+
+
+/**
+ * @ngdoc provider
+ * @name $sanitizeProvider
+ * @this
+ *
+ * @description
+ * Creates and configures {@link $sanitize} instance.
+ */
+function $SanitizeProvider() {
+  var svgEnabled = false;
+
+  this.$get = ['$$sanitizeUri', function($$sanitizeUri) {
+    if (svgEnabled) {
+      extend(validElements, svgElements);
+    }
+    return function(html) {
+      var buf = [];
+      htmlParser(html, htmlSanitizeWriter(buf, function(uri, isImage) {
+        return !/^unsafe:/.test($$sanitizeUri(uri, isImage));
+      }));
+      return buf.join('');
+    };
+  }];
+
+
+  /**
+   * @ngdoc method
+   * @name $sanitizeProvider#enableSvg
+   * @kind function
+   *
+   * @description
+   * Enables a subset of svg to be supported by the sanitizer.
+   *
+   * <div class="alert alert-warning">
+   *   <p>By enabling this setting without taking other precautions, you might expose your
+   *   application to click-hijacking attacks. In these attacks, sanitized svg elements could be positioned
+   *   outside of the containing element and be rendered over other elements on the page (e.g. a login
+   *   link). Such behavior can then result in phishing incidents.</p>
+   *
+   *   <p>To protect against these, explicitly setup `overflow: hidden` css rule for all potential svg
+   *   tags within the sanitized content:</p>
+   *
+   *   <br>
+   *
+   *   <pre><code>
+   *   .rootOfTheIncludedContent svg {
+   *     overflow: hidden !important;
+   *   }
+   *   </code></pre>
+   * </div>
+   *
+   * @param {boolean=} flag Enable or disable SVG support in the sanitizer.
+   * @returns {boolean|ng.$sanitizeProvider} Returns the currently configured value if called
+   *    without an argument or self for chaining otherwise.
+   */
+  this.enableSvg = function(enableSvg) {
+    if (isDefined(enableSvg)) {
+      svgEnabled = enableSvg;
+      return this;
+    } else {
+      return svgEnabled;
+    }
+  };
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  // Private stuff
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  bind = angular.bind;
+  extend = angular.extend;
+  forEach = angular.forEach;
+  isDefined = angular.isDefined;
+  lowercase = angular.lowercase;
+  noop = angular.noop;
+
+  htmlParser = htmlParserImpl;
+  htmlSanitizeWriter = htmlSanitizeWriterImpl;
+
+  // Regular Expressions for parsing tags and attributes
+  var SURROGATE_PAIR_REGEXP = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g,
+    // Match everything outside of normal chars and " (quote character)
+    NON_ALPHANUMERIC_REGEXP = /([^#-~ |!])/g;
+
+
+  // Good source of info about elements and attributes
+  // http://dev.w3.org/html5/spec/Overview.html#semantics
+  // http://simon.html5.org/html-elements
+
+  // Safe Void Elements - HTML5
+  // http://dev.w3.org/html5/spec/Overview.html#void-elements
+  var voidElements = toMap('area,br,col,hr,img,wbr');
+
+  // Elements that you can, intentionally, leave open (and which close themselves)
+  // http://dev.w3.org/html5/spec/Overview.html#optional-tags
+  var optionalEndTagBlockElements = toMap('colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr'),
+      optionalEndTagInlineElements = toMap('rp,rt'),
+      optionalEndTagElements = extend({},
+                                              optionalEndTagInlineElements,
+                                              optionalEndTagBlockElements);
+
+  // Safe Block Elements - HTML5
+  var blockElements = extend({}, optionalEndTagBlockElements, toMap('address,article,' +
+          'aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,' +
+          'h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,section,table,ul'));
+
+  // Inline Elements - HTML5
+  var inlineElements = extend({}, optionalEndTagInlineElements, toMap('a,abbr,acronym,b,' +
+          'bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,' +
+          'samp,small,span,strike,strong,sub,sup,time,tt,u,var'));
+
+  // SVG Elements
+  // https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Elements
+  // Note: the elements animate,animateColor,animateMotion,animateTransform,set are intentionally omitted.
+  // They can potentially allow for arbitrary javascript to be executed. See #11290
+  var svgElements = toMap('circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph,' +
+          'hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline,' +
+          'radialGradient,rect,stop,svg,switch,text,title,tspan');
+
+  // Blocked Elements (will be stripped)
+  var blockedElements = toMap('script,style');
+
+  var validElements = extend({},
+                                     voidElements,
+                                     blockElements,
+                                     inlineElements,
+                                     optionalEndTagElements);
+
+  //Attributes that have href and hence need to be sanitized
+  var uriAttrs = toMap('background,cite,href,longdesc,src,xlink:href');
+
+  var htmlAttrs = toMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,' +
+      'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
+      'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
+      'scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,' +
+      'valign,value,vspace,width');
+
+  // SVG attributes (without "id" and "name" attributes)
+  // https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Attributes
+  var svgAttrs = toMap('accent-height,accumulate,additive,alphabetic,arabic-form,ascent,' +
+      'baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,' +
+      'cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,' +
+      'font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,' +
+      'height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,' +
+      'marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,' +
+      'max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,' +
+      'path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,' +
+      'requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,' +
+      'stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,' +
+      'stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,' +
+      'stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,' +
+      'underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,' +
+      'width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,' +
+      'xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan', true);
+
+  var validAttrs = extend({},
+                                  uriAttrs,
+                                  svgAttrs,
+                                  htmlAttrs);
+
+  function toMap(str, lowercaseKeys) {
+    var obj = {}, items = str.split(','), i;
+    for (i = 0; i < items.length; i++) {
+      obj[lowercaseKeys ? lowercase(items[i]) : items[i]] = true;
+    }
+    return obj;
+  }
+
+  var inertBodyElement;
+  (function(window) {
+    var doc;
+    if (window.document && window.document.implementation) {
+      doc = window.document.implementation.createHTMLDocument('inert');
+    } else {
+      throw $sanitizeMinErr('noinert', 'Can\'t create an inert html document');
+    }
+    var docElement = doc.documentElement || doc.getDocumentElement();
+    var bodyElements = docElement.getElementsByTagName('body');
+
+    // usually there should be only one body element in the document, but IE doesn't have any, so we need to create one
+    if (bodyElements.length === 1) {
+      inertBodyElement = bodyElements[0];
+    } else {
+      var html = doc.createElement('html');
+      inertBodyElement = doc.createElement('body');
+      html.appendChild(inertBodyElement);
+      doc.appendChild(html);
+    }
+  })(window);
+
+  /**
+   * @example
+   * htmlParser(htmlString, {
+   *     start: function(tag, attrs) {},
+   *     end: function(tag) {},
+   *     chars: function(text) {},
+   *     comment: function(text) {}
+   * });
+   *
+   * @param {string} html string
+   * @param {object} handler
+   */
+  function htmlParserImpl(html, handler) {
+    if (html === null || html === undefined) {
+      html = '';
+    } else if (typeof html !== 'string') {
+      html = '' + html;
+    }
+    inertBodyElement.innerHTML = html;
+
+    //mXSS protection
+    var mXSSAttempts = 5;
+    do {
+      if (mXSSAttempts === 0) {
+        throw $sanitizeMinErr('uinput', 'Failed to sanitize html because the input is unstable');
+      }
+      mXSSAttempts--;
+
+      // strip custom-namespaced attributes on IE<=11
+      if (window.document.documentMode) {
+        stripCustomNsAttrs(inertBodyElement);
+      }
+      html = inertBodyElement.innerHTML; //trigger mXSS
+      inertBodyElement.innerHTML = html;
+    } while (html !== inertBodyElement.innerHTML);
+
+    var node = inertBodyElement.firstChild;
+    while (node) {
+      switch (node.nodeType) {
+        case 1: // ELEMENT_NODE
+          handler.start(node.nodeName.toLowerCase(), attrToMap(node.attributes));
+          break;
+        case 3: // TEXT NODE
+          handler.chars(node.textContent);
+          break;
+      }
+
+      var nextNode;
+      if (!(nextNode = node.firstChild)) {
+        if (node.nodeType === 1) {
+          handler.end(node.nodeName.toLowerCase());
+        }
+        nextNode = node.nextSibling;
+        if (!nextNode) {
+          while (nextNode == null) {
+            node = node.parentNode;
+            if (node === inertBodyElement) break;
+            nextNode = node.nextSibling;
+            if (node.nodeType === 1) {
+              handler.end(node.nodeName.toLowerCase());
+            }
+          }
+        }
+      }
+      node = nextNode;
+    }
+
+    while ((node = inertBodyElement.firstChild)) {
+      inertBodyElement.removeChild(node);
+    }
+  }
+
+  function attrToMap(attrs) {
+    var map = {};
+    for (var i = 0, ii = attrs.length; i < ii; i++) {
+      var attr = attrs[i];
+      map[attr.name] = attr.value;
+    }
+    return map;
+  }
+
+
+  /**
+   * Escapes all potentially dangerous characters, so that the
+   * resulting string can be safely inserted into attribute or
+   * element text.
+   * @param value
+   * @returns {string} escaped text
+   */
+  function encodeEntities(value) {
+    return value.
+      replace(/&/g, '&amp;').
+      replace(SURROGATE_PAIR_REGEXP, function(value) {
+        var hi = value.charCodeAt(0);
+        var low = value.charCodeAt(1);
+        return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';';
+      }).
+      replace(NON_ALPHANUMERIC_REGEXP, function(value) {
+        return '&#' + value.charCodeAt(0) + ';';
+      }).
+      replace(/</g, '&lt;').
+      replace(/>/g, '&gt;');
+  }
+
+  /**
+   * create an HTML/XML writer which writes to buffer
+   * @param {Array} buf use buf.join('') to get out sanitized html string
+   * @returns {object} in the form of {
+   *     start: function(tag, attrs) {},
+   *     end: function(tag) {},
+   *     chars: function(text) {},
+   *     comment: function(text) {}
+   * }
+   */
+  function htmlSanitizeWriterImpl(buf, uriValidator) {
+    var ignoreCurrentElement = false;
+    var out = bind(buf, buf.push);
+    return {
+      start: function(tag, attrs) {
+        tag = lowercase(tag);
+        if (!ignoreCurrentElement && blockedElements[tag]) {
+          ignoreCurrentElement = tag;
+        }
+        if (!ignoreCurrentElement && validElements[tag] === true) {
+          out('<');
+          out(tag);
+          forEach(attrs, function(value, key) {
+            var lkey = lowercase(key);
+            var isImage = (tag === 'img' && lkey === 'src') || (lkey === 'background');
+            if (validAttrs[lkey] === true &&
+              (uriAttrs[lkey] !== true || uriValidator(value, isImage))) {
+              out(' ');
+              out(key);
+              out('="');
+              out(encodeEntities(value));
+              out('"');
+            }
+          });
+          out('>');
+        }
+      },
+      end: function(tag) {
+        tag = lowercase(tag);
+        if (!ignoreCurrentElement && validElements[tag] === true && voidElements[tag] !== true) {
+          out('</');
+          out(tag);
+          out('>');
+        }
+        // eslint-disable-next-line eqeqeq
+        if (tag == ignoreCurrentElement) {
+          ignoreCurrentElement = false;
+        }
+      },
+      chars: function(chars) {
+        if (!ignoreCurrentElement) {
+          out(encodeEntities(chars));
+        }
+      }
+    };
+  }
+
+
+  /**
+   * When IE9-11 comes across an unknown namespaced attribute e.g. 'xlink:foo' it adds 'xmlns:ns1' attribute to declare
+   * ns1 namespace and prefixes the attribute with 'ns1' (e.g. 'ns1:xlink:foo'). This is undesirable since we don't want
+   * to allow any of these custom attributes. This method strips them all.
+   *
+   * @param node Root element to process
+   */
+  function stripCustomNsAttrs(node) {
+    if (node.nodeType === window.Node.ELEMENT_NODE) {
+      var attrs = node.attributes;
+      for (var i = 0, l = attrs.length; i < l; i++) {
+        var attrNode = attrs[i];
+        var attrName = attrNode.name.toLowerCase();
+        if (attrName === 'xmlns:ns1' || attrName.lastIndexOf('ns1:', 0) === 0) {
+          node.removeAttributeNode(attrNode);
+          i--;
+          l--;
+        }
+      }
+    }
+
+    var nextNode = node.firstChild;
+    if (nextNode) {
+      stripCustomNsAttrs(nextNode);
+    }
+
+    nextNode = node.nextSibling;
+    if (nextNode) {
+      stripCustomNsAttrs(nextNode);
+    }
+  }
+}
+
+function sanitizeText(chars) {
+  var buf = [];
+  var writer = htmlSanitizeWriter(buf, noop);
+  writer.chars(chars);
+  return buf.join('');
+}
+
+
+// define ngSanitize module and register $sanitize service
+angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
+
+/**
+ * @ngdoc filter
+ * @name linky
+ * @kind function
+ *
+ * @description
+ * Finds links in text input and turns them into html links. Supports `http/https/ftp/mailto` and
+ * plain email address links.
+ *
+ * Requires the {@link ngSanitize `ngSanitize`} module to be installed.
+ *
+ * @param {string} text Input text.
+ * @param {string} target Window (`_blank|_self|_parent|_top`) or named frame to open links in.
+ * @param {object|function(url)} [attributes] Add custom attributes to the link element.
+ *
+ *    Can be one of:
+ *
+ *    - `object`: A map of attributes
+ *    - `function`: Takes the url as a parameter and returns a map of attributes
+ *
+ *    If the map of attributes contains a value for `target`, it overrides the value of
+ *    the target parameter.
+ *
+ *
+ * @returns {string} Html-linkified and {@link $sanitize sanitized} text.
+ *
+ * @usage
+   <span ng-bind-html="linky_expression | linky"></span>
+ *
+ * @example
+   <example module="linkyExample" deps="angular-sanitize.js" name="linky-filter">
+     <file name="index.html">
+       <div ng-controller="ExampleController">
+       Snippet: <textarea ng-model="snippet" cols="60" rows="3"></textarea>
+       <table>
+         <tr>
+           <th>Filter</th>
+           <th>Source</th>
+           <th>Rendered</th>
+         </tr>
+         <tr id="linky-filter">
+           <td>linky filter</td>
+           <td>
+             <pre>&lt;div ng-bind-html="snippet | linky"&gt;<br>&lt;/div&gt;</pre>
+           </td>
+           <td>
+             <div ng-bind-html="snippet | linky"></div>
+           </td>
+         </tr>
+         <tr id="linky-target">
+          <td>linky target</td>
+          <td>
+            <pre>&lt;div ng-bind-html="snippetWithSingleURL | linky:'_blank'"&gt;<br>&lt;/div&gt;</pre>
+          </td>
+          <td>
+            <div ng-bind-html="snippetWithSingleURL | linky:'_blank'"></div>
+          </td>
+         </tr>
+         <tr id="linky-custom-attributes">
+          <td>linky custom attributes</td>
+          <td>
+            <pre>&lt;div ng-bind-html="snippetWithSingleURL | linky:'_self':{rel: 'nofollow'}"&gt;<br>&lt;/div&gt;</pre>
+          </td>
+          <td>
+            <div ng-bind-html="snippetWithSingleURL | linky:'_self':{rel: 'nofollow'}"></div>
+          </td>
+         </tr>
+         <tr id="escaped-html">
+           <td>no filter</td>
+           <td><pre>&lt;div ng-bind="snippet"&gt;<br>&lt;/div&gt;</pre></td>
+           <td><div ng-bind="snippet"></div></td>
+         </tr>
+       </table>
+     </file>
+     <file name="script.js">
+       angular.module('linkyExample', ['ngSanitize'])
+         .controller('ExampleController', ['$scope', function($scope) {
+           $scope.snippet =
+             'Pretty text with some links:\n' +
+             'http://angularjs.org/,\n' +
+             'mailto:us@somewhere.org,\n' +
+             'another@somewhere.org,\n' +
+             'and one more: ftp://127.0.0.1/.';
+           $scope.snippetWithSingleURL = 'http://angularjs.org/';
+         }]);
+     </file>
+     <file name="protractor.js" type="protractor">
+       it('should linkify the snippet with urls', function() {
+         expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).
+             toBe('Pretty text with some links: http://angularjs.org/, us@somewhere.org, ' +
+                  'another@somewhere.org, and one more: ftp://127.0.0.1/.');
+         expect(element.all(by.css('#linky-filter a')).count()).toEqual(4);
+       });
+
+       it('should not linkify snippet without the linky filter', function() {
+         expect(element(by.id('escaped-html')).element(by.binding('snippet')).getText()).
+             toBe('Pretty text with some links: http://angularjs.org/, mailto:us@somewhere.org, ' +
+                  'another@somewhere.org, and one more: ftp://127.0.0.1/.');
+         expect(element.all(by.css('#escaped-html a')).count()).toEqual(0);
+       });
+
+       it('should update', function() {
+         element(by.model('snippet')).clear();
+         element(by.model('snippet')).sendKeys('new http://link.');
+         expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).
+             toBe('new http://link.');
+         expect(element.all(by.css('#linky-filter a')).count()).toEqual(1);
+         expect(element(by.id('escaped-html')).element(by.binding('snippet')).getText())
+             .toBe('new http://link.');
+       });
+
+       it('should work with the target property', function() {
+        expect(element(by.id('linky-target')).
+            element(by.binding("snippetWithSingleURL | linky:'_blank'")).getText()).
+            toBe('http://angularjs.org/');
+        expect(element(by.css('#linky-target a')).getAttribute('target')).toEqual('_blank');
+       });
+
+       it('should optionally add custom attributes', function() {
+        expect(element(by.id('linky-custom-attributes')).
+            element(by.binding("snippetWithSingleURL | linky:'_self':{rel: 'nofollow'}")).getText()).
+            toBe('http://angularjs.org/');
+        expect(element(by.css('#linky-custom-attributes a')).getAttribute('rel')).toEqual('nofollow');
+       });
+     </file>
+   </example>
+ */
+angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
+  var LINKY_URL_REGEXP =
+        /((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i,
+      MAILTO_REGEXP = /^mailto:/i;
+
+  var linkyMinErr = angular.$$minErr('linky');
+  var isDefined = angular.isDefined;
+  var isFunction = angular.isFunction;
+  var isObject = angular.isObject;
+  var isString = angular.isString;
+
+  return function(text, target, attributes) {
+    if (text == null || text === '') return text;
+    if (!isString(text)) throw linkyMinErr('notstring', 'Expected string but received: {0}', text);
+
+    var attributesFn =
+      isFunction(attributes) ? attributes :
+      isObject(attributes) ? function getAttributesObject() {return attributes;} :
+      function getEmptyAttributesObject() {return {};};
+
+    var match;
+    var raw = text;
+    var html = [];
+    var url;
+    var i;
+    while ((match = raw.match(LINKY_URL_REGEXP))) {
+      // We can not end in these as they are sometimes found at the end of the sentence
+      url = match[0];
+      // if we did not match ftp/http/www/mailto then assume mailto
+      if (!match[2] && !match[4]) {
+        url = (match[3] ? 'http://' : 'mailto:') + url;
+      }
+      i = match.index;
+      addText(raw.substr(0, i));
+      addLink(url, match[0].replace(MAILTO_REGEXP, ''));
+      raw = raw.substring(i + match[0].length);
+    }
+    addText(raw);
+    return $sanitize(html.join(''));
+
+    function addText(text) {
+      if (!text) {
+        return;
+      }
+      html.push(sanitizeText(text));
+    }
+
+    function addLink(url, text) {
+      var key, linkAttributes = attributesFn(url);
+      html.push('<a ');
+
+      for (key in linkAttributes) {
+        html.push(key + '="' + linkAttributes[key] + '" ');
+      }
+
+      if (isDefined(target) && !('target' in linkAttributes)) {
+        html.push('target="',
+                  target,
+                  '" ');
+      }
+      html.push('href="',
+                url.replace(/"/g, '&quot;'),
+                '">');
+      addText(text);
+      html.push('</a>');
+    }
+  };
+}]);
+
+
+})(window, window.angular);
+
+/*! jCarousel - v0.3.4 - 2015-09-23
+* http://sorgalla.com/jcarousel/
+* Copyright (c) 2006-2015 Jan Sorgalla; Licensed MIT */
+(function($) {
+    'use strict';
+
+    var jCarousel = $.jCarousel = {};
+
+    jCarousel.version = '0.3.4';
+
+    var rRelativeTarget = /^([+\-]=)?(.+)$/;
+
+    jCarousel.parseTarget = function(target) {
+        var relative = false,
+            parts    = typeof target !== 'object' ?
+                           rRelativeTarget.exec(target) :
+                           null;
+
+        if (parts) {
+            target = parseInt(parts[2], 10) || 0;
+
+            if (parts[1]) {
+                relative = true;
+                if (parts[1] === '-=') {
+                    target *= -1;
+                }
+            }
+        } else if (typeof target !== 'object') {
+            target = parseInt(target, 10) || 0;
+        }
+
+        return {
+            target: target,
+            relative: relative
+        };
+    };
+
+    jCarousel.detectCarousel = function(element) {
+        var carousel;
+
+        while (element.length > 0) {
+            carousel = element.filter('[data-jcarousel]');
+
+            if (carousel.length > 0) {
+                return carousel;
+            }
+
+            carousel = element.find('[data-jcarousel]');
+
+            if (carousel.length > 0) {
+                return carousel;
+            }
+
+            element = element.parent();
+        }
+
+        return null;
+    };
+
+    jCarousel.base = function(pluginName) {
+        return {
+            version:  jCarousel.version,
+            _options:  {},
+            _element:  null,
+            _carousel: null,
+            _init:     $.noop,
+            _create:   $.noop,
+            _destroy:  $.noop,
+            _reload:   $.noop,
+            create: function() {
+                this._element
+                    .attr('data-' + pluginName.toLowerCase(), true)
+                    .data(pluginName, this);
+
+                if (false === this._trigger('create')) {
+                    return this;
+                }
+
+                this._create();
+
+                this._trigger('createend');
+
+                return this;
+            },
+            destroy: function() {
+                if (false === this._trigger('destroy')) {
+                    return this;
+                }
+
+                this._destroy();
+
+                this._trigger('destroyend');
+
+                this._element
+                    .removeData(pluginName)
+                    .removeAttr('data-' + pluginName.toLowerCase());
+
+                return this;
+            },
+            reload: function(options) {
+                if (false === this._trigger('reload')) {
+                    return this;
+                }
+
+                if (options) {
+                    this.options(options);
+                }
+
+                this._reload();
+
+                this._trigger('reloadend');
+
+                return this;
+            },
+            element: function() {
+                return this._element;
+            },
+            options: function(key, value) {
+                if (arguments.length === 0) {
+                    return $.extend({}, this._options);
+                }
+
+                if (typeof key === 'string') {
+                    if (typeof value === 'undefined') {
+                        return typeof this._options[key] === 'undefined' ?
+                                null :
+                                this._options[key];
+                    }
+
+                    this._options[key] = value;
+                } else {
+                    this._options = $.extend({}, this._options, key);
+                }
+
+                return this;
+            },
+            carousel: function() {
+                if (!this._carousel) {
+                    this._carousel = jCarousel.detectCarousel(this.options('carousel') || this._element);
+
+                    if (!this._carousel) {
+                        $.error('Could not detect carousel for plugin "' + pluginName + '"');
+                    }
+                }
+
+                return this._carousel;
+            },
+            _trigger: function(type, element, data) {
+                var event,
+                    defaultPrevented = false;
+
+                data = [this].concat(data || []);
+
+                (element || this._element).each(function() {
+                    event = $.Event((pluginName + ':' + type).toLowerCase());
+
+                    $(this).trigger(event, data);
+
+                    if (event.isDefaultPrevented()) {
+                        defaultPrevented = true;
+                    }
+                });
+
+                return !defaultPrevented;
+            }
+        };
+    };
+
+    jCarousel.plugin = function(pluginName, pluginPrototype) {
+        var Plugin = $[pluginName] = function(element, options) {
+            this._element = $(element);
+            this.options(options);
+
+            this._init();
+            this.create();
+        };
+
+        Plugin.fn = Plugin.prototype = $.extend(
+            {},
+            jCarousel.base(pluginName),
+            pluginPrototype
+        );
+
+        $.fn[pluginName] = function(options) {
+            var args        = Array.prototype.slice.call(arguments, 1),
+                returnValue = this;
+
+            if (typeof options === 'string') {
+                this.each(function() {
+                    var instance = $(this).data(pluginName);
+
+                    if (!instance) {
+                        return $.error(
+                            'Cannot call methods on ' + pluginName + ' prior to initialization; ' +
+                            'attempted to call method "' + options + '"'
+                        );
+                    }
+
+                    if (!$.isFunction(instance[options]) || options.charAt(0) === '_') {
+                        return $.error(
+                            'No such method "' + options + '" for ' + pluginName + ' instance'
+                        );
+                    }
+
+                    var methodValue = instance[options].apply(instance, args);
+
+                    if (methodValue !== instance && typeof methodValue !== 'undefined') {
+                        returnValue = methodValue;
+                        return false;
+                    }
+                });
+            } else {
+                this.each(function() {
+                    var instance = $(this).data(pluginName);
+
+                    if (instance instanceof Plugin) {
+                        instance.reload(options);
+                    } else {
+                        new Plugin(this, options);
+                    }
+                });
+            }
+
+            return returnValue;
+        };
+
+        return Plugin;
+    };
+}(jQuery));
+
+(function($, window) {
+    'use strict';
+
+    var toFloat = function(val) {
+        return parseFloat(val) || 0;
+    };
+
+    $.jCarousel.plugin('jcarousel', {
+        animating:   false,
+        tail:        0,
+        inTail:      false,
+        resizeTimer: null,
+        lt:          null,
+        vertical:    false,
+        rtl:         false,
+        circular:    false,
+        underflow:   false,
+        relative:    false,
+
+        _options: {
+            list: function() {
+                return this.element().children().eq(0);
+            },
+            items: function() {
+                return this.list().children();
+            },
+            animation:   400,
+            transitions: false,
+            wrap:        null,
+            vertical:    null,
+            rtl:         null,
+            center:      false
+        },
+
+        // Protected, don't access directly
+        _list:         null,
+        _items:        null,
+        _target:       $(),
+        _first:        $(),
+        _last:         $(),
+        _visible:      $(),
+        _fullyvisible: $(),
+        _init: function() {
+            var self = this;
+
+            this.onWindowResize = function() {
+                if (self.resizeTimer) {
+                    clearTimeout(self.resizeTimer);
+                }
+
+                self.resizeTimer = setTimeout(function() {
+                    self.reload();
+                }, 100);
+            };
+
+            return this;
+        },
+        _create: function() {
+            this._reload();
+
+            $(window).on('resize.jcarousel', this.onWindowResize);
+        },
+        _destroy: function() {
+            $(window).off('resize.jcarousel', this.onWindowResize);
+        },
+        _reload: function() {
+            this.vertical = this.options('vertical');
+
+            if (this.vertical == null) {
+                this.vertical = this.list().height() > this.list().width();
+            }
+
+            this.rtl = this.options('rtl');
+
+            if (this.rtl == null) {
+                this.rtl = (function(element) {
+                    if (('' + element.attr('dir')).toLowerCase() === 'rtl') {
+                        return true;
+                    }
+
+                    var found = false;
+
+                    element.parents('[dir]').each(function() {
+                        if ((/rtl/i).test($(this).attr('dir'))) {
+                            found = true;
+                            return false;
+                        }
+                    });
+
+                    return found;
+                }(this._element));
+            }
+
+            this.lt = this.vertical ? 'top' : 'left';
+
+            // Ensure before closest() call
+            this.relative = this.list().css('position') === 'relative';
+
+            // Force list and items reload
+            this._list  = null;
+            this._items = null;
+
+            var item = this.index(this._target) >= 0 ?
+                           this._target :
+                           this.closest();
+
+            // _prepare() needs this here
+            this.circular  = this.options('wrap') === 'circular';
+            this.underflow = false;
+
+            var props = {'left': 0, 'top': 0};
+
+            if (item.length > 0) {
+                this._prepare(item);
+                this.list().find('[data-jcarousel-clone]').remove();
+
+                // Force items reload
+                this._items = null;
+
+                this.underflow = this._fullyvisible.length >= this.items().length;
+                this.circular  = this.circular && !this.underflow;
+
+                props[this.lt] = this._position(item) + 'px';
+            }
+
+            this.move(props);
+
+            return this;
+        },
+        list: function() {
+            if (this._list === null) {
+                var option = this.options('list');
+                this._list = $.isFunction(option) ? option.call(this) : this._element.find(option);
+            }
+
+            return this._list;
+        },
+        items: function() {
+            if (this._items === null) {
+                var option = this.options('items');
+                this._items = ($.isFunction(option) ? option.call(this) : this.list().find(option)).not('[data-jcarousel-clone]');
+            }
+
+            return this._items;
+        },
+        index: function(item) {
+            return this.items().index(item);
+        },
+        closest: function() {
+            var self    = this,
+                pos     = this.list().position()[this.lt],
+                closest = $(), // Ensure we're returning a jQuery instance
+                stop    = false,
+                lrb     = this.vertical ? 'bottom' : (this.rtl && !this.relative ? 'left' : 'right'),
+                width;
+
+            if (this.rtl && this.relative && !this.vertical) {
+                pos += this.list().width() - this.clipping();
+            }
+
+            this.items().each(function() {
+                closest = $(this);
+
+                if (stop) {
+                    return false;
+                }
+
+                var dim = self.dimension(closest);
+
+                pos += dim;
+
+                if (pos >= 0) {
+                    width = dim - toFloat(closest.css('margin-' + lrb));
+
+                    if ((Math.abs(pos) - dim + (width / 2)) <= 0) {
+                        stop = true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+
+            return closest;
+        },
+        target: function() {
+            return this._target;
+        },
+        first: function() {
+            return this._first;
+        },
+        last: function() {
+            return this._last;
+        },
+        visible: function() {
+            return this._visible;
+        },
+        fullyvisible: function() {
+            return this._fullyvisible;
+        },
+        hasNext: function() {
+            if (false === this._trigger('hasnext')) {
+                return true;
+            }
+
+            var wrap = this.options('wrap'),
+                end = this.items().length - 1,
+                check = this.options('center') ? this._target : this._last;
+
+            return end >= 0 && !this.underflow &&
+                ((wrap && wrap !== 'first') ||
+                    (this.index(check) < end) ||
+                    (this.tail && !this.inTail)) ? true : false;
+        },
+        hasPrev: function() {
+            if (false === this._trigger('hasprev')) {
+                return true;
+            }
+
+            var wrap = this.options('wrap');
+
+            return this.items().length > 0 && !this.underflow &&
+                ((wrap && wrap !== 'last') ||
+                    (this.index(this._first) > 0) ||
+                    (this.tail && this.inTail)) ? true : false;
+        },
+        clipping: function() {
+            return this._element['inner' + (this.vertical ? 'Height' : 'Width')]();
+        },
+        dimension: function(element) {
+            return element['outer' + (this.vertical ? 'Height' : 'Width')](true);
+        },
+        scroll: function(target, animate, callback) {
+            if (this.animating) {
+                return this;
+            }
+
+            if (false === this._trigger('scroll', null, [target, animate])) {
+                return this;
+            }
+
+            if ($.isFunction(animate)) {
+                callback = animate;
+                animate  = true;
+            }
+
+            var parsed = $.jCarousel.parseTarget(target);
+
+            if (parsed.relative) {
+                var end    = this.items().length - 1,
+                    scroll = Math.abs(parsed.target),
+                    wrap   = this.options('wrap'),
+                    current,
+                    first,
+                    index,
+                    start,
+                    curr,
+                    isVisible,
+                    props,
+                    i;
+
+                if (parsed.target > 0) {
+                    var last = this.index(this._last);
+
+                    if (last >= end && this.tail) {
+                        if (!this.inTail) {
+                            this._scrollTail(animate, callback);
+                        } else {
+                            if (wrap === 'both' || wrap === 'last') {
+                                this._scroll(0, animate, callback);
+                            } else {
+                                if ($.isFunction(callback)) {
+                                    callback.call(this, false);
+                                }
+                            }
+                        }
+                    } else {
+                        current = this.index(this._target);
+
+                        if ((this.underflow && current === end && (wrap === 'circular' || wrap === 'both' || wrap === 'last')) ||
+                            (!this.underflow && last === end && (wrap === 'both' || wrap === 'last'))) {
+                            this._scroll(0, animate, callback);
+                        } else {
+                            index = current + scroll;
+
+                            if (this.circular && index > end) {
+                                i = end;
+                                curr = this.items().get(-1);
+
+                                while (i++ < index) {
+                                    curr = this.items().eq(0);
+                                    isVisible = this._visible.index(curr) >= 0;
+
+                                    if (isVisible) {
+                                        curr.after(curr.clone(true).attr('data-jcarousel-clone', true));
+                                    }
+
+                                    this.list().append(curr);
+
+                                    if (!isVisible) {
+                                        props = {};
+                                        props[this.lt] = this.dimension(curr);
+                                        this.moveBy(props);
+                                    }
+
+                                    // Force items reload
+                                    this._items = null;
+                                }
+
+                                this._scroll(curr, animate, callback);
+                            } else {
+                                this._scroll(Math.min(index, end), animate, callback);
+                            }
+                        }
+                    }
+                } else {
+                    if (this.inTail) {
+                        this._scroll(Math.max((this.index(this._first) - scroll) + 1, 0), animate, callback);
+                    } else {
+                        first  = this.index(this._first);
+                        current = this.index(this._target);
+                        start  = this.underflow ? current : first;
+                        index  = start - scroll;
+
+                        if (start <= 0 && ((this.underflow && wrap === 'circular') || wrap === 'both' || wrap === 'first')) {
+                            this._scroll(end, animate, callback);
+                        } else {
+                            if (this.circular && index < 0) {
+                                i    = index;
+                                curr = this.items().get(0);
+
+                                while (i++ < 0) {
+                                    curr = this.items().eq(-1);
+                                    isVisible = this._visible.index(curr) >= 0;
+
+                                    if (isVisible) {
+                                        curr.after(curr.clone(true).attr('data-jcarousel-clone', true));
+                                    }
+
+                                    this.list().prepend(curr);
+
+                                    // Force items reload
+                                    this._items = null;
+
+                                    var dim = this.dimension(curr);
+
+                                    props = {};
+                                    props[this.lt] = -dim;
+                                    this.moveBy(props);
+
+                                }
+
+                                this._scroll(curr, animate, callback);
+                            } else {
+                                this._scroll(Math.max(index, 0), animate, callback);
+                            }
+                        }
+                    }
+                }
+            } else {
+                this._scroll(parsed.target, animate, callback);
+            }
+
+            this._trigger('scrollend');
+
+            return this;
+        },
+        moveBy: function(properties, opts) {
+            var position = this.list().position(),
+                multiplier = 1,
+                correction = 0;
+
+            if (this.rtl && !this.vertical) {
+                multiplier = -1;
+
+                if (this.relative) {
+                    correction = this.list().width() - this.clipping();
+                }
+            }
+
+            if (properties.left) {
+                properties.left = (position.left + correction + toFloat(properties.left) * multiplier) + 'px';
+            }
+
+            if (properties.top) {
+                properties.top = (position.top + correction + toFloat(properties.top) * multiplier) + 'px';
+            }
+
+            return this.move(properties, opts);
+        },
+        move: function(properties, opts) {
+            opts = opts || {};
+
+            var option       = this.options('transitions'),
+                transitions  = !!option,
+                transforms   = !!option.transforms,
+                transforms3d = !!option.transforms3d,
+                duration     = opts.duration || 0,
+                list         = this.list();
+
+            if (!transitions && duration > 0) {
+                list.animate(properties, opts);
+                return;
+            }
+
+            var complete = opts.complete || $.noop,
+                css = {};
+
+            if (transitions) {
+                var backup = {
+                        transitionDuration: list.css('transitionDuration'),
+                        transitionTimingFunction: list.css('transitionTimingFunction'),
+                        transitionProperty: list.css('transitionProperty')
+                    },
+                    oldComplete = complete;
+
+                complete = function() {
+                    $(this).css(backup);
+                    oldComplete.call(this);
+                };
+                css = {
+                    transitionDuration: (duration > 0 ? duration / 1000 : 0) + 's',
+                    transitionTimingFunction: option.easing || opts.easing,
+                    transitionProperty: duration > 0 ? (function() {
+                        if (transforms || transforms3d) {
+                            // We have to use 'all' because jQuery doesn't prefix
+                            // css values, like transition-property: transform;
+                            return 'all';
+                        }
+
+                        return properties.left ? 'left' : 'top';
+                    })() : 'none',
+                    transform: 'none'
+                };
+            }
+
+            if (transforms3d) {
+                css.transform = 'translate3d(' + (properties.left || 0) + ',' + (properties.top || 0) + ',0)';
+            } else if (transforms) {
+                css.transform = 'translate(' + (properties.left || 0) + ',' + (properties.top || 0) + ')';
+            } else {
+                $.extend(css, properties);
+            }
+
+            if (transitions && duration > 0) {
+                list.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', complete);
+            }
+
+            list.css(css);
+
+            if (duration <= 0) {
+                list.each(function() {
+                    complete.call(this);
+                });
+            }
+        },
+        _scroll: function(item, animate, callback) {
+            if (this.animating) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            if (typeof item !== 'object') {
+                item = this.items().eq(item);
+            } else if (typeof item.jquery === 'undefined') {
+                item = $(item);
+            }
+
+            if (item.length === 0) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            this.inTail = false;
+
+            this._prepare(item);
+
+            var pos     = this._position(item),
+                currPos = this.list().position()[this.lt];
+
+            if (pos === currPos) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            var properties = {};
+            properties[this.lt] = pos + 'px';
+
+            this._animate(properties, animate, callback);
+
+            return this;
+        },
+        _scrollTail: function(animate, callback) {
+            if (this.animating || !this.tail) {
+                if ($.isFunction(callback)) {
+                    callback.call(this, false);
+                }
+
+                return this;
+            }
+
+            var pos = this.list().position()[this.lt];
+
+            if (this.rtl && this.relative && !this.vertical) {
+                pos += this.list().width() - this.clipping();
+            }
+
+            if (this.rtl && !this.vertical) {
+                pos += this.tail;
+            } else {
+                pos -= this.tail;
+            }
+
+            this.inTail = true;
+
+            var properties = {};
+            properties[this.lt] = pos + 'px';
+
+            this._update({
+                target:       this._target.next(),
+                fullyvisible: this._fullyvisible.slice(1).add(this._visible.last())
+            });
+
+            this._animate(properties, animate, callback);
+
+            return this;
+        },
+        _animate: function(properties, animate, callback) {
+            callback = callback || $.noop;
+
+            if (false === this._trigger('animate')) {
+                callback.call(this, false);
+                return this;
+            }
+
+            this.animating = true;
+
+            var animation = this.options('animation'),
+                complete  = $.proxy(function() {
+                    this.animating = false;
+
+                    var c = this.list().find('[data-jcarousel-clone]');
+
+                    if (c.length > 0) {
+                        c.remove();
+                        this._reload();
+                    }
+
+                    this._trigger('animateend');
+
+                    callback.call(this, true);
+                }, this);
+
+            var opts = typeof animation === 'object' ?
+                           $.extend({}, animation) :
+                           {duration: animation},
+                oldComplete = opts.complete || $.noop;
+
+            if (animate === false) {
+                opts.duration = 0;
+            } else if (typeof $.fx.speeds[opts.duration] !== 'undefined') {
+                opts.duration = $.fx.speeds[opts.duration];
+            }
+
+            opts.complete = function() {
+                complete();
+                oldComplete.call(this);
+            };
+
+            this.move(properties, opts);
+
+            return this;
+        },
+        _prepare: function(item) {
+            var index  = this.index(item),
+                idx    = index,
+                wh     = this.dimension(item),
+                clip   = this.clipping(),
+                lrb    = this.vertical ? 'bottom' : (this.rtl ? 'left'  : 'right'),
+                center = this.options('center'),
+                update = {
+                    target:       item,
+                    first:        item,
+                    last:         item,
+                    visible:      item,
+                    fullyvisible: wh <= clip ? item : $()
+                },
+                curr,
+                isVisible,
+                margin,
+                dim;
+
+            if (center) {
+                wh /= 2;
+                clip /= 2;
+            }
+
+            if (wh < clip) {
+                while (true) {
+                    curr = this.items().eq(++idx);
+
+                    if (curr.length === 0) {
+                        if (!this.circular) {
+                            break;
+                        }
+
+                        curr = this.items().eq(0);
+
+                        if (item.get(0) === curr.get(0)) {
+                            break;
+                        }
+
+                        isVisible = this._visible.index(curr) >= 0;
+
+                        if (isVisible) {
+                            curr.after(curr.clone(true).attr('data-jcarousel-clone', true));
+                        }
+
+                        this.list().append(curr);
+
+                        if (!isVisible) {
+                            var props = {};
+                            props[this.lt] = this.dimension(curr);
+                            this.moveBy(props);
+                        }
+
+                        // Force items reload
+                        this._items = null;
+                    }
+
+                    dim = this.dimension(curr);
+
+                    if (dim === 0) {
+                        break;
+                    }
+
+                    wh += dim;
+
+                    update.last    = curr;
+                    update.visible = update.visible.add(curr);
+
+                    // Remove right/bottom margin from total width
+                    margin = toFloat(curr.css('margin-' + lrb));
+
+                    if ((wh - margin) <= clip) {
+                        update.fullyvisible = update.fullyvisible.add(curr);
+                    }
+
+                    if (wh >= clip) {
+                        break;
+                    }
+                }
+            }
+
+            if (!this.circular && !center && wh < clip) {
+                idx = index;
+
+                while (true) {
+                    if (--idx < 0) {
+                        break;
+                    }
+
+                    curr = this.items().eq(idx);
+
+                    if (curr.length === 0) {
+                        break;
+                    }
+
+                    dim = this.dimension(curr);
+
+                    if (dim === 0) {
+                        break;
+                    }
+
+                    wh += dim;
+
+                    update.first   = curr;
+                    update.visible = update.visible.add(curr);
+
+                    // Remove right/bottom margin from total width
+                    margin = toFloat(curr.css('margin-' + lrb));
+
+                    if ((wh - margin) <= clip) {
+                        update.fullyvisible = update.fullyvisible.add(curr);
+                    }
+
+                    if (wh >= clip) {
+                        break;
+                    }
+                }
+            }
+
+            this._update(update);
+
+            this.tail = 0;
+
+            if (!center &&
+                this.options('wrap') !== 'circular' &&
+                this.options('wrap') !== 'custom' &&
+                this.index(update.last) === (this.items().length - 1)) {
+
+                // Remove right/bottom margin from total width
+                wh -= toFloat(update.last.css('margin-' + lrb));
+
+                if (wh > clip) {
+                    this.tail = wh - clip;
+                }
+            }
+
+            return this;
+        },
+        _position: function(item) {
+            var first  = this._first,
+                pos    = first.position()[this.lt],
+                center = this.options('center'),
+                centerOffset = center ? (this.clipping() / 2) - (this.dimension(first) / 2) : 0;
+
+            if (this.rtl && !this.vertical) {
+                if (this.relative) {
+                    pos -= this.list().width() - this.dimension(first);
+                } else {
+                    pos -= this.clipping() - this.dimension(first);
+                }
+
+                pos += centerOffset;
+            } else {
+                pos -= centerOffset;
+            }
+
+            if (!center &&
+                (this.index(item) > this.index(first) || this.inTail) &&
+                this.tail) {
+                pos = this.rtl && !this.vertical ? pos - this.tail : pos + this.tail;
+                this.inTail = true;
+            } else {
+                this.inTail = false;
+            }
+
+            return -pos;
+        },
+        _update: function(update) {
+            var self = this,
+                current = {
+                    target:       this._target,
+                    first:        this._first,
+                    last:         this._last,
+                    visible:      this._visible,
+                    fullyvisible: this._fullyvisible
+                },
+                back = this.index(update.first || current.first) < this.index(current.first),
+                key,
+                doUpdate = function(key) {
+                    var elIn  = [],
+                        elOut = [];
+
+                    update[key].each(function() {
+                        if (current[key].index(this) < 0) {
+                            elIn.push(this);
+                        }
+                    });
+
+                    current[key].each(function() {
+                        if (update[key].index(this) < 0) {
+                            elOut.push(this);
+                        }
+                    });
+
+                    if (back) {
+                        elIn = elIn.reverse();
+                    } else {
+                        elOut = elOut.reverse();
+                    }
+
+                    self._trigger(key + 'in', $(elIn));
+                    self._trigger(key + 'out', $(elOut));
+
+                    self['_' + key] = update[key];
+                };
+
+            for (key in update) {
+                doUpdate(key);
+            }
+
+            return this;
+        }
+    });
+}(jQuery, window));
+
+(function($) {
+    'use strict';
+
+    $.jcarousel.fn.scrollIntoView = function(target, animate, callback) {
+        var parsed = $.jCarousel.parseTarget(target),
+            first  = this.index(this._fullyvisible.first()),
+            last   = this.index(this._fullyvisible.last()),
+            index;
+
+        if (parsed.relative) {
+            index = parsed.target < 0 ? Math.max(0, first + parsed.target) : last + parsed.target;
+        } else {
+            index = typeof parsed.target !== 'object' ? parsed.target : this.index(parsed.target);
+        }
+
+        if (index < first) {
+            return this.scroll(index, animate, callback);
+        }
+
+        if (index >= first && index <= last) {
+            if ($.isFunction(callback)) {
+                callback.call(this, false);
+            }
+
+            return this;
+        }
+
+        var items = this.items(),
+            clip = this.clipping(),
+            lrb  = this.vertical ? 'bottom' : (this.rtl ? 'left'  : 'right'),
+            wh   = 0,
+            curr;
+
+        while (true) {
+            curr = items.eq(index);
+
+            if (curr.length === 0) {
+                break;
+            }
+
+            wh += this.dimension(curr);
+
+            if (wh >= clip) {
+                var margin = parseFloat(curr.css('margin-' + lrb)) || 0;
+                if ((wh - margin) !== clip) {
+                    index++;
+                }
+                break;
+            }
+
+            if (index <= 0) {
+                break;
+            }
+
+            index--;
+        }
+
+        return this.scroll(index, animate, callback);
+    };
+}(jQuery));
+
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselControl', {
+        _options: {
+            target: '+=1',
+            event:  'click',
+            method: 'scroll'
+        },
+        _active: null,
+        _init: function() {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+            this.onReload = $.proxy(this._reload, this);
+            this.onEvent = $.proxy(function(e) {
+                e.preventDefault();
+
+                var method = this.options('method');
+
+                if ($.isFunction(method)) {
+                    method.call(this);
+                } else {
+                    this.carousel()
+                        .jcarousel(this.options('method'), this.options('target'));
+                }
+            }, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy)
+                .on('jcarousel:reloadend jcarousel:scrollend', this.onReload);
+
+            this._element
+                .on(this.options('event') + '.jcarouselcontrol', this.onEvent);
+
+            this._reload();
+        },
+        _destroy: function() {
+            this._element
+                .off('.jcarouselcontrol', this.onEvent);
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy)
+                .off('jcarousel:reloadend jcarousel:scrollend', this.onReload);
+        },
+        _reload: function() {
+            var parsed   = $.jCarousel.parseTarget(this.options('target')),
+                carousel = this.carousel(),
+                active;
+
+            if (parsed.relative) {
+                active = carousel
+                    .jcarousel(parsed.target > 0 ? 'hasNext' : 'hasPrev');
+            } else {
+                var target = typeof parsed.target !== 'object' ?
+                                carousel.jcarousel('items').eq(parsed.target) :
+                                parsed.target;
+
+                active = carousel.jcarousel('target').index(target) >= 0;
+            }
+
+            if (this._active !== active) {
+                this._trigger(active ? 'active' : 'inactive');
+                this._active = active;
+            }
+
+            return this;
+        }
+    });
+}(jQuery));
+
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselPagination', {
+        _options: {
+            perPage: null,
+            item: function(page) {
+                return '<a href="#' + page + '">' + page + '</a>';
+            },
+            event:  'click',
+            method: 'scroll'
+        },
+        _carouselItems: null,
+        _pages: {},
+        _items: {},
+        _currentPage: null,
+        _init: function() {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+            this.onReload = $.proxy(this._reload, this);
+            this.onScroll = $.proxy(this._update, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy)
+                .on('jcarousel:reloadend', this.onReload)
+                .on('jcarousel:scrollend', this.onScroll);
+
+            this._reload();
+        },
+        _destroy: function() {
+            this._clear();
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy)
+                .off('jcarousel:reloadend', this.onReload)
+                .off('jcarousel:scrollend', this.onScroll);
+
+            this._carouselItems = null;
+        },
+        _reload: function() {
+            var perPage = this.options('perPage');
+
+            this._pages = {};
+            this._items = {};
+
+            // Calculate pages
+            if ($.isFunction(perPage)) {
+                perPage = perPage.call(this);
+            }
+
+            if (perPage == null) {
+                this._pages = this._calculatePages();
+            } else {
+                var pp    = parseInt(perPage, 10) || 0,
+                    items = this._getCarouselItems(),
+                    page  = 1,
+                    i     = 0,
+                    curr;
+
+                while (true) {
+                    curr = items.eq(i++);
+
+                    if (curr.length === 0) {
+                        break;
+                    }
+
+                    if (!this._pages[page]) {
+                        this._pages[page] = curr;
+                    } else {
+                        this._pages[page] = this._pages[page].add(curr);
+                    }
+
+                    if (i % pp === 0) {
+                        page++;
+                    }
+                }
+            }
+
+            this._clear();
+
+            var self     = this,
+                carousel = this.carousel().data('jcarousel'),
+                element  = this._element,
+                item     = this.options('item'),
+                numCarouselItems = this._getCarouselItems().length;
+
+            $.each(this._pages, function(page, carouselItems) {
+                var currItem = self._items[page] = $(item.call(self, page, carouselItems));
+
+                currItem.on(self.options('event') + '.jcarouselpagination', $.proxy(function() {
+                    var target = carouselItems.eq(0);
+
+                    // If circular wrapping enabled, ensure correct scrolling direction
+                    if (carousel.circular) {
+                        var currentIndex = carousel.index(carousel.target()),
+                            newIndex     = carousel.index(target);
+
+                        if (parseFloat(page) > parseFloat(self._currentPage)) {
+                            if (newIndex < currentIndex) {
+                                target = '+=' + (numCarouselItems - currentIndex + newIndex);
+                            }
+                        } else {
+                            if (newIndex > currentIndex) {
+                                target = '-=' + (currentIndex + (numCarouselItems - newIndex));
+                            }
+                        }
+                    }
+
+                    carousel[this.options('method')](target);
+                }, self));
+
+                element.append(currItem);
+            });
+
+            this._update();
+        },
+        _update: function() {
+            var target = this.carousel().jcarousel('target'),
+                currentPage;
+
+            $.each(this._pages, function(page, carouselItems) {
+                carouselItems.each(function() {
+                    if (target.is(this)) {
+                        currentPage = page;
+                        return false;
+                    }
+                });
+
+                if (currentPage) {
+                    return false;
+                }
+            });
+
+            if (this._currentPage !== currentPage) {
+                this._trigger('inactive', this._items[this._currentPage]);
+                this._trigger('active', this._items[currentPage]);
+            }
+
+            this._currentPage = currentPage;
+        },
+        items: function() {
+            return this._items;
+        },
+        reloadCarouselItems: function() {
+            this._carouselItems = null;
+            return this;
+        },
+        _clear: function() {
+            this._element.empty();
+            this._currentPage = null;
+        },
+        _calculatePages: function() {
+            var carousel = this.carousel().data('jcarousel'),
+                items    = this._getCarouselItems(),
+                clip     = carousel.clipping(),
+                wh       = 0,
+                idx      = 0,
+                page     = 1,
+                pages    = {},
+                curr,
+                dim;
+
+            while (true) {
+                curr = items.eq(idx++);
+
+                if (curr.length === 0) {
+                    break;
+                }
+
+                dim = carousel.dimension(curr);
+
+                if ((wh + dim) > clip) {
+                    page++;
+                    wh = 0;
+                }
+
+                wh += dim;
+
+                if (!pages[page]) {
+                    pages[page] = curr;
+                } else {
+                    pages[page] = pages[page].add(curr);
+                }
+            }
+
+            return pages;
+        },
+        _getCarouselItems: function() {
+            if (!this._carouselItems) {
+                this._carouselItems = this.carousel().jcarousel('items');
+            }
+
+            return this._carouselItems;
+        }
+    });
+}(jQuery));
+
+(function($, document) {
+    'use strict';
+
+    var hiddenProp,
+        visibilityChangeEvent,
+        visibilityChangeEventNames = {
+            hidden: 'visibilitychange',
+            mozHidden: 'mozvisibilitychange',
+            msHidden: 'msvisibilitychange',
+            webkitHidden: 'webkitvisibilitychange'
+        }
+    ;
+
+    $.each(visibilityChangeEventNames, function(key, val) {
+        if (typeof document[key] !== 'undefined') {
+            hiddenProp = key;
+            visibilityChangeEvent = val;
+            return false;
+        }
+    });
+
+    $.jCarousel.plugin('jcarouselAutoscroll', {
+        _options: {
+            target:    '+=1',
+            interval:  3000,
+            autostart: true
+        },
+        _timer: null,
+        _started: false,
+        _init: function () {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+
+            this.onAnimateEnd = $.proxy(this._start, this);
+
+            this.onVisibilityChange = $.proxy(function() {
+                if (document[hiddenProp]) {
+                    this._stop();
+                } else {
+                    this._start();
+                }
+            }, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy);
+
+            $(document)
+                .on(visibilityChangeEvent, this.onVisibilityChange);
+
+            if (this.options('autostart')) {
+                this.start();
+            }
+        },
+        _destroy: function() {
+            this._stop();
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy);
+
+            $(document)
+                .off(visibilityChangeEvent, this.onVisibilityChange);
+        },
+        _start: function() {
+            this._stop();
+
+            if (!this._started) {
+                return;
+            }
+
+            this.carousel()
+                .one('jcarousel:animateend', this.onAnimateEnd);
+
+            this._timer = setTimeout($.proxy(function() {
+                this.carousel().jcarousel('scroll', this.options('target'));
+            }, this), this.options('interval'));
+
+            return this;
+        },
+        _stop: function() {
+            if (this._timer) {
+                this._timer = clearTimeout(this._timer);
+            }
+
+            this.carousel()
+                .off('jcarousel:animateend', this.onAnimateEnd);
+
+            return this;
+        },
+        start: function() {
+            this._started = true;
+            this._start();
+
+            return this;
+        },
+        stop: function() {
+            this._started = false;
+            this._stop();
+
+            return this;
+        }
+    });
+}(jQuery, document));
+
 
 var app = angular.module('app', [
     'ngRoute',
     'ngAnimate',
-    'ui.mask'
+    'ui.mask',
+    'ngSanitize'
 ]);
 
 
 
-function router($routeProvider) {
+function router($routeProvider, $locationProvider) {
     $routeProvider
-        .when('/home', {
+        .when('/', {
             templateUrl: '/templates/home/_home.html',
             controller:  HomeCtrl
         })
         .when('/o-proekte', {
-            templateUrl: '/templates/about/_about.html',
+            templateUrl: '/templates/preim/_preim.html',
             activetab: 'about',
             controller: AboutCtrl
         })
         .when('/o-proekte/preimushestva', {
-            templateUrl: '/templates/preim/_preim.html',
+            templateUrl: '/templates/about/_about.html',
             contoroller: AboutCtrl
         })
         .when('/gallery', {
             templateUrl: '/templates/gallery/gallery.html',
             controller: GalleryCtrl
         })
-        .when('/vubor-kvartiru', {
+        .when('/vybor-kvartiry', {
             templateUrl: '/templates/map/_map.html',
             controller: MapCtrl
         })
@@ -56211,11 +58423,11 @@ function router($routeProvider) {
             templateUrl: '/templates/how-to-bay/_how-to-bay.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/stoimosti-kvarti', {
+        .when('/stoimost-kvartiry', {
             templateUrl: '/templates/how-to-bay/_price.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/tipovoy-dogovor', {
+        .when('/tipovoy-dogovor', {
             templateUrl: '/templates/how-to-bay/_contracts.html',
             controller: BayCtrl
         })
@@ -56223,12 +58435,20 @@ function router($routeProvider) {
             templateUrl: '/templates/how-to-bay/_reservation.html',
             controller: ReservationCtrl
         })
-        .when('/kak-kupit/otdel-prodag', {
+        .when('/kak-kupit/documenty', {
+            templateUrl: '/templates/how-to-bay/_documents.html',
+            controller: ReservationCtrl
+        })
+        .when('/otdel-prodazh', {
             templateUrl: '/templates/how-to-bay/_sales-department.html',
             controller: BayCtrl
         })
         .when('/novosti', {
             templateUrl: '/templates/news/_news.html',
+            controller: NewsCtrl
+        })
+        .when('/novosti/:postId', {
+            templateUrl: '/templates/news/_one_news.html',
             controller: NewsCtrl
         })
         .when('/kompania', {
@@ -56243,16 +58463,23 @@ function router($routeProvider) {
             templateUrl: '/templates/company/_dogovor.html',
             controller: CompanyCtrl
         })
-        .when('/kontaktu', {
+        .when('/news', {
+            templateUrl: '/news',
+            controller: NewsCtrl
+        })
+        .when('/contacts', {
             templateUrl: '/templates/contacts/contacts.html',
             controller: ContactsCtrl
         })
         .otherwise({
-            redirectTo: '/home'
-        })
+            redirectTo: '/'
+        });
+        //$locationProvider.html5Mode(true);
+        
 };
 
 app.config(router);
+
 function AboutCtrl($scope, $route, $rootScope) {
     console.log('About controller');
     $rootScope.activePage = 'about';
@@ -56264,12 +58491,22 @@ app.controller('AboutCtrl', AboutCtrl);
 function BayCtrl($scope, $rootScope) {
 	console.log('Bay controller');
 	$rootScope.activePage = 'bay';
+
+	$scope.addRating = function() {
+		console.log('+');
+	}
 }
 
 app.controller('BayCtrl', BayCtrl);
 function CompanyCtrl($scope, $rootScope) {
 	console.log('Company controller');
 	$rootScope.activePage = 'company';
+	 $scope.printPdf = function () {
+        
+        var doc = open('../../documents/dogovor.pdf');
+        
+        doc.print();
+    }
 }
 
 app.controller('CompanyCtrl', CompanyCtrl);
@@ -56307,12 +58544,14 @@ function FlatsCtrl($scope, $location, $routeParams, mapService, $http) {
     $scope.reservationFlat = function() {
         $scope.done = !$scope.done;
         $scope.httpLoading = !$scope.httpLoading;
-        $http.post('send/' + $scope.flat.number, $scope.form)
+        var path = '/send/' + $scope.id + '/' + $scope.flat.number;
+        $http.post(path, $scope.form)
             .success(function(data){
                 $scope.httpLoading = !$scope.httpLoading;
-            })
-            .error(function(data) {
                 console.log(data);
+            })
+            .error(function(error) {
+                console.log(error);
                 $scope.done = !$scope.done;
             });
 
@@ -56324,6 +58563,201 @@ app.controller('FlatsCtrl', FlatsCtrl);
 function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
     console.log('Floor controller');
     var jsonCoords = {
+        "9a" : {
+            "1" : [
+                "1337,528,1050,527,1051,272,1429,271,1429,528",
+                "1337,612,1563,612,1564,869,1694,869,1694,272,1429,271,1429,528,1337,528",
+                "1163,612,1563,612,1564,869,1164,869",
+                "899,612,1163,612,1164,869,898,869",
+                "521,611,899,612,898,869,521,869",
+                "455,611,521,611,521,869,255,869,256,530,356,530,356,611",
+                "256,272,520,272,521,528,455,529,455,611,356,611,356,530,256,530",
+                "520,272,785,272,786,529,521,528"
+            ],
+            "2" : [
+                "1431,273,1161,272,1160,535,1432,535",
+                "1702,534,1701,272,1431,273,1432,535",
+                "1431,880,1702,880,1702,534,1599,535,1599,619,1432,619",
+                "1046,880,1431,880,1432,619,1046,618",
+                "775,879,1046,880,1046,619,776,620",
+                "506,881,775,879,776,620,506,621",
+                "599,535,505,534,504,273,236,272,235,881,506,881,506,620,599,620",
+                "504,273,890,274,890,534,506,534"
+            ]
+        },
+        "29a" : {
+            "1" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ],
+            "2" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ]
+        },
+        "30" : {
+            "1" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ],
+            "2" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ]
+        },
+    };
+    var section = $routeParams.section;
+    var floor = $routeParams.floor;
+    var building = $routeParams.id;
+    $scope.id = $routeParams.id;
+    $scope.section = section;
+    $scope.maps = jsonCoords[building][section];
+
+    $scope.number;
+
+    var flats_info;
+    mapService.getAllRooms(building, section,floor).then(
+                function(data) {
+                    flats_info = data;
+                },
+                function(error) {
+                    console.log('asdfas')
+                    console.error(error);
+                }
+            );
+
+    var isSale = function(flats_info, room) {
+        var result = {};
+        for(i in flats_info) {
+            
+            if(flats_info[i].onPlan == room) {
+                result.number = flats_info[i].number;
+                result.onPlan = flats_info[i].onPlan;
+                result.onSale = flats_info[i].onSale;
+            }
+           
+        }
+        return result;
+    };
+
+
+
+    
+    $scope.sectionInit = function () {
+        $rootScope.loading = true;
+        setTimeout(function () {
+            $('.map-plans').svgDrawing({
+                each: function(el) {
+                    for(i in flats_info) {
+                        if(flats_info[i].onSale == 0) {
+                            if(el.data('alt') == flats_info[i].onPlan) {
+                                el.attr({
+                                    opacity: 0.5,
+                                    fill: '#FF6300'
+                                })
+                            }
+                        }
+                    }
+                },
+                onclick: function (el) {
+                    var room = el.data('alt');
+                        console.log("Flats->" + room);
+                    console.log(floor);
+                    mapService.getRoomNumber(building,section, floor, room).then(
+                        function(data) {
+                            if(data.onSale != 0) {
+                               $location.path('/building/' + building + '/section/' + section + '/floor/' + floor + '/room/' + room);
+                            }
+                        },
+                        function(error) {
+                            console.log(error);
+                        }
+                    );
+
+                },
+                onmouseover: function (el) {
+                    var room = el.data('alt');
+                    
+                    $scope.$apply(function(){
+                        $scope.number = isSale(flats_info, room).number;
+                    });
+
+                    if(isSale(flats_info, room).onSale != 0) {
+                                el.attr('opacity', 0.5);
+                                $scope.message = '';
+                            } else {
+                                $scope.message = 'Продано';
+                            }
+
+                    $('.rooms-popup').find('div[data-target=' + room + ']').show();
+
+                },
+                onmouseout: function (el) {
+                    var room = el.data('alt');
+                    if(isSale(flats_info, room).onSale == 0) {
+                                el.attr({
+                                    opacity: 0.5,
+                                    fill: '#FF6300'
+                                })
+                            } else {
+                                el.attr('opacity', 0);
+                            }
+                    
+                    
+                    $('.rooms-popup').find('div[data-target=' + room + ']').hide();
+                    $scope.message = '';
+                }
+            });
+            mapService.getSalesFlats(building, section, floor).then(
+                function(data) {
+                    var flats = data;
+                    console.log(flats);
+                },
+                function(error) {
+                    console.log(error);
+                }
+            );
+            $rootScope.loading = false;
+            
+        }, 1000);
+
+        
+
+    };
+
+var jsonCoords_old = {
         "9a" : {
             "1" : [
                 "1337,528,1050,527,1051,272,1429,271,1429,528",
@@ -56399,78 +58833,32 @@ function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
             ]
         },
     };
-    var section = $routeParams.section;
-    var floor = $routeParams.floor;
-    var building = $routeParams.id;
-    $scope.id = $routeParams.id;
-    $scope.section = section;
-    $scope.maps = jsonCoords[building][section];
-
-    $scope.sectionInit = function () {
-        $rootScope.loading = true;
-        setTimeout(function () {
-            $('.map-plans').svgDrawing({
-                onclick: function (el) {
-                    var room = el.data('alt');
-                        console.log("Flats->" + room);
-                    console.log(floor);
-                    mapService.getRoomNumber(building,section, floor, room).then(
-                        function(data) {
-                            if(data.onSale != 0) {
-                               $location.path('/building/' + building + '/section/' + section + '/floor/' + floor + '/room/' + room);
-                            }
-                        },
-                        function(error) {
-                            console.log(error);
-                        }
-                    );
-                },
-                onmouseover: function (el) {
-                    var room = el.data('alt');
-                    mapService.getRoomNumber(building,section, floor, room).then(
-                        function(data) {
-                            $scope.number = data;
-                            if(data.onSale != 0) {
-                                el.attr('opacity', 0.5);
-                                $scope.message = '';
-                            } else {
-                                $scope.message = 'Продано';
-                            }
-                        },
-                        function(error) {
-                            console.log(error);
-                        }
-                    );
-                    $('.rooms-popup').find('div[data-target=' + room + ']').show();
-
-                },
-                onmouseout: function (el) {
-                    el.attr('opacity', 0);
-                    var room = el.data('alt');
-                    $('.rooms-popup').find('div[data-target=' + room + ']').hide();
-                    $scope.message = '';
-                }
-            });
-                        $rootScope.loading = false;
-        }, 1000);
-    };
-
-
 };
 
 app.controller('FloorCtrl', FloorCtrl);
 
 
-function GalleryCtrl ($scope, $rootScope) {
+function GalleryCtrl ($scope, $rootScope, $http) {
 	console.log('Gallery controller');
 	$rootScope.activePage = 'gallery';
-	console.log($rootScope.activePage);
-}
+
+
+	$http.get('/wordpress/?json=get_posts')
+		.success(function(data) {
+			$scope.posts = data.posts;
+			console.log(data.posts);
+		})
+		.error(function(error) {
+			console.log(error);
+		});
+
+	$('.slider').slick();
+};
 
 app.controller('GalleryCtrl', GalleryCtrl);
 
 
-function HomeCtrl($scope, $rootScope) {
+function HomeCtrl($scope, $rootScope, $location) {
     console.log('Home controller');
     $rootScope.activePage = 'home';
     $scope.slider = {};
@@ -56478,17 +58866,17 @@ function HomeCtrl($scope, $rootScope) {
     $scope.viewClass = 'animation-fade';
     // Slider controls text
     $scope.slider.text = [
-        {'text' : 'благоустройство территории'},
-        {'text' : 'благоустройство территории-1'},
-        {'text' : 'благоустройство территории-2'},
-        {'text' : 'благоустройство территории-3'},
+        {'text' : 'Благоустройство по  европейскому принципу'},
+        {'text' : 'закрытая охраняемая территория'},
+        {'text' : 'детский сад, магазины, аптека'},
+        {'text' : 'фитнес-клуб, стадион и тренажерная площадка'},
     ];
     //Slider images
     $scope.slider.images = [
-        {'image' : '../../images/slider/slider-image/0005.jpg'},
-        {'image' : '../../images/slider/slider-image/0004.jpg'},
-        {'image' : '../../images/slider/slider-image/0006.jpg'},
-        {'image' : '../../images/slider/slider-image/0001.jpg'},
+        {'image' : '../../images/slider/slider-image/0007-min.jpg'},
+        {'image' : '../../images/slider/slider-image/0005-min.jpg'},
+        {'image' : '../../images/slider/slider-image/0004-min.jpg'},
+        {'image' : '../../images/slider/slider-image/0006-min.jpg'},
     ];
     // Slider icons
     $scope.slider.icons = [
@@ -56497,8 +58885,8 @@ function HomeCtrl($scope, $rootScope) {
         {'icon' : '../../images/slider/slider-icons/0012.png'},
         {'icon' : '../../images/slider/slider-icons/0013.png'},
     ];
+
     // Next slide
-    
     $scope.next = function () {
         var totalImg = $scope.slider.images.length;
         if(totalImg > 0) {
@@ -56514,11 +58902,19 @@ function HomeCtrl($scope, $rootScope) {
     };
     // Slider autoplay
     $scope.autoPlay = function () {
+        console.log('autoplay start');
         setTimeout(function () {
             $scope.next();
             $scope.autoPlay();
         }, 3000)
     };
+    
+   $scope.refPage = function () {
+        console.log('Refresh');
+        $locarion.reload();
+       
+   };
+
 };
 
 app.controller('HomeCtrl', HomeCtrl);
@@ -56591,12 +58987,51 @@ function MapCtrl($scope, $rootScope, $location, $routeParams, $route, $http, map
 
 app.controller('MapCtrl', MapCtrl);
 
-function NewsCtrl($scope, $rootScope, $http, $location) {
+function NewsCtrl($scope, $rootScope, $http, $routeParams, $location) {
     console.log('News controller');
     $rootScope.activePage = 'news';
+    
+    
+        
+        window.location.reload();
+ 
+    
+    /*
+    console.log('Post->');
+    $http.get('/wordpress/?json=get_posts')
+        .success(function(data) {
+            $scope.posts = data.posts;
+            console.log(data.posts);
+        })
+        .error(function(error) {
+            console.log(error);
+        })
+
+    if($routeParams.postId) {
+        console.log($routeParams.postId);
+        var path = 'wordpress/?json=get_post&id=' + $routeParams.postId;
+        $http.get(path)
+            .success(function(data) {
+                $scope.post = data.post;
+                console.log(data);
+            })
+            .error(function(error) {
+                console.log(error);
+            })
+    }
+    */
 };
 
 app.controller('NewsCtrl', NewsCtrl);
+
+app.filter('postLimit', function () {
+    return function (text, length) {
+        if (text.length > length) {
+            return text.substr(0, length);
+        }
+        return text;
+    }
+});
 
 function ReservationCtrl($scope, mapService) {
     console.log('Reservation controller');
@@ -56809,65 +59244,44 @@ app.controller('CorpsCtrl', CorpsCtrl);
 app.factory('mapService', function($http, $q) {
     return {
         getMapData: function() {
-            var defer = $q.defer();
-
-            $http.get('/get-coordinate')
-                .success(function(data) {
-                    defer.resolve(data);
-                })
-                .error(function(error) {
-                    defer.reject(error);
-                });
-            return defer.promise;
+            var path = '/get-coordinate';
+            return getHttp(path);
         },
         getOnSaleFlats: function (section) {
-            var defer = $q.defer();
             var path = '/get-onsale-flats/' + section;
-            $http.get(path)
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (error) {
-                    defer.reject(error);
-                });
-            return defer.promise;
+            return getHttp(path);
         },
         getSection: function (building, section) {
-            var defer = $q.defer();
             var path = '/get-flats-section/' + building + '/' + section;
-            $http.get(path)
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (error) {
-                    defer.reject(error);
-                });
-            return defer.promise;
+            return getHttp(path);
         },
         getFloorFlats: function (section, floor) {
-            var defer = $q.defer();
             var path = '/get-floor-flats/' + section + '/' + floor;
-            $http.get(path)
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (error) {
-                    defer.reject(error);
-                });
-            return defer.promise;
+            return getHttp(path);
         },
         getRoomNumber: function (building,section, floor, room) {
-            var defer = $q.defer();
             var path = '/get-room-number/' + building + '/' + section + '/' + floor + '/' + room;
-            $http.get(path)
-                .success(function (data) {
-                    defer.resolve(data);
-                })
-                .error(function (error) {
-                    defer.reject(error);
-                });
-            return defer.promise;
+            return getHttp(path);
+        },
+        getSalesFlats: function(building, section, floor) {
+            var path = '/get-sales-flats/' + building + '/' + section + '/' + floor;
+            return getHttp(path);
+        },
+        getAllRooms: function(building, section, floor) {
+            var path = '/get-all-rooms/' + building + '/' + section + '/' + floor;
+            return getHttp(path);
         }
+    };
+    function getHttp(path){
+        var defer = $q.defer();
+        $http.get(path)
+            .success(function(data) {
+                defer.resolve(data);
+            })
+            .error(function(error) {
+                defer.reject(error);
+            });
+        return defer.promise;
     }
 });
 
