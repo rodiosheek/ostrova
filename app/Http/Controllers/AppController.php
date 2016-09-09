@@ -8,7 +8,12 @@ use App\Http\Requests;
 
 class AppController extends Controller
 {
-    public function index() {
-        return view('index');
+    public function index(Request $request) {
+        //return view('index');
+        if($request->is('news')) {
+        	return 'news';
+        } else {
+        	return view('index');
+        }
     }
 }

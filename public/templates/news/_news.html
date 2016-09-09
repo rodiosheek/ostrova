@@ -1,0 +1,12 @@
+<!-- News -->
+<section class="news-list">
+    <article class="post" ng-repeat="post in posts" ng-if="post.categories[0].id == 1">
+        <h1><a href="#/novosti/{{post.id}}" ng-bind-html="post.title"></a></h1>
+        <div class="post-date" ng-bind-html="post.date"></div>
+        <div class="post-img" ng-if="post.attachments[0]">
+            <img class="size-medium wp-image-8 alignleft" src="{{post.attachments[0].url}}" alt="1" >
+        </div>
+        <div class="post-content" ng-bind-html="post.content | postLimit: 300"></div>
+        <a href="#/novosti/{{post.id}}">Подробнее...</a>
+    </article>
+</section>

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Building9a;
-use App\Building_30;
+use App\Building30;
+use App\Building33;
 
 use View;
 
@@ -25,7 +26,7 @@ class AdminController extends Controller
             return View::make('welcome');
         }
 
-        $flats = Building_30::all();
+        $flats = Building33::all();
         return View::make('admin-panel.index')
             ->with('flats', $flats);
     }
@@ -48,7 +49,7 @@ class AdminController extends Controller
 
             $floor++;
         }
-        $newFlats = Building_30::all();
+        $newFlats = Building33::all();
         return View::make('admin-panel.index')
             ->with('flats', $newFlats);
     }

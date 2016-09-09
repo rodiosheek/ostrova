@@ -26,6 +26,8 @@
 
             <button class="reservation-button" ng-click="formShow = !formShow">Online бронирование</button>
 
+            <button ng-click="printWin()">print</button>
+
         </div>
     </div>
     <div class="reservation-form" ng-show="formShow" style="overflow: scroll">
@@ -55,7 +57,7 @@
 
             <div ng-show="done" class="done-message">
                 <div class="http-loading" ng-show="httpLoading"><div>Отправка сообщения...</div></div>
-                <div>Сообщение отправлено</div>
+                <div style="text-align: center;">Спасибо за обращение.<br> В течении часа с Вами свяжется менеджер из отдела продаж</div>
                 <button ng-click="formShow = !formShow">Назад</button>
             </div>
         </form>

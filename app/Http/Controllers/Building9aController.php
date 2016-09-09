@@ -12,6 +12,8 @@ use App\Building29a;
 
 use App\Building30;
 
+use Response;
+
 class Building9aController extends Controller
 {
     /**
@@ -136,5 +138,47 @@ class Building9aController extends Controller
             $number1 = $num;
         }
         return $number1;
+    }
+
+    public function getSalesFats($building, $section, $floor) {
+        switch ($building) {
+            case '9a':
+                $build = new Building9a;
+                break;
+            case '29a':
+                $build = new Building29a;
+                break;
+            case '30':
+                $build = new Building30;
+                break;
+            default:
+                echo 'Error';
+                break;
+        };
+        $section = (int) $section;
+        $floor = (int) $floor;
+        $flats = $build::all()->where('section', $section)->where('floor', $floor)->where('sales', 1);
+        return $flats;
+    }
+
+    public function getAllRooms($building, $section, $floor) {
+        switch ($building) {
+            case '9a':
+                $build = new Building9a;
+                break;
+            case '29a':
+                $build = new Building29a;
+                break;
+            case '30':
+                $build = new Building30;
+                break;
+            default:
+                echo 'Error';
+                break;
+        };
+        $section = (int) $section;
+        $floor = (int) $floor;
+        $flats = $build::all()->where('section', $section)->where('floor', $floor);
+        return $flats;
     }
 }

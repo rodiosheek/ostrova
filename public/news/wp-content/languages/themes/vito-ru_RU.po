@@ -1,0 +1,235 @@
+# Translation of Vito in Russian
+# This file is distributed under the same license as the Vito package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2016-06-07 12:54:49+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: GlotPress/2.1.0-alpha\n"
+"Project-Id-Version: Vito\n"
+
+#. Description of the plugin/theme
+msgid "Vito is a blogging theme that offers a beautiful and modern design to your site."
+msgstr "Vito — это тема для ведения блога, которая предлагает красивый и современный дизайн для вашего сайта."
+
+#. Theme Name of the plugin/theme
+msgid "Vito"
+msgstr "Vito"
+
+#: templates/content-none.php:3
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for."
+msgstr "Кажется, мы не можем найти то, что вы ищете."
+
+#: search.php:5
+msgid "Search Results for: %s"
+msgstr "Результаты поиска: %s"
+
+#: pagination.php:11
+msgid "Next page"
+msgstr "Следующая страница"
+
+#: pagination.php:10
+msgid "Previous page"
+msgstr "Предыдущая страница"
+
+#: meta.php:4
+msgid "% Comments"
+msgstr "Комментарии: %"
+
+#: meta.php:4
+msgid "1 Comment"
+msgstr "1 комментарий"
+
+#: meta.php:4
+msgid "No Comments"
+msgstr "Комментариев нет"
+
+#: framework/widget_areas/widget_areas.php:5
+msgid "Sidebar Widgets"
+msgstr "Боковая панель виджетов"
+
+#: framework/widget_areas/widget_areas.php:7
+msgid "These are widgets for the sidebar."
+msgstr "Это виджеты для боковой панели."
+
+#: image.php:39 page.php:34 single.php:35
+msgid "Page"
+msgstr "Страница"
+
+#: framework/functions/theme_customizer.php:255
+msgid "RSS"
+msgstr "RSS"
+
+#: framework/functions/theme_customizer.php:242
+msgid "Pinterest"
+msgstr "Pinterest"
+
+#: framework/functions/theme_customizer.php:216
+msgid "Dribbble"
+msgstr "Dribbble"
+
+#: framework/functions/theme_customizer.php:229
+msgid "Foursquare"
+msgstr "Foursquare"
+
+#: framework/functions/theme_customizer.php:190
+msgid "Google Plus"
+msgstr "Google Plus"
+
+#: framework/functions/theme_customizer.php:203
+msgid "Tumblr"
+msgstr "Tumblr"
+
+#: framework/functions/theme_customizer.php:177
+msgid "Skype"
+msgstr "Skype"
+
+#: framework/functions/theme_customizer.php:164
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+#: framework/functions/theme_customizer.php:151
+msgid "Vimeo"
+msgstr "Vimeo"
+
+#: framework/functions/theme_customizer.php:138
+msgid "Youtube"
+msgstr "YouTube"
+
+#: framework/functions/theme_customizer.php:125
+msgid "Flickr"
+msgstr "Flickr"
+
+#: framework/functions/theme_customizer.php:112
+msgid "Instagram"
+msgstr "Instagram"
+
+#: framework/functions/theme_customizer.php:86
+msgid "Add your social URL:"
+msgstr "Добавьте свой адрес в соцсети:"
+
+#: framework/functions/theme_customizer.php:99
+msgid "Twitter"
+msgstr "Twitter"
+
+#: framework/functions/theme_customizer.php:85
+msgid "Facebook"
+msgstr "Facebook"
+
+#: framework/functions/theme_customizer.php:38
+msgid "Headings Color"
+msgstr "Цвет заголовков"
+
+#: framework/functions/theme_customizer.php:50
+msgid "Content Color"
+msgstr "Цвет контента"
+
+#: framework/functions/theme_customizer.php:62
+msgid "Links Color"
+msgstr "Цвет ссылок"
+
+#: framework/functions/theme_customizer.php:73
+msgid "Social Icons"
+msgstr "Социальные иконки"
+
+#: framework/functions/theme_customizer.php:22
+msgid "Site Title"
+msgstr "Название сайта"
+
+#: framework/functions/custom_comments.php:47
+msgid "(Edit)"
+msgstr "(Изменить)"
+
+#: framework/functions/custom_comments.php:45
+msgid "%1$s at %2$s"
+msgstr "%1$s в %2$s"
+
+#: framework/functions/custom_comments.php:31
+msgid "Your comment is awaiting moderation."
+msgstr "Ваш комментарий ожидает модерации."
+
+#: framework/functions/custom-functions.php:38
+msgid "Post navigation"
+msgstr "Навигация по записям"
+
+#: framework/functions/custom-functions.php:15
+msgid "Read More"
+msgstr "Читать далее"
+
+#: footer.php:5
+msgid "Vito theme designed by "
+msgstr "Тема Vito разработана"
+
+#: footer.php:5
+msgid "http://quemalabs.com/"
+msgstr "http://quemalabs.com/"
+
+#: framework/Theme.php:169
+msgid "Navigation Menu"
+msgstr "Меню навигации"
+
+#: footer.php:5
+msgid "Proudly powered by "
+msgstr "Сайт работает на"
+
+#: footer.php:5
+msgid "https://wordpress.org/"
+msgstr "https://ru.wordpress.org/"
+
+#: comments.php:99
+msgid "Website"
+msgstr "Сайт"
+
+#: comments.php:90
+msgid "Email"
+msgstr "Email"
+
+#: comments.php:81
+msgid "Name"
+msgstr "Имя"
+
+#: comments.php:69
+msgid "Comment"
+msgstr "Комментарий"
+
+#: comments.php:17
+msgid "No Responses"
+msgstr "Нет ответов"
+
+#: comments.php:17
+msgid "One Response"
+msgstr "Один ответ"
+
+#: comments.php:17
+msgid "% Responses"
+msgstr "Ответы: %"
+
+#: comments.php:41
+msgid "Comments are closed."
+msgstr "Обсуждение закрыто."
+
+#: 404.php:9
+msgid "It looks like nothing was found at this location."
+msgstr "По данному адресу ничего не найдено."
+
+#: comments.php:8
+msgid "This post is password protected. Enter the password to view comments."
+msgstr "Эта запись защищена паролем. Введите пароль, чтобы посмотреть комментарии."
+
+#: 404.php:7
+msgid "Oops! That page can&rsquo;t be found."
+msgstr "Ой! Страница не найдена."
+
+#. Theme URI of the plugin/theme
+msgid "http://www.quemalabs.com/theme/vito/"
+msgstr "http://www.quemalabs.com/theme/vito/"
+
+#. Author of the plugin/theme
+msgid "Quema Labs"
+msgstr "Quema Labs"
+
+#. Author URI of the plugin/theme
+msgid "http://www.quemalabs.com/"
+msgstr "http://www.quemalabs.com/"

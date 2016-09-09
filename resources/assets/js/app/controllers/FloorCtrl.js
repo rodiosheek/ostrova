@@ -25,6 +25,201 @@ function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
         },
         "29a" : {
             "1" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ],
+            "2" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ]
+        },
+        "30" : {
+            "1" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ],
+            "2" : [
+                "528,614,791,615,790,836,529,837",
+                "527,924,265,924,265,563,459,562,458,613,527,614",
+                "266,564,267,225,529,222,529,534,458,534,459,562",
+                "791,289,789,533,530,534,530,289",
+                "790,533,1162,534,1163,289,793,289",
+                "1164,289,1424,288,1426,532,1163,535",
+                "1424,289,1424,225,1685,223,1686,575,1497,575,1497,535,1427,534",
+                "1424,614,1497,614,1498,575,1687,575,1686,925,1425,926",
+                "1163,833,1163,615,1424,615,1424,834",
+                "900,615,900,833,1164,836,1165,615"
+            ]
+        },
+    };
+    var section = $routeParams.section;
+    var floor = $routeParams.floor;
+    var building = $routeParams.id;
+    $scope.id = $routeParams.id;
+    $scope.section = section;
+    $scope.maps = jsonCoords[building][section];
+
+    $scope.number;
+
+    var flats_info;
+    mapService.getAllRooms(building, section,floor).then(
+                function(data) {
+                    flats_info = data;
+                },
+                function(error) {
+                    console.log('asdfas')
+                    console.error(error);
+                }
+            );
+
+    var isSale = function(flats_info, room) {
+        var result = {};
+        for(i in flats_info) {
+            
+            if(flats_info[i].onPlan == room) {
+                result.number = flats_info[i].number;
+                result.onPlan = flats_info[i].onPlan;
+                result.onSale = flats_info[i].onSale;
+            }
+           
+        }
+        return result;
+    };
+
+
+
+    
+    $scope.sectionInit = function () {
+        $rootScope.loading = true;
+        setTimeout(function () {
+            $('.map-plans').svgDrawing({
+                each: function(el) {
+                    for(i in flats_info) {
+                        if(flats_info[i].onSale == 0) {
+                            if(el.data('alt') == flats_info[i].onPlan) {
+                                el.attr({
+                                    opacity: 0.5,
+                                    fill: '#FF6300'
+                                })
+                            }
+                        }
+                    }
+                },
+                onclick: function (el) {
+                    var room = el.data('alt');
+                        console.log("Flats->" + room);
+                    console.log(floor);
+                    mapService.getRoomNumber(building,section, floor, room).then(
+                        function(data) {
+                            if(data.onSale != 0) {
+                               $location.path('/building/' + building + '/section/' + section + '/floor/' + floor + '/room/' + room);
+                            }
+                        },
+                        function(error) {
+                            console.log(error);
+                        }
+                    );
+
+                },
+                onmouseover: function (el) {
+                    var room = el.data('alt');
+                    
+                    $scope.$apply(function(){
+                        $scope.number = isSale(flats_info, room).number;
+                    });
+
+                    if(isSale(flats_info, room).onSale != 0) {
+                                el.attr('opacity', 0.5);
+                                $scope.message = '';
+                            } else {
+                                $scope.message = 'Продано';
+                            }
+
+                    $('.rooms-popup').find('div[data-target=' + room + ']').show();
+
+                },
+                onmouseout: function (el) {
+                    var room = el.data('alt');
+                    if(isSale(flats_info, room).onSale == 0) {
+                                el.attr({
+                                    opacity: 0.5,
+                                    fill: '#FF6300'
+                                })
+                            } else {
+                                el.attr('opacity', 0);
+                            }
+                    
+                    
+                    $('.rooms-popup').find('div[data-target=' + room + ']').hide();
+                    $scope.message = '';
+                }
+            });
+            mapService.getSalesFlats(building, section, floor).then(
+                function(data) {
+                    var flats = data;
+                    console.log(flats);
+                },
+                function(error) {
+                    console.log(error);
+                }
+            );
+            $rootScope.loading = false;
+            
+        }, 1000);
+
+        
+
+    };
+
+var jsonCoords_old = {
+        "9a" : {
+            "1" : [
+                "1337,528,1050,527,1051,272,1429,271,1429,528",
+                "1337,612,1563,612,1564,869,1694,869,1694,272,1429,271,1429,528,1337,528",
+                "1163,612,1563,612,1564,869,1164,869",
+                "899,612,1163,612,1164,869,898,869",
+                "521,611,899,612,898,869,521,869",
+                "455,611,521,611,521,869,255,869,256,530,356,530,356,611",
+                "256,272,520,272,521,528,455,529,455,611,356,611,356,530,256,530",
+                "520,272,785,272,786,529,521,528"
+            ],
+            "2" : [
+                "1431,273,1161,272,1160,535,1432,535",
+                "1702,534,1701,272,1431,273,1432,535",
+                "1431,880,1702,880,1702,534,1599,535,1599,619,1432,619",
+                "1046,880,1431,880,1432,619,1046,618",
+                "775,879,1046,880,1046,619,776,620",
+                "506,881,775,879,776,620,506,621",
+                "599,535,505,534,504,273,236,272,235,881,506,881,506,620,599,620",
+                "504,273,890,274,890,534,506,534"
+            ]
+        },
+        "29a" : {
+            "1" : [
                 "529,496,790,497,790,716,529,716",
                 "528,806,266,805,266,445,458,446,458,495,530,497",
                 "267,445,267,104,529,103,529,416,458,416,458,446",
@@ -76,63 +271,6 @@ function FloorCtrl($scope, $rootScope, $location, $routeParams, mapService) {
             ]
         },
     };
-    var section = $routeParams.section;
-    var floor = $routeParams.floor;
-    var building = $routeParams.id;
-    $scope.id = $routeParams.id;
-    $scope.section = section;
-    $scope.maps = jsonCoords[building][section];
-
-    $scope.sectionInit = function () {
-        $rootScope.loading = true;
-        setTimeout(function () {
-            $('.map-plans').svgDrawing({
-                onclick: function (el) {
-                    var room = el.data('alt');
-                        console.log("Flats->" + room);
-                    console.log(floor);
-                    mapService.getRoomNumber(building,section, floor, room).then(
-                        function(data) {
-                            if(data.onSale != 0) {
-                               $location.path('/building/' + building + '/section/' + section + '/floor/' + floor + '/room/' + room);
-                            }
-                        },
-                        function(error) {
-                            console.log(error);
-                        }
-                    );
-                },
-                onmouseover: function (el) {
-                    var room = el.data('alt');
-                    mapService.getRoomNumber(building,section, floor, room).then(
-                        function(data) {
-                            $scope.number = data;
-                            if(data.onSale != 0) {
-                                el.attr('opacity', 0.5);
-                                $scope.message = '';
-                            } else {
-                                $scope.message = 'Продано';
-                            }
-                        },
-                        function(error) {
-                            console.log(error);
-                        }
-                    );
-                    $('.rooms-popup').find('div[data-target=' + room + ']').show();
-
-                },
-                onmouseout: function (el) {
-                    el.attr('opacity', 0);
-                    var room = el.data('alt');
-                    $('.rooms-popup').find('div[data-target=' + room + ']').hide();
-                    $scope.message = '';
-                }
-            });
-                        $rootScope.loading = false;
-        }, 1000);
-    };
-
-
 };
 
 app.controller('FloorCtrl', FloorCtrl);

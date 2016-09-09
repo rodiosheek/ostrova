@@ -215,7 +215,7 @@ $(window).ready(function () {
     mapResize('svg');
     navigationHover();
 
-
+    
 
 });
 

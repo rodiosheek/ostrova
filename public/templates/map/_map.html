@@ -5,7 +5,7 @@
         <!-- Map directive -->
         <div class="map-frame">
             <!-- Background map image -->
-            <img class="bg-img" src="../../images/maps/9a.jpg">
+            <img class="bg-img" src="../../images/maps/9a-min.jpg">
             <div class="map-info" >
                 <img  class="map-plans"  width="3300" height="1855" src="">
                 <map >
@@ -104,7 +104,7 @@
                     </div>
                 </a>
                 <!-- Popup item -->
-                <a href="" class="corps-link" data-target="9a" style="top: 43%;left: 48%;">9a
+                <a href="" class="corps-link" data-target="9a" style="top: 43%;left: 48%;">9
                     <div class="corps-link-popup">
                         <div class="corps-popup-title">
                             {{ flats.count }}
@@ -133,6 +133,12 @@
                                 3-комнатных
                             </span>
                         </div>
+                        <div class="corps-popup f4" style="font-size: 0.5em">
+                            Сдача дома в
+                            <span>
+                            4 кв/2017
+                            </span>
+                        </div>
                     </div>
                 </a>
                 <!-- Popup item -->
@@ -151,7 +157,7 @@
                 </a>
                 <!-- Popup item -->
                 <a href="" class="corps-link " data-target="feetstyle" style="top: 22%;left: 26%;">
-                    <div class="corps-link-popup" style="left: 50px">
+                    <div class="corps-link-popup" style="left: 50px;display: block;">
                         <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
                             Фитнес-клуб FITSTYLE
                             
@@ -174,7 +180,7 @@
                 </a>
                 <!-- Popup item -->
                 <a href="" class="corps-link" data-target="dc" style="top: 15%;left: 62%;">
-                    <div class="corps-link-popup" style="left: 50px">
+                    <div class="corps-link-popup" style="left: 50px;display: block;">
                         <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
                             Детский сад
                         </div>
@@ -182,7 +188,7 @@
                 </a>
                 <!-- Popup item -->
                 <a href="" class="corps-link" data-target="tc" style="top: 67%;left: 31%;">
-                    <div class="corps-link-popup" style="left: 50px">
+                    <div class="corps-link-popup" style="left: 50px;display: block;">
                         <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
                             Торговый центр
                         </div>
@@ -221,8 +227,12 @@
                     </div>
                 </a>
                 <!-- Popup item -->
-                <a href="" class="corps-link" data-target="30" style="top: 44%;left: 5%;">30
+                <a href="" class="corps-link" data-target="30" style="top: 44%;left: 5%;">38
                     <div class="corps-link-popup" style="left: 50px">
+                    <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
+                            Дом сдан
+                        </div>
+                    <!--
                         <div class="corps-popup-title">
                             {{ flats.count }}
                             <div class="corps-text">
@@ -250,11 +260,22 @@
                                 3-комнатных
                             </span>
                         </div>
+                        <div class="corps-popup f4">
+                            Дом сдан
+                            <span>
+
+                            </span>
+                        </div>
+                        -->
                     </div>
                 </a>
                 <!-- Popup item -->
-                <a href="" class="corps-link" data-target="29a" style="top: 25%;left: 17%;">29a
+                <a href="" class="corps-link" data-target="29a" style="top: 27%;left: 15%;">40
                    <div class="corps-link-popup" style="left: 50px">
+                   <div class="corps-popup-title" style="text-align: center;font-size: 16px;">
+                            Дом сдан
+                        </div>
+                   <!--
                         <div class="corps-popup-title">
                             {{ flats.count }}
                             <div class="corps-text">
@@ -282,10 +303,35 @@
                                 3-комнатных
                             </span>
                         </div>
+                       <div class="corps-popup f4">
+                           Дом сдан
+                            <span>
+
+                            </span>
+                       </div>
+                       -->
                     </div>
                 </a>
             </div>
 
         </div>
 
+    <div class="popup-img" ng-show="fitstyle" ng-click="fitstyle = !fitstyle">
+        <div class="img-popup">
+            <img src="../../images/popup_map/fitstyle.png">
+            <div class="close-popup">
+                <img src="../../images/popup_map/close.png">
+            </div>
+        </div>
+        
+    </div>
+    <div class="popup-img" ng-show="sadik" ng-click="sadik = !sadik">
+        <div class="img-popup">
+            <img src="../../images/popup_map/sadik.jpg">
+            <div class="close-popup">
+                <img src="../../images/popup_map/close.png">
+            </div>
+        </div>
+        
+    </div>
     </section>

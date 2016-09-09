@@ -1,24 +1,24 @@
 
-function router($routeProvider) {
+function router($routeProvider, $locationProvider) {
     $routeProvider
-        .when('/home', {
+        .when('/', {
             templateUrl: '/templates/home/_home.html',
             controller:  HomeCtrl
         })
         .when('/o-proekte', {
-            templateUrl: '/templates/about/_about.html',
+            templateUrl: '/templates/preim/_preim.html',
             activetab: 'about',
             controller: AboutCtrl
         })
         .when('/o-proekte/preimushestva', {
-            templateUrl: '/templates/preim/_preim.html',
+            templateUrl: '/templates/about/_about.html',
             contoroller: AboutCtrl
         })
         .when('/gallery', {
             templateUrl: '/templates/gallery/gallery.html',
             controller: GalleryCtrl
         })
-        .when('/vubor-kvartiru', {
+        .when('/vybor-kvartiry', {
             templateUrl: '/templates/map/_map.html',
             controller: MapCtrl
         })
@@ -42,11 +42,11 @@ function router($routeProvider) {
             templateUrl: '/templates/how-to-bay/_how-to-bay.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/stoimosti-kvarti', {
+        .when('/stoimost-kvartiry', {
             templateUrl: '/templates/how-to-bay/_price.html',
             controller: BayCtrl
         })
-        .when('/kak-kupit/tipovoy-dogovor', {
+        .when('/tipovoy-dogovor', {
             templateUrl: '/templates/how-to-bay/_contracts.html',
             controller: BayCtrl
         })
@@ -54,12 +54,20 @@ function router($routeProvider) {
             templateUrl: '/templates/how-to-bay/_reservation.html',
             controller: ReservationCtrl
         })
-        .when('/kak-kupit/otdel-prodag', {
+        .when('/kak-kupit/documenty', {
+            templateUrl: '/templates/how-to-bay/_documents.html',
+            controller: ReservationCtrl
+        })
+        .when('/otdel-prodazh', {
             templateUrl: '/templates/how-to-bay/_sales-department.html',
             controller: BayCtrl
         })
         .when('/novosti', {
             templateUrl: '/templates/news/_news.html',
+            controller: NewsCtrl
+        })
+        .when('/novosti/:postId', {
+            templateUrl: '/templates/news/_one_news.html',
             controller: NewsCtrl
         })
         .when('/kompania', {
@@ -74,13 +82,19 @@ function router($routeProvider) {
             templateUrl: '/templates/company/_dogovor.html',
             controller: CompanyCtrl
         })
-        .when('/kontaktu', {
+        .when('/news', {
+            templateUrl: '/news',
+            controller: NewsCtrl
+        })
+        .when('/contacts', {
             templateUrl: '/templates/contacts/contacts.html',
             controller: ContactsCtrl
         })
         .otherwise({
-            redirectTo: '/home'
-        })
+            redirectTo: '/'
+        });
+        //$locationProvider.html5Mode(true);
+        
 };
 
 app.config(router);
